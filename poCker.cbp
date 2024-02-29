@@ -32,6 +32,7 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="constants.h" />
+		<Unit filename="dealer.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

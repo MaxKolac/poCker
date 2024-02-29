@@ -9,6 +9,7 @@
 	"constants.h"
 	"utils.h"
 	"playingcard.h"
+	"dealer.h"
 
 1709243691 c:\users\ja\documents\github\pocker\playingcard.h
 	<string.h>
@@ -17,4 +18,6 @@
 	<ctype.h>
 
 1709245554 c:\users\ja\documents\github\pocker\constants.h
+
+1709245378 c:\users\ja\documents\github\pocker\dealer.h
 
