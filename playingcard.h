@@ -1,5 +1,9 @@
 #include <string.h>
 
+const int PIPS_PER_SUIT = 13;
+const int SUITS_COUNT = 4;
+const int DECK_LENGTH = SUITS_COUNT * PIPS_PER_SUIT;
+
 enum Suit {
     HEARTS,
     DIAMONDS,

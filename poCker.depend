@@ -1,16 +1,20 @@
 # depslib dependency file v1.0
 1709155750 source:c:\users\ja\documents\github\pocker\playingcard.c
 
-1709237880 source:c:\users\ja\documents\github\pocker\main.c
+1709245392 source:c:\users\ja\documents\github\pocker\main.c
 	<stdbool.h>
 	<stdio.h>
 	<stdlib.h>
-	"playingcard.h"
+	<time.h>
+	"constants.h"
 	"utils.h"
+	"playingcard.h"
 
-1709208073 c:\users\ja\documents\github\pocker\playingcard.h
+1709243691 c:\users\ja\documents\github\pocker\playingcard.h
 	<string.h>
 
 1709237196 c:\users\ja\documents\github\pocker\utils.h
 	<ctype.h>
+
+1709245554 c:\users\ja\documents\github\pocker\constants.h
 
