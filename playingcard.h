@@ -1,9 +1,14 @@
 #include <string.h>
+/**
+* \file     playingcard.h
+* \brief    Contains functions, constants and structs related to playing cards.
+*/
 
 const int PIPS_PER_SUIT = 13;
 const int SUITS_COUNT = 4;
 const int DECK_LENGTH = SUITS_COUNT * PIPS_PER_SUIT;
 
+/** \enum Represents a symbol in a card deck. */
 enum Suit {
     HEARTS,
     DIAMONDS,
@@ -11,6 +16,7 @@ enum Suit {
     SPADES
 };
 
+/** \enum Represents the amount of symbols on a card and its rank amongst other cards. */
 enum Pip {
     ACE,
     TWO,
@@ -27,8 +33,11 @@ enum Pip {
     KING
 };
 
+/** \brief Represents a single playing card. */
 struct PlayingCard {
+    /** \brief The card's symbol. */
     enum Suit suit;
+    /** \brief The amount of symbols on a card. */
     enum Pip pips;
 };
 

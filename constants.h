@@ -1,3 +1,8 @@
+/**
+* \file     constants.h
+* \brief    Contains global constants that didn't fit other files.
+*/
+
 const int CARDS_PER_PLAYER = 2;
 const int COMM_CARDS_COUNT = 5;
 const int MIN_FUNDS_PER_PLAYER = 100;
