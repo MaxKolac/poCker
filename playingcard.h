@@ -18,7 +18,6 @@ enum Suit {
 
 /** \enum Represents the amount of symbols on a card and its rank amongst other cards. */
 enum Pip {
-    ACE,
     TWO,
     THREE,
     FOUR,
@@ -30,7 +29,8 @@ enum Pip {
     TEN,
     JACK,
     QUEEN,
-    KING
+    KING,
+    ACE
 };
 
 /** \brief Represents a single playing card. */
@@ -46,7 +46,6 @@ const char* getSuitName(enum Suit);
 
 const char* getPipName(enum Pip pips){
     switch (pips){
-        case ACE: return "Ace";
         case TWO: return "Two";
         case THREE: return "Three";
         case FOUR: return "Four";
@@ -59,6 +58,7 @@ const char* getPipName(enum Pip pips){
         case JACK: return "Jack";
         case QUEEN: return "Queen";
         case KING: return "King";
+        case ACE: return "Ace";
         default: return "";
     }
 }
