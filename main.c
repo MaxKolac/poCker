@@ -6,7 +6,6 @@
 #include "utils.h"
 #include "playingcard.h"
 #include "dealer.h"
-//Note to self - #include declarations are basically copying those file contents here. Their order matters!
 
 int main()
 {

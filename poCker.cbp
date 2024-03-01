@@ -36,6 +36,10 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="notes.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="playingcard.h" />
 		<Unit filename="utils.h" />
 		<Extensions />

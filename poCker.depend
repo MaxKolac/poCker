@@ -1,7 +1,7 @@
 # depslib dependency file v1.0
 1709155750 source:c:\users\ja\documents\github\pocker\playingcard.c
 
-1709245392 source:c:\users\ja\documents\github\pocker\main.c
+1709245902 source:c:\users\ja\documents\github\pocker\main.c
 	<stdbool.h>
 	<stdio.h>
 	<stdlib.h>
@@ -11,13 +11,13 @@
 	"playingcard.h"
 	"dealer.h"
 
-1709243691 c:\users\ja\documents\github\pocker\playingcard.h
+1709294215 c:\users\ja\documents\github\pocker\playingcard.h
 	<string.h>
 
-1709237196 c:\users\ja\documents\github\pocker\utils.h
+1709294700 c:\users\ja\documents\github\pocker\utils.h
 	<ctype.h>
 
-1709245554 c:\users\ja\documents\github\pocker\constants.h
+1709294212 c:\users\ja\documents\github\pocker\constants.h
 
-1709245378 c:\users\ja\documents\github\pocker\dealer.h
+1709294905 c:\users\ja\documents\github\pocker\dealer.h
 
