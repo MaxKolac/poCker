@@ -18,6 +18,7 @@ int main()
             //printf("%d\n", PIPS_PER_SUIT * i + j);
         }
     }
+    //Debug
     //for (int i = 0; i < deck_length; i++){
     //    printf("%s of %s\n", getPipName(deck[i].pips), getSuitName(deck[i].suit));
     //}
@@ -25,16 +26,17 @@ int main()
     struct PlayingCard* player_hands[PLAYER_COUNT][CARDS_PER_PLAYER];
     struct PlayingCard* comm_cards[COMM_CARDS_COUNT];
 
-    //random gen initialization, should be called only once
+    //Seeds the random number generator with current time since epoch.
+    //Should be called ONLY once.
     srand(time(NULL));
 
     //Game loop
     for (;;){
         //Setup
-
-        //Get from the user how many funds should all players start with.
         char input[10];
         bool input_is_valid = false;
+
+        //Prompt the user for how many funds should all players start with.
         int ini_funds_per_player;
         do {
             printf("Set the initial amount of funds for each player. Min - %d, Max - %d: ", MIN_FUNDS_PER_PLAYER, MAX_FUNDS_PER_PLAYER);
@@ -45,9 +47,21 @@ int main()
                 ini_funds_per_player = input_as_int;
             }
         } while (!input_is_valid);
+        //Debug
         //printf("Initial funds per player: %d", ini_funds_per_player);
 
-        distributeHoleCards(deck, player_hands, comm_cards);
+        distributeCards(deck, player_hands, comm_cards);
+        //Debug
+        //for (int i = 0; i < PLAYER_COUNT; i++){
+        //    printf("Player %d's cards:\n", i);
+        //    for (int j = 0; j < CARDS_PER_PLAYER; j++){
+        //        printf("\t%s of %s\n", getPipName(player_hands[i][j]->pips), getSuitName(player_hands[i][j]->suit));
+        //    }
+        //}
+        //printf("Community cards:\n");
+        //for (int i = 0; i < COMM_CARDS_COUNT; i++){
+        //    printf("\t%s of %s\n", getPipName(comm_cards[i]->pips), getSuitName(comm_cards[i]->suit));
+        //}
     }
 
     return 0;
