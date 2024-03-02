@@ -8,7 +8,7 @@ const int PIPS_PER_SUIT = 13;
 const int SUITS_COUNT = 4;
 const int DECK_LENGTH = SUITS_COUNT * PIPS_PER_SUIT;
 
-/** \enum Represents a symbol in a card deck. */
+/** \brief Represents a symbol in a card deck. */
 enum Suit {
     HEARTS,
     DIAMONDS,
@@ -16,7 +16,10 @@ enum Suit {
     SPADES
 };
 
-/** \enum Represents the amount of symbols on a card and its rank amongst other cards. */
+/**
+* \brief Represents the amount of symbols on a card and more importantly, its value amongst other cards.
+* \warning Keep in mind that for the sake of hand rank score calculation, Pip enumerator starts with 1, and not zero!
+*/
 enum Pip {
     TWO = 1,
     THREE,
