@@ -33,6 +33,7 @@
 		</Compiler>
 		<Unit filename="constants.h" />
 		<Unit filename="dealer.h" />
+		<Unit filename="handranking.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -40,6 +41,7 @@
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="player.h" />
 		<Unit filename="playingcard.h" />
 		<Unit filename="utils.h" />
 		<Extensions />
