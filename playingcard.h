@@ -18,7 +18,7 @@ enum Suit {
 
 /** \enum Represents the amount of symbols on a card and its rank amongst other cards. */
 enum Pip {
-    TWO,
+    TWO = 1,
     THREE,
     FOUR,
     FIVE,
