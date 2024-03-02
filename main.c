@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "playingcard.h"
 #include "dealer.h"
+#include "handranking.h"
 
 int main()
 {
