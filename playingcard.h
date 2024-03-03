@@ -1,8 +1,5 @@
-#include <string.h>
-/**
-* \file     playingcard.h
-* \brief    Contains functions, constants and structs related to playing cards.
-*/
+#ifndef playingcard.h
+#define playingcard.h
 
 const int PIPS_PER_SUIT = 13;
 const int SUITS_COUNT = 4;
@@ -47,31 +44,4 @@ struct PlayingCard {
 const char* getPipName(enum Pip);
 const char* getSuitName(enum Suit);
 
-const char* getPipName(enum Pip pips){
-    switch (pips){
-        case TWO: return "Two";
-        case THREE: return "Three";
-        case FOUR: return "Four";
-        case FIVE: return "Five";
-        case SIX: return "Six";
-        case SEVEN: return "Seven";
-        case EIGHT: return "Eight";
-        case NINE: return "Nine";
-        case TEN: return "Ten";
-        case JACK: return "Jack";
-        case QUEEN: return "Queen";
-        case KING: return "King";
-        case ACE: return "Ace";
-        default: return "";
-    }
-}
-
-const char* getSuitName(enum Suit suits){
-    switch (suits){
-        case HEARTS: return "Hearts";
-        case DIAMONDS: return "Diamonds";
-        case CLUBS: return "Clubs";
-        case SPADES: return "Spades";
-        default: return "";
-    }
-}
+#endif
