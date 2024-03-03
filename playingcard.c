@@ -22,7 +22,7 @@ const char* getPipName(enum Pip pips){
     return "";
 }
 
-const char* getSuitName(Suit suits){
+const char* getSuitName(enum Suit suits){
     switch (suits){
         case HEARTS: return "Hearts";
         case DIAMONDS: return "Diamonds";
