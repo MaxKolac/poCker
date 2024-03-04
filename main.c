@@ -8,6 +8,7 @@
 #include "player.h"
 #include "dealer.h"
 #include "handranking.h"
+#include "test/test_handranking.h"
 
 int main()
 {
@@ -16,14 +17,18 @@ int main()
     for (int i = 0; i < SUITS_COUNT; i++){
         for (int j = 0; j < PIPS_PER_SUIT; j++){
             deck[PIPS_PER_SUIT * i + j].suit = i;
-            deck[PIPS_PER_SUIT * i + j].pips = j;
+            deck[PIPS_PER_SUIT * i + j].pips = j + 1; //Remember, Pips start from 1, not zero!
             //printf("%d\n", PIPS_PER_SUIT * i + j);
         }
     }
     //Debug
-    //for (int i = 0; i < deck_length; i++){
-    //    printf("%s of %s\n", getPipName(deck[i].pips), getSuitName(deck[i].suit));
+    //for (int i = 0; i < DECK_LENGTH; i++){
+    //    printf("%s of %s at %p\n", getPipName(deck[i].pips), getSuitName(deck[i].suit), &deck[i]);
     //}
+
+    //Uncomment this to run unit-tests
+    test_handrankingPerform(deck);
+    return 0;
 
     struct Player* players[PLAYER_COUNT];
     struct PlayingCard* comm_cards[COMM_CARDS_COUNT];

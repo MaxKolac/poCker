@@ -24,16 +24,30 @@ int detectRoyalFlush(struct PlayingCard* cards[], int cards_count){
     //If program finds a card that could be a part of a Royal Flush, it remembers finding it in a 4 by 5 bool table.
     //Kinda like ticking off boxes on a bingo card, except the only way to get bingo is fill any suit's row.
     //If one suit column is filled with only trues, it means we have a Royal Flush.
-    //Royal Flush requires 5 cards so if we already had more than (5 + 2) - 5 = 2 cards smaller than TEN
+
+    //Table needs to be first filled with 'false's.
+    //Testing has shown that this table almost always includes some random integers from the memory, likely because the array is only declared.
+    //Condition checking each bingo square for a 'true' returns true for integers greater than 1, it seems.
+    //Without pre-filling the array with falses, it is very likely for filledBoxes to be incremented at wrong times.
+    //This algorithm could probably be made shorter if instead of checking for 'true's,
+    //the condition was 'equals to 1', but I'm too scared right now. Don't fix what ain't broke.
+    bool card_bingo_table[SUITS_COUNT][5];
+    for (int i = 0; i < SUITS_COUNT; i++){
+        for (int j = 0; j < 5; j++){
+            card_bingo_table[i][j] = false;
+        }
+    }
+
+    //Royal Flush requires 5 cards so if we already had more than cards_count - 5 cards smaller than Pips.TEN
     //then it's pointless to keep looking for a Royal Flush.
     int conflictingCards = 0;
-    bool card_bingo_table[SUITS_COUNT][5];
-    for (int i = 0; i < CARDS_PER_PLAYER + COMM_CARDS_COUNT; i++){
-        if (conflictingCards > CARDS_PER_PLAYER + COMM_CARDS_COUNT - 5){
+    for (int i = 0; i < cards_count; i++){
+        if (conflictingCards > cards_count - 5){
             return 0;
         }
+        //printf("%s of %s\n", getPipName(cards[i]->pips), getSuitName(cards[i]->suit));
         if (cards[i]->pips >= TEN){
-            card_bingo_table[cards[i]->suit][cards[i]->pips - TEN] = true;
+            card_bingo_table[cards[i]->suit][(cards[i]->pips) - TEN] = true;
         }
         else{
             conflictingCards++;

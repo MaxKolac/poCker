@@ -43,6 +43,9 @@
 		</Unit>
 		<Unit filename="player.h" />
 		<Unit filename="playingcard.h" />
+		<Unit filename="test/test_handranking.h">
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="utils.h" />
 		<Extensions>
 			<DoxyBlocks>
