@@ -24,7 +24,7 @@ int main()
     //    printf("%s of %s\n", getPipName(deck[i].pips), getSuitName(deck[i].suit));
     //}
 
-    struct Player* players[PLAYER_COUNT];
+    struct PlayingCard* player_hands[PLAYER_COUNT][CARDS_PER_PLAYER];
     struct PlayingCard* comm_cards[COMM_CARDS_COUNT];
 
     //Seeds the random number generator with current time since epoch.
@@ -51,7 +51,7 @@ int main()
         //Debug
         //printf("Initial funds per player: %d", ini_funds_per_player);
 
-        distributeCards(deck, players, comm_cards);
+        distributeCards(deck, player_hands, comm_cards);
         //Debug
         //for (int i = 0; i < PLAYER_COUNT; i++){
         //    printf("Player %d's cards:\n", i);

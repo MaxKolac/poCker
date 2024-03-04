@@ -12,6 +12,4 @@
 *   Prototypes & Function Declarations
 *   Code
 *
-* The header .H is like an interface for others to use - make sure to use guard macros (the #ifndef wrappers on every header)
-* The source .C is the implementation
 */
