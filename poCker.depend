@@ -1,7 +1,8 @@
 # depslib dependency file v1.0
-1709155750 source:c:\users\ja\documents\github\pocker\playingcard.c
+1709497223 source:c:\users\ja\documents\github\pocker\playingcard.c
+	"playingcard.h"
 
-1709407981 source:c:\users\ja\documents\github\pocker\main.c
+1709497661 source:c:\users\ja\documents\github\pocker\main.c
 	<stdbool.h>
 	<stdio.h>
 	<stdlib.h>
@@ -12,16 +13,55 @@
 	"dealer.h"
 	"handranking.h"
 
-1709408672 c:\users\ja\documents\github\pocker\playingcard.h
-	<string.h>
+1709497622 c:\users\ja\documents\github\pocker\playingcard.h
 
-1709331814 c:\users\ja\documents\github\pocker\utils.h
-	<ctype.h>
+1709496428 c:\users\ja\documents\github\pocker\utils.h
 
-1709331550 c:\users\ja\documents\github\pocker\constants.h
+1709496373 c:\users\ja\documents\github\pocker\constants.h
 
-1709403962 c:\users\ja\documents\github\pocker\dealer.h
-	<assert.h>
+1709496172 c:\users\ja\documents\github\pocker\dealer.h
+	"playingcard.h"
+	"player.h"
 
-1709413215 c:\users\ja\documents\github\pocker\handranking.h
+1709497124 c:\users\ja\documents\github\pocker\handranking.h
+	"playingcard.h"
+	"player.h"
+
+1709496517 source:c:\users\ja\documents\github\pocker\dealer.c
+	"constants.h"
+	"playingcard.h"
+	"player.h"
+	"utils.h"
+
+1709496470 c:\users\ja\documents\github\pocker\player.h
+	<stdbool.h>
+	"playingcard.h"
+
+1709496407 source:c:\users\ja\documents\github\pocker\utils.c
+	<stdlib.h>
+
+1709497914 source:c:\users\ja\documents\github\pocker\notes.c
+
+1709496373 source:c:\users\ja\documents\github\pocker\constants.h
+
+1709496172 source:c:\users\ja\documents\github\pocker\dealer.h
+	"playingcard.h"
+	"player.h"
+
+1709496423 source:c:\users\ja\documents\github\pocker\playingcard.h
+
+1709497124 source:c:\users\ja\documents\github\pocker\handranking.h
+	"playingcard.h"
+	"player.h"
+
+1709497170 source:c:\users\ja\documents\github\pocker\handranking.c
+	"constants.h"
+	"playingcard.h"
+	"player.h"
+
+1709496470 source:c:\users\ja\documents\github\pocker\player.h
+	<stdbool.h>
+	"playingcard.h"
+
+1709496428 source:c:\users\ja\documents\github\pocker\utils.h
 
