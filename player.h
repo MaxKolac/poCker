@@ -1,3 +1,6 @@
+#ifndef player.h
+#define player.h
+
 #include <stdbool.h>
 #include "playingcard.h"
 
@@ -17,3 +20,5 @@ struct Player {
     /** \brief Pointers to player's playing cards in his hand. */
     struct PlayingCard* current_hand[2];
 };
+
+#endif // player
