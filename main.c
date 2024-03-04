@@ -14,17 +14,7 @@ int main()
 {
     //Builds a full playing deck
     struct PlayingCard deck[DECK_LENGTH];
-    for (int i = 0; i < SUITS_COUNT; i++){
-        for (int j = 0; j < PIPS_PER_SUIT; j++){
-            deck[PIPS_PER_SUIT * i + j].suit = i;
-            deck[PIPS_PER_SUIT * i + j].pips = j + 1; //Remember, Pips start from 1, not zero!
-            //printf("%d\n", PIPS_PER_SUIT * i + j);
-        }
-    }
-    //Debug
-    //for (int i = 0; i < DECK_LENGTH; i++){
-    //    printf("%s of %s at %p\n", getPipName(deck[i].pips), getSuitName(deck[i].suit), &deck[i]);
-    //}
+    buildDeck(&deck);
 
     //Uncomment this to run unit-tests
     test_handrankingPerform(deck);

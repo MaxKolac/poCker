@@ -5,6 +5,7 @@
 * \brief    Contains function-equivalents of what a real-life table dealer would do in a real poker game.
 */
 
+void buildDeck(struct PlayingCard[]);
 void distributeCards();
 
 /** \brief  Distributes random playing cards to players' hands and selects community cards.
@@ -83,5 +84,23 @@ void distributeCards(struct PlayingCard deck[],
     //Debug
     //for (int i = 0; i < indexes_count; i++){
     //    assert(indexes[i] == -1);
+    //}
+}
+
+/**
+*   \brief Builds a deck of playing cards containing 4 suits & 13 cards for each suit.
+*   \param targetArray The array of PlayingCards to build the deck in.
+*/
+void buildDeck(struct PlayingCard targetArray[]){
+    for (int i = 0; i < SUITS_COUNT; i++){
+        for (int j = 0; j < PIPS_PER_SUIT; j++){
+            targetArray[PIPS_PER_SUIT * i + j].suit = i;
+            targetArray[PIPS_PER_SUIT * i + j].pips = j + 1; //Remember, Pips start from 1, not zero!
+            //printf("%d\n", PIPS_PER_SUIT * i + j);
+        }
+    }
+    //Debug
+    //for (int i = 0; i < DECK_LENGTH; i++){
+    //    printf("%s of %s at %p\n", getPipName(targetArray[i].pips), getSuitName(targetArray[i].suit), &targetArray[i]);
     //}
 }
