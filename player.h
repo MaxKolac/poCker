@@ -1,8 +1,10 @@
 #include <stdbool.h>
 #include "playingcard.h"
 
-#ifndef player.h
-#define player.h
+/**
+* \file player.h
+* \brief Contains only a Player struct.
+*/
 
 /** \brief Represents a single player. */
 struct Player {
@@ -15,5 +17,3 @@ struct Player {
     /** \brief Pointers to player's playing cards in his hand. */
     struct PlayingCard* current_hand[2];
 };
-
-#endif // player

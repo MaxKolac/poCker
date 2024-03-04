@@ -60,7 +60,7 @@
 				<comment_style block="0" line="0" />
 				<doxyfile_project />
 				<doxyfile_build />
-				<doxyfile_warnings />
+				<doxyfile_warnings warn_if_undocumented="1" />
 				<doxyfile_output />
 				<doxyfile_dot />
 				<general />
