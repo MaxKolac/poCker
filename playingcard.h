@@ -1,4 +1,8 @@
+#ifndef playingcard.h
+#define playingcard.h
+
 #include <string.h>
+
 /**
 * \file     playingcard.h
 * \brief    Contains functions, constants and structs related to playing cards.
@@ -75,3 +79,5 @@ const char* getSuitName(enum Suit suits){
         default: return "";
     }
 }
+
+#endif
