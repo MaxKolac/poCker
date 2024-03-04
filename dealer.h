@@ -18,7 +18,7 @@ void distributeCards();
  *  Each used index is replaced with -1 to ensure no player and community card were given the same card.
  */
 void distributeCards(struct PlayingCard deck[],
-                     struct PlayingCard* player_hands[][CARDS_PER_PLAYER],
+                     struct Player* players[],
                      struct PlayingCard* comm_cards[]){
     //Generate an array of random numbers in range of deck's array length.
     int indexes_count = PLAYER_COUNT * CARDS_PER_PLAYER + COMM_CARDS_COUNT;
@@ -66,7 +66,7 @@ void distributeCards(struct PlayingCard deck[],
             while (indexes[selectedIndex] == -1){
                 selectedIndex = (selectedIndex + 1) % indexes_count;
             }
-            player_hands[i][j] = &(deck[indexes[selectedIndex]]);
+            players[i]->current_hand[j] = &(deck[indexes[selectedIndex]]);
             indexes[selectedIndex] = -1;
         }
     }
