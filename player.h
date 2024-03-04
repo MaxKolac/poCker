@@ -1,6 +1,11 @@
 #include <stdbool.h>
 #include "playingcard.h"
 
+/**
+* \file player.h
+* \brief Contains only a Player struct.
+*/
+
 /** \brief Represents a single player. */
 struct Player {
     /** \brief Player's current amount of funds. If this number reaches 0, the player looses. */
