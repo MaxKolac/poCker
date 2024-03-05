@@ -52,6 +52,11 @@ const char* getPipName(enum Pip);
 const char* getSuitName(enum Suit);
 void getCardName(struct PlayingCard*, char*, int);
 
+/**
+*   \brief Returns a string literal containing the name of the given Pip enumerator.
+*   \param pips Pip enumerator to get the name of.
+*   Returns "ERR" if no match was found.
+*/
 const char* getPipName(enum Pip pips){
     switch (pips){
         case TWO: return "Two";
@@ -67,20 +72,32 @@ const char* getPipName(enum Pip pips){
         case QUEEN: return "Queen";
         case KING: return "King";
         case ACE: return "Ace";
-        default: return "";
     }
+    return "ERR";
 }
 
+/**
+*   \brief Returns a string literal containing the name of the given Suit enumerator.
+*   \param suits Suit enumerator to get the name of.
+*   Returns "ERR" if no match was found.
+*/
 const char* getSuitName(enum Suit suits){
     switch (suits){
         case HEARTS: return "Hearts";
         case DIAMONDS: return "Diamonds";
         case CLUBS: return "Clubs";
         case SPADES: return "Spades";
-        default: return "";
     }
+    return "ERR";
 }
 
+/**
+*   \brief Populates a char array with the card's name.
+*   \param card Pointer to a card to read.
+*   \param buffer The char array to fill.
+*   \param buffer_size The length of the buffer array.
+*   The buffer will be filled with the card's name in a format of "Pips of Suit". For example "Ace of Spades".
+*/
 void getCardName(struct PlayingCard* card, char* buffer, int buffer_size){
     snprintf(buffer, buffer_size, "%s of %s", getPipName(card->pips), getSuitName(card->suit));
 }
