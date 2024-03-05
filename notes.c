@@ -21,4 +21,8 @@
 * - Arrays without initialized elements might include random gibberish that
 *   happened to be there when array claimed its spots in memory. In the case of this commit, random integers.
 * - Integers greater than 1 are also treated as true. Likely because booleans in stdlib.h are just integers in disguise.
+*
+* Prototype of a function which takes in one array of pointers to structs as parameter looks as follows:
+* return_type functionName(struct Type*[]);
+* In case I ever forget.
 */

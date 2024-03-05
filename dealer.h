@@ -5,8 +5,8 @@
 * \brief    Contains function-equivalents of what a real-life table dealer would do in a real poker game.
 */
 
+void distributeCards(struct PlayingCard[], struct Player*[], struct PlayingCard*[]);
 void buildDeck(struct PlayingCard[]);
-void distributeCards();
 
 /** \brief  Distributes random playing cards to players' hands and selects community cards.
  * \param   deck An array of previously generated playing cards.
