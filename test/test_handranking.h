@@ -38,3 +38,16 @@ void test_royalFlushNotPresent(struct PlayingCard deck[]){
     int result = detectRoyalFlush(cards, 7);
     assert(result == 0);
 }
+
+void test_straightFlushPresent(struct PlayingCard deck[]){
+    struct PlayingCard* cards[] = {
+        [0] = &deck[PIPS_PER_SUIT * + - 1],
+        [1] = &deck[PIPS_PER_SUIT * + - 1],
+        [2] = &deck[PIPS_PER_SUIT * + - 1],
+        [3] = &deck[PIPS_PER_SUIT * + - 1],
+        [4] = &deck[PIPS_PER_SUIT * + - 1],
+        [5] = &deck[PIPS_PER_SUIT * + - 1],
+        [6] = &deck[PIPS_PER_SUIT * + - 1],
+    };
+    int result = detectStraightFlush(cards, 6);
+}
