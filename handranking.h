@@ -83,40 +83,49 @@ int detectRoyalFlush(struct PlayingCard* cards[], int cards_count){
  * The score of a Straight Flush is equal to the highest card's value.
  */
 int detectStraightFlush(struct PlayingCard* cards[], int cards_count){
-    struct *PlayingCard suit_arrays[SUITS_COUNT][cards_count];
-    int suit_arrays_size[SUITS_COUNT] = { 0, 0, 0, 0 };
+    struct PlayingCard* suit_arrays[SUITS_COUNT][cards_count];
+    int suit_arrays_size[SUITS_COUNT];
+    for (int i = 0; i < SUITS_COUNT; i++){
+        suit_arrays_size[i] = 0;
+    }
 
     //Put each card into their respective suit_array in such manner that each list keeps their cards in a descending order.
     for (int i = 0; i < cards_count; i++){
         //If there is/are already card(s) in this array, putting another card will require finding a spot for it
         //So that the whole array retains its elements in a descending order
+        //Debug
+        char debug_buff[30]; getCardName(cards[i], debug_buff, 30); printf("%s\n", debug_buff);
         if (suit_arrays_size[cards[i]->suit] > 0){
             for (int j = 0; j < suit_arrays_size[cards[i]->suit]; j++){
                 //If our current card has greater value, than the current 'j' card
                 //To preserve the descending order, 'i' will have to be inserted into this spot and push all cards after it by 1.
+                debug_buff[30];
+                getCardName(suit_arrays[cards[i]->suit][j], debug_buff, 30);
+                printf("%s smaller than %s ?\n", debug_buff, getPipName(cards[i]->pips));
                 if (suit_arrays[cards[i]->suit][j]->pips < cards[i]->pips){
                     //Move elements forward by 1 index, including the one we just compared our card to
                     //Place the card in the resulting empty space
                     for (int k = suit_arrays_size[cards[i]->suit]; k > j; k--){
                         suit_arrays[cards[i]->suit][k] = suit_arrays[cards[i]->suit][k - 1];
                     }
-                    suit_arrays[cards[i]->suit][j] = &cards[i];
+                    suit_arrays[cards[i]->suit][j] = cards[i];
+                    break;
                 }
                 //If all cards in the array were greater than current card and we reached j == array's size - 1 (end of iterating over suit_array)
                 //We'll append the card at the end
                 else if (j + 1 == suit_arrays_size[cards[i]->suit]){
-                    suit_arrays[cards[i]->suit][j + 1] = &cards[i];
+                    suit_arrays[cards[i]->suit][j + 1] = cards[i];
                     //suit_arrays_size[cards[i]->suit]++;
                     //We need to break the 'for' loop, because incrementing suit_array_size will make the 'for' loop
                     //perform an additional iteration. During that iteration, both conditions in 'if' and 'else if' would be true.
                     //That would cause adding the same card over and over.
-                    //break;
+                    break;
                 }
             }
         }
         //But if this suit_array is empty, we can freely put the card in it without any consequences
         else {
-            suit_arrays[cards[i]->suit][0] = &cards[i];
+            suit_arrays[cards[i]->suit][0] = cards[i];
         }
         //Regardless of which condition was true, size of one of suit_arrays definitely increased by 1.
         suit_arrays_size[cards[i]->suit]++;
@@ -131,14 +140,16 @@ int detectStraightFlush(struct PlayingCard* cards[], int cards_count){
         }
         int consecutive_cards = 0;
         for (int j = 1; j < suit_arrays_size[i]; j++){
-            if (consecutive_cards == 5){
-                return suit_arrays[i][j - 4]->pips;
-            }
             if (suit_arrays[i][j - 1]->pips == (suit_arrays[i][j]->pips) + 1){
-                consecutiveCards++;
+                consecutive_cards++;
             }
             else {
-                consecutiveCards = 0;
+                consecutive_cards = 0;
+            }
+            //We are checking a total of 4 relations between cards and if they meet a condition.
+            //This is why it's 4 consecutive cards, not 5
+            if (consecutive_cards == 4){
+                return suit_arrays[i][j - 4]->pips;
             }
         }
     }
