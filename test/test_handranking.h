@@ -9,6 +9,7 @@
 void test_handrankingPerform(struct PlayingCard deck[]){
     test_royalFlushPresent(deck);
     test_royalFlushNotPresent(deck);
+    test_straightFlushPresent(deck);
 }
 
 void test_royalFlushPresent(struct PlayingCard deck[]){
@@ -40,14 +41,34 @@ void test_royalFlushNotPresent(struct PlayingCard deck[]){
 }
 
 void test_straightFlushPresent(struct PlayingCard deck[]){
-    struct PlayingCard* cards[] = {
-        [0] = &deck[PIPS_PER_SUIT * + - 1],
-        [1] = &deck[PIPS_PER_SUIT * + - 1],
-        [2] = &deck[PIPS_PER_SUIT * + - 1],
-        [3] = &deck[PIPS_PER_SUIT * + - 1],
-        [4] = &deck[PIPS_PER_SUIT * + - 1],
-        [5] = &deck[PIPS_PER_SUIT * + - 1],
-        [6] = &deck[PIPS_PER_SUIT * + - 1],
+    struct PlayingCard* cards1[] = {
+        [0] = &deck[PIPS_PER_SUIT * DIAMONDS + EIGHT - 1],
+        [1] = &deck[PIPS_PER_SUIT * DIAMONDS + TEN - 1],
+        [2] = &deck[PIPS_PER_SUIT * DIAMONDS + NINE - 1],
+        [4] = &deck[PIPS_PER_SUIT * DIAMONDS + SIX - 1],
+        [3] = &deck[PIPS_PER_SUIT * DIAMONDS + SEVEN - 1]
     };
-    int result = detectStraightFlush(cards, 6);
+    struct PlayingCard* cards2[] = {
+        [0] = &deck[PIPS_PER_SUIT * SPADES + TWO - 1],
+        [1] = &deck[PIPS_PER_SUIT * CLUBS + THREE - 1],
+        [2] = &deck[PIPS_PER_SUIT * SPADES + THREE - 1],
+        [3] = &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
+        [4] = &deck[PIPS_PER_SUIT * SPADES + SIX - 1],
+        [5] = &deck[PIPS_PER_SUIT * SPADES + FIVE - 1]
+    };
+    struct PlayingCard* cards3[] = {
+        [0] = &deck[PIPS_PER_SUIT * HEARTS + QUEEN - 1],
+        [1] = &deck[PIPS_PER_SUIT * HEARTS + TEN - 1],
+        [2] = &deck[PIPS_PER_SUIT * CLUBS + TEN - 1],
+        [3] = &deck[PIPS_PER_SUIT * SPADES + THREE - 1],
+        [4] = &deck[PIPS_PER_SUIT * HEARTS + JACK - 1],
+        [5] = &deck[PIPS_PER_SUIT * HEARTS + EIGHT - 1],
+        [6] = &deck[PIPS_PER_SUIT * HEARTS + NINE - 1]
+    };
+    int result1 = detectStraightFlush(cards1, 5);
+    int result2 = detectStraightFlush(cards2, 6);
+    int result3 = detectStraightFlush(cards3, 7);
+    assert(result1 == TEN);
+    assert(result2 == SIX);
+    assert(result3 == QUEEN);
 }
