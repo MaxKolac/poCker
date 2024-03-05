@@ -50,6 +50,7 @@ struct PlayingCard {
 
 const char* getPipName(enum Pip);
 const char* getSuitName(enum Suit);
+void getCardName(struct PlayingCard*, char*, int);
 
 const char* getPipName(enum Pip pips){
     switch (pips){
@@ -78,6 +79,10 @@ const char* getSuitName(enum Suit suits){
         case SPADES: return "Spades";
         default: return "";
     }
+}
+
+void getCardName(struct PlayingCard* card, char* buffer, int buffer_size){
+    snprintf(buffer, buffer_size, "%s of %s", getPipName(card->pips), getSuitName(card->suit));
 }
 
 #endif

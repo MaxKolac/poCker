@@ -100,7 +100,10 @@ void buildDeck(struct PlayingCard targetArray[]){
         }
     }
     //Debug
-    //for (int i = 0; i < DECK_LENGTH; i++){
-    //    printf("%s of %s at %p\n", getPipName(targetArray[i].pips), getSuitName(targetArray[i].suit), &targetArray[i]);
-    //}
+    for (int i = 0; i < DECK_LENGTH; i++){
+        char buffer[30];
+        getCardName(&targetArray[i], buffer, 30);
+        printf("%s at %p\n", buffer, &targetArray[i]);
+        //printf("%s of %s at %p\n", getPipName(targetArray[i].pips), getSuitName(targetArray[i].suit), &targetArray[i]);
+    }
 }
