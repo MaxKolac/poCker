@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <stdarg.h>
 
 /**
 * \file     utils.h
@@ -8,6 +9,7 @@
 int isNumber(char[]);
 int mathClamp(int, int, int);
 int randRange(int, int);
+int mathMax(int, ...);
 
 /** \brief  Checks if the given char array can be considered a number.
  * \param   s A char array to check.
@@ -39,8 +41,8 @@ int mathClamp(int val, int min, int max){
         return val;
 }
 
-/** \brief  Randomizes an integer from a given inclusive range.
- *
+/**
+ * \brief  Randomizes an integer from a given inclusive range.
  * \param   lower_inc_bound Lower inclusive bound, clamped to be in range of (0, upper_inc_bound); both ends inclusive.
  * \param   upper_inc_bound Upper inclusive bound, clamped to be in range of (lower_inc_bound, RAND_MAX); both ends inclusive.
  * \return  A random integer from range of (lower_inc_bound, upper_inc_bound), both ends inclusive.
@@ -51,4 +53,30 @@ int randRange(int lower_inc_bound, int upper_inc_bound){
     lower_inc_bound = mathClamp(lower_inc_bound, 0, upper_inc_bound);
     upper_inc_bound = mathClamp(upper_inc_bound, lower_inc_bound, RAND_MAX);
     return lower_inc_bound + (rand() % (upper_inc_bound - lower_inc_bound));
+}
+
+/**
+ * \brief Returns the greatest integer provided in arguments.
+ * \param count Amount of integers in the arguments.
+ * \param ... Integers to compare.
+ */
+int mathMax(int count, ...) {
+    //Declare a variadic arguments list
+    va_list args;
+    //Macro that returns integer's minimum value
+    int max = INT_MIN;
+
+    //Populate the args list with 'count' arguments
+    va_start(args, count);
+    for (int i = 0; i < count; i++) {
+        // Retrieve the next argument
+        int value = va_arg(args, int);
+        if (value > max) {
+            max = value;
+        }
+    }
+    //Clean up the va_list
+    va_end(args);
+
+    return max;
 }
