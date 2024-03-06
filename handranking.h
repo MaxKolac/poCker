@@ -83,6 +83,11 @@ int detectRoyalFlush(struct PlayingCard* cards[], int cards_count){
  * The score of a Straight Flush is equal to the highest card's value.
  */
 int detectStraightFlush(struct PlayingCard* cards[], int cards_count){
+    //Cards are sorted by suits, and then by their value.
+    //Creating 4 lists of them, all in descending order.
+    //Then, whichever list happens to have 5 or more cards
+    //And they are all consecutive in relation to their neighbouring cards
+    //Result in a Straight Flush
     struct PlayingCard* suit_arrays[SUITS_COUNT][cards_count];
     int suit_arrays_size[SUITS_COUNT];
     for (int i = 0; i < SUITS_COUNT; i++){
@@ -94,14 +99,14 @@ int detectStraightFlush(struct PlayingCard* cards[], int cards_count){
         //If there is/are already card(s) in this array, putting another card will require finding a spot for it
         //So that the whole array retains its elements in a descending order
         //Debug
-        char debug_buff[30]; getCardName(cards[i], debug_buff, 30); printf("%s\n", debug_buff);
+        //char debug_buff[30]; getCardName(cards[i], debug_buff, 30); printf("%s\n", debug_buff);
         if (suit_arrays_size[cards[i]->suit] > 0){
             for (int j = 0; j < suit_arrays_size[cards[i]->suit]; j++){
                 //If our current card has greater value, than the current 'j' card
                 //To preserve the descending order, 'i' will have to be inserted into this spot and push all cards after it by 1.
-                debug_buff[30];
-                getCardName(suit_arrays[cards[i]->suit][j], debug_buff, 30);
-                printf("%s smaller than %s ?\n", debug_buff, getPipName(cards[i]->pips));
+                //debug_buff[30];
+                //getCardName(suit_arrays[cards[i]->suit][j], debug_buff, 30);
+                //printf("%s smaller than %s ?\n", debug_buff, getPipName(cards[i]->pips));
                 if (suit_arrays[cards[i]->suit][j]->pips < cards[i]->pips){
                     //Move elements forward by 1 index, including the one we just compared our card to
                     //Place the card in the resulting empty space
@@ -173,7 +178,54 @@ int detectStraightFlush(struct PlayingCard* cards[], int cards_count){
  * (value of card that makes the FOaK) * 100 + (value of 5th card)
  */
 int detectFOaK(struct PlayingCard* cards[], int cards_count){
-    return 0;
+    enum Pip found_pips[cards_count];
+    int found_pips_size = 0;
+    int found_pips_counts[cards_count];
+    for (int i = 0; i < cards_count; i++){
+        found_pips_counts[i] = 0;
+    }
+
+    //Count on how many occurences of which Pips there are in the cards
+    for (int i = 0; i < cards_count; i++){
+        for (int j = 0; j < found_pips_size; j++){
+            if (found_pips[j] == cards[i]->pips){
+                found_pips_counts[j]++;
+                break;
+            }
+        }
+        found_pips[found_pips_size] = cards[i]->pips;
+        found_pips_counts[found_pips_size]++;
+        found_pips_size++;
+    }
+
+    //Debug
+    for (int i = 0; i < found_pips_size; i++){
+        printf("Found %d %s\n", found_pips_counts[i], getPipName(found_pips[i]));
+    }
+
+    //Find the highest FOaK and save its pip
+    enum Pip highest_foak;
+    for (int i = 0; i < found_pips_size; i++){
+        if (found_pips_counts[i] < 4){
+            continue;
+        }
+        highest_foak = highest_foak == NULL ? found_pips[i] : mathMax(2, highest_foak, found_pips[i]);
+    }
+    //No FOaKs found, return zero
+    if (highest_foak == NULL){
+        return 0;
+    }
+
+    //After finding highest FOaK, find the highest value card that is not a part of that FOaK
+    enum Pip highest_kicker;
+    for (int i = 1; i < found_pips_size; i++){
+        if (found_pips[i] == highest_foak || found_pips[i + 1] == highest_foak){
+            continue;
+        }
+        highest_kicker = mathMax(2, found_pips[i], found_pips[i - 1]);
+    }
+    //Calculate and return total score
+    return highest_foak * 100 + highest_kicker;
 }
 
 /** \brief  Detects if the given card set would result in a Full House.

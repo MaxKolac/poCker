@@ -17,21 +17,22 @@
 1709668981 c:\users\ja\documents\github\pocker\playingcard.h
 	<string.h>
 
-1709572397 c:\users\ja\documents\github\pocker\utils.h
+1709739932 c:\users\ja\documents\github\pocker\utils.h
 	<ctype.h>
+	<stdarg.h>
 
 1709572397 c:\users\ja\documents\github\pocker\constants.h
 
 1709665264 c:\users\ja\documents\github\pocker\dealer.h
 	<assert.h>
 
-1709664488 c:\users\ja\documents\github\pocker\handranking.h
+1709740256 c:\users\ja\documents\github\pocker\handranking.h
 	"player.h"
 
 1709575235 c:\users\ja\documents\github\pocker\player.h
 	<stdbool.h>
 	"playingcard.h"
 
-1709728289 c:\users\ja\documents\github\pocker\test\test_handranking.h
+1709741329 c:\users\ja\documents\github\pocker\test\test_handranking.h
 	<assert.h>
 
