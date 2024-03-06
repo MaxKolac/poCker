@@ -10,6 +10,7 @@ void test_handrankingPerform(struct PlayingCard deck[]){
     test_royalFlushPresent(deck);
     test_royalFlushNotPresent(deck);
     test_straightFlushPresent(deck);
+    test_straightFlushNotPresent(deck);
 }
 
 void test_royalFlushPresent(struct PlayingCard deck[]){
@@ -71,4 +72,37 @@ void test_straightFlushPresent(struct PlayingCard deck[]){
     assert(result1 == TEN);
     assert(result2 == SIX);
     assert(result3 == QUEEN);
+}
+
+void test_straightFlushNotPresent(struct PlayingCard deck[]){
+    struct PlayingCard* cards1[] = {
+        [0] = &deck[PIPS_PER_SUIT * HEARTS + EIGHT - 1],
+        [1] = &deck[PIPS_PER_SUIT * HEARTS + TEN - 1],
+        [2] = &deck[PIPS_PER_SUIT * CLUBS + NINE - 1],
+        [3] = &deck[PIPS_PER_SUIT * HEARTS + SEVEN - 1],
+        [4] = &deck[PIPS_PER_SUIT * HEARTS + SIX - 1]
+    };
+    struct PlayingCard* cards2[] = {
+        [0] = &deck[PIPS_PER_SUIT * DIAMONDS + FIVE - 1],
+        [1] = &deck[PIPS_PER_SUIT * CLUBS + EIGHT - 1],
+        [2] = &deck[PIPS_PER_SUIT * CLUBS + NINE - 1],
+        [3] = &deck[PIPS_PER_SUIT * DIAMONDS + SEVEN - 1],
+        [4] = &deck[PIPS_PER_SUIT * DIAMONDS + SIX - 1],
+        [5] = &deck[PIPS_PER_SUIT * CLUBS + TEN - 1]
+    };
+    struct PlayingCard* cards3[] = {
+        [0] = &deck[PIPS_PER_SUIT * SPADES + EIGHT - 1],
+        [1] = &deck[PIPS_PER_SUIT * SPADES + TEN - 1],
+        [2] = &deck[PIPS_PER_SUIT * SPADES + NINE - 1],
+        [3] = &deck[PIPS_PER_SUIT * SPADES + SEVEN - 1],
+        [4] = &deck[PIPS_PER_SUIT * SPADES + FIVE - 1],
+        [5] = &deck[PIPS_PER_SUIT * SPADES + THREE - 1],
+        [6] = &deck[PIPS_PER_SUIT * SPADES + FOUR - 1]
+    };
+    int result1 = detectStraightFlush(cards1, 5);
+    int result2 = detectStraightFlush(cards2, 6);
+    int result3 = detectStraightFlush(cards3, 7);
+    assert(result1 == 0);
+    assert(result2 == 0);
+    assert(result3 == 0);
 }
