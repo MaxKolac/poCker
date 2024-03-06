@@ -178,6 +178,7 @@ int detectStraightFlush(struct PlayingCard* cards[], int cards_count){
  * (value of card that makes the FOaK) * 100 + (value of 5th card)
  */
 int detectFOaK(struct PlayingCard* cards[], int cards_count){
+    //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
     enum Pip found_pips[cards_count];
     int found_pips_size = 0;
     int found_pips_counts[cards_count];
@@ -187,42 +188,43 @@ int detectFOaK(struct PlayingCard* cards[], int cards_count){
 
     //Count on how many occurences of which Pips there are in the cards
     for (int i = 0; i < cards_count; i++){
-        for (int j = 0; j < found_pips_size; j++){
+        for (int j = 0; j <= found_pips_size; j++){
             if (found_pips[j] == cards[i]->pips){
                 found_pips_counts[j]++;
                 break;
             }
+            if (j == found_pips_size){
+                found_pips[found_pips_size] = cards[i]->pips;
+                found_pips_counts[found_pips_size]++;
+                found_pips_size++;
+                break;
+            }
         }
-        found_pips[found_pips_size] = cards[i]->pips;
-        found_pips_counts[found_pips_size]++;
-        found_pips_size++;
     }
 
     //Debug
-    for (int i = 0; i < found_pips_size; i++){
-        printf("Found %d %s\n", found_pips_counts[i], getPipName(found_pips[i]));
-    }
+    //for (int i = 0; i < found_pips_size; i++){
+    //    printf("Found %d %s\n", found_pips_counts[i], getPipName(found_pips[i]));
+    //}
 
     //Find the highest FOaK and save its pip
-    enum Pip highest_foak;
+    int highest_foak = -1;
     for (int i = 0; i < found_pips_size; i++){
-        if (found_pips_counts[i] < 4){
-            continue;
+        if (found_pips_counts[i] >= 4){
+            highest_foak = highest_foak == -1 ? found_pips[i] : mathMax(2, highest_foak, found_pips[i]);
         }
-        highest_foak = highest_foak == NULL ? found_pips[i] : mathMax(2, highest_foak, found_pips[i]);
     }
     //No FOaKs found, return zero
-    if (highest_foak == NULL){
+    if (highest_foak == -1){
         return 0;
     }
 
     //After finding highest FOaK, find the highest value card that is not a part of that FOaK
-    enum Pip highest_kicker;
-    for (int i = 1; i < found_pips_size; i++){
-        if (found_pips[i] == highest_foak || found_pips[i + 1] == highest_foak){
-            continue;
+    int highest_kicker = INT_MIN;
+    for (int i = 0; i < found_pips_size; i++){
+        if (found_pips[i] != highest_foak){
+            highest_kicker = mathMax(2, highest_kicker, found_pips[i]);
         }
-        highest_kicker = mathMax(2, found_pips[i], found_pips[i - 1]);
     }
     //Calculate and return total score
     return highest_foak * 100 + highest_kicker;

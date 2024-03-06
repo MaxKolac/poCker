@@ -130,20 +130,20 @@ void test_FOaKPresent(struct PlayingCard deck[]){
         [9] = &deck[PIPS_PER_SUIT * CLUBS + EIGHT - 1]
     };
     struct PlayingCard* cards3[] = {
-        [0] = &deck[PIPS_PER_SUIT * HEARTS + ACE - 1],
+        [0] = &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
         [1] = &deck[PIPS_PER_SUIT * SPADES + ACE - 1],
         [2] = &deck[PIPS_PER_SUIT * SPADES + TWO - 1],
         [3] = &deck[PIPS_PER_SUIT * HEARTS + TWO - 1],
         [4] = &deck[PIPS_PER_SUIT * DIAMONDS + ACE - 1],
         [5] = &deck[PIPS_PER_SUIT * SPADES + KING - 1],
-        [6] = &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
+        [6] = &deck[PIPS_PER_SUIT * HEARTS + ACE - 1],
         [7] = &deck[PIPS_PER_SUIT * CLUBS + TWO - 1],
         [8] = &deck[PIPS_PER_SUIT * DIAMONDS + TWO - 1],
         [9] = &deck[PIPS_PER_SUIT * CLUBS + KING - 1]
     };
-    int result1 = detectStraightFlush(cards1, 5);
-    int result2 = detectStraightFlush(cards2, 10);
-    int result3 = detectStraightFlush(cards3, 10);
+    int result1 = detectFOaK(cards1, 5);
+    int result2 = detectFOaK(cards2, 10);
+    int result3 = detectFOaK(cards3, 10);
     assert(result1 == 309);
     assert(result2 == 708);
     assert(result3 == 113);
