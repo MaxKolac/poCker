@@ -186,7 +186,7 @@ int detectFOaK(struct PlayingCard* cards[], int cards_count){
         found_pips_counts[i] = 0;
     }
 
-    //Count on how many occurences of which Pips there are in the cards
+    //Count on how many occurrences of which Pips there are in the cards
     for (int i = 0; i < cards_count; i++){
         for (int j = 0; j <= found_pips_size; j++){
             if (found_pips[j] == cards[i]->pips){
@@ -246,7 +246,53 @@ int detectFOaK(struct PlayingCard* cards[], int cards_count){
  * ("trio" card value) * 100 + (pair card value)
  */
 int detectFullHouse(struct PlayingCard* cards[], int cards_count){
-    return 0;
+    //Copied and pasted from FOaK code
+    //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
+    enum Pip found_pips[cards_count];
+    int found_pips_size = 0;
+    int found_pips_counts[cards_count];
+    for (int i = 0; i < cards_count; i++){
+        found_pips_counts[i] = 0;
+    }
+
+    //Count on how many occurrences of which Pips there are in the cards
+    for (int i = 0; i < cards_count; i++){
+        for (int j = 0; j <= found_pips_size; j++){
+            if (found_pips[j] == cards[i]->pips){
+                found_pips_counts[j]++;
+                break;
+            }
+            if (j == found_pips_size){
+                found_pips[found_pips_size] = cards[i]->pips;
+                found_pips_counts[found_pips_size]++;
+                found_pips_size++;
+                break;
+            }
+        }
+    }
+
+    //Find the highest FOaK and save its pip
+    int highest_toak = -1;
+    for (int i = 0; i < found_pips_size; i++){
+        if (found_pips_counts[i] >= 3){
+            highest_toak = highest_toak == -1 ? found_pips[i] : mathMax(2, highest_toak, found_pips[i]);
+        }
+    }
+    //No TOaKs found, Full House is impossible
+    if (highest_toak == -1){
+        return 0;
+    }
+
+    //After finding highest TOaK, find the highest value pair that is not a part of that TOaK
+    int highest_pair = -1;
+    for (int i = 0; i < found_pips_size; i++){
+        if (found_pips[i] != highest_toak && found_pips_counts[i] >= 2){
+            highest_pair = highest_pair == -1 ? found_pips[i] : mathMax(2, highest_pair, found_pips[i]);
+        }
+    }
+    //No pair to accompany the TOaK, Full House is impossible.
+    //Otherwise, return a proper tie breaker score
+    return highest_pair == -1 ? 0 : highest_toak * 100 + highest_pair;
 }
 
 /** \brief  Detects if the given card set would result in a Flush.
