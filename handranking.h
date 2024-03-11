@@ -1,3 +1,4 @@
+#include <math.h>
 #include "player.h"
 
 /**
@@ -86,7 +87,7 @@ int detectStraightFlush(struct PlayingCard* cards[], int cards_count){
     //Cards are sorted by suits, and then by their value.
     //Creating 4 lists of them, all in descending order.
     //Then, whichever list happens to have 5 or more cards
-    //And they are all consecutive in relation to their neighbouring cards
+    //And they are all consecutive in relation to their neighboring cards
     //Result in a Straight Flush
     struct PlayingCard* suit_arrays[SUITS_COUNT][cards_count];
     int suit_arrays_size[SUITS_COUNT];
@@ -205,7 +206,7 @@ int detectFOaK(struct PlayingCard* cards[], int cards_count){
     //Debug
     //for (int i = 0; i < found_pips_size; i++){
     //    printf("Found %d %s\n", found_pips_counts[i], getPipName(found_pips[i]));
-    //}
+    //
 
     //Find the highest FOaK and save its pip
     int highest_foak = -1;
@@ -311,7 +312,74 @@ int detectFullHouse(struct PlayingCard* cards[], int cards_count){
  * Sum of (cardValue * 20 ^ n) for cards in descending order, where n = 4 -> 0
  */
 int detectFlush(struct PlayingCard* cards[], int cards_count){
-    return 0;
+    struct PlayingCard* suit_arrays[SUITS_COUNT][cards_count];
+    int suit_arrays_size[SUITS_COUNT];
+    for (int i = 0; i < SUITS_COUNT; i++){
+        suit_arrays_size[i] = 0;
+    }
+
+    //Algorithm for grouping cards by suit and sorting in descending order from detectStraightFlush
+    for (int i = 0; i < cards_count; i++){
+        //Debug
+        //char debug_buff[30]; getCardName(cards[i], debug_buff, 30); printf("%s\n", debug_buff);
+        if (suit_arrays_size[cards[i]->suit] > 0){
+            for (int j = 0; j < suit_arrays_size[cards[i]->suit]; j++){
+                //debug_buff[30];
+                //getCardName(suit_arrays[cards[i]->suit][j], debug_buff, 30);
+                //printf("%s smaller than %s ?\n", debug_buff, getPipName(cards[i]->pips));
+                if (suit_arrays[cards[i]->suit][j]->pips < cards[i]->pips){
+                    for (int k = suit_arrays_size[cards[i]->suit]; k > j; k--){
+                        suit_arrays[cards[i]->suit][k] = suit_arrays[cards[i]->suit][k - 1];
+                    }
+                    suit_arrays[cards[i]->suit][j] = cards[i];
+                    break;
+                }
+                else if (j + 1 == suit_arrays_size[cards[i]->suit]){
+                    suit_arrays[cards[i]->suit][j + 1] = cards[i];
+                    break;
+                }
+            }
+        }
+        else {
+            suit_arrays[cards[i]->suit][0] = cards[i];
+        }
+        suit_arrays_size[cards[i]->suit]++;
+    }
+
+    //Also copied from detectStraightFlush
+    //Check suit_arrays that have 5 or more cards
+    //In case of two Flushes, keep the highest score calculated
+    int highest_score = 0;
+    for (int i = 0; i < SUITS_COUNT; i++){
+        if (suit_arrays_size[i] < 5){
+            continue;
+        }
+        int consecutive_cards = 0;
+        for (int j = 1; j < suit_arrays_size[i]; j++){
+            //Difference between this code and code from detectStraightFlush
+            //Check that each subsequent card has smaller value than the previous one
+            if (suit_arrays[i][j - 1]->pips > suit_arrays[i][j]->pips){
+                consecutive_cards++;
+            }
+            else {
+                consecutive_cards = 0;
+            }
+            //We are checking a total of 4 relations between cards and if they meet a condition.
+            //This is why it's 4 consecutive cards, not 5
+            if (consecutive_cards == 4){
+                int current_score = 0;
+                for (int k = 4; k >= 0; k--){
+                    //current_score += suit_arrays[i][j - k]->pips * pow(20, k);
+                    int base = suit_arrays[i][j - k]->pips;
+                    int weight = pow(20, k);
+                    int card_score = base * weight;
+                    current_score += card_score;
+                }
+                highest_score = mathMax(2, highest_score, current_score);
+            }
+        }
+    }
+    return highest_score;
 }
 
 /** \brief  Detects if the given card set would result in a Straight.
