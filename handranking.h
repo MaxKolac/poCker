@@ -369,11 +369,7 @@ int detectFlush(struct PlayingCard* cards[], int cards_count){
             if (consecutive_cards == 4){
                 int current_score = 0;
                 for (int k = 4; k >= 0; k--){
-                    //current_score += suit_arrays[i][j - k]->pips * pow(20, k);
-                    int base = suit_arrays[i][j - k]->pips;
-                    int weight = pow(20, k);
-                    int card_score = base * weight;
-                    current_score += card_score;
+                    current_score += suit_arrays[i][j - k]->pips * pow(20, k);
                 }
                 highest_score = mathMax(2, highest_score, current_score);
             }

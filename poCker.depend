@@ -17,7 +17,7 @@
 1709668981 c:\users\ja\documents\github\pocker\playingcard.h
 	<string.h>
 
-1710159791 c:\users\ja\documents\github\pocker\utils.h
+1710165629 c:\users\ja\documents\github\pocker\utils.h
 	<ctype.h>
 	<stdarg.h>
 
@@ -26,7 +26,7 @@
 1709665264 c:\users\ja\documents\github\pocker\dealer.h
 	<assert.h>
 
-1710165098 c:\users\ja\documents\github\pocker\handranking.h
+1710165689 c:\users\ja\documents\github\pocker\handranking.h
 	<math.h>
 	"player.h"
 
