@@ -46,4 +46,9 @@
 *   reside inside RAM. Unable to create pointers to them.
 *
 *   Apparently the compiler is fine with accidentally assigning values in the IF instructions as a condition.
+*
+*   https://stackoverflow.com/questions/252748/how-can-i-use-an-array-of-function-pointers
+*   Function pointers need to be inside the extra brackets. Otherwise it just look like we are declaring a new function.
+*   The syntax is: return_type (*pointer_name)(arg_type_one, arg_type_two, ...) = &function_to_point_at
+*
 */

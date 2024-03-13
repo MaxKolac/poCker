@@ -423,12 +423,13 @@ int detectStraight(struct PlayingCard* cards[], int cards_count){
     //Debug
     for (int i = 0; i < cards_count - 1; i++){
         assert(sorted_cards[i]->pips >= sorted_cards[i + 1]->pips);
-        printf("%d, ", sorted_cards[i]->pips);
+        //printf("%d, ", sorted_cards[i]->pips);
     }
-    printf("%d", sorted_cards[cards_count - 1]->pips);
+    //printf("%d", sorted_cards[cards_count - 1]->pips);
 
     //Find out if there exists a subarray consisting of 5 cards where each subsequent card is smaller by 1 from the previous one.
     //Multiple cards of the same value do not break the consecutivity.
+
     //This variable counts cards, not relations between them. One card is considered consecutive to itself.
     int consecutive_cards = 1;
     //Duplicate cards is the amount of duplicates in the currently detected consecutive streak. One card is considered a duplicate of itself.
@@ -441,7 +442,6 @@ int detectStraight(struct PlayingCard* cards[], int cards_count){
             duplicate_cards++;
         }
         else {
-        //if (sorted_cards[i - 1]->pips != sorted_cards[i]->pips){
             consecutive_cards = 1;
             duplicate_cards = 0;
         }
@@ -536,15 +536,22 @@ void scorePlayersHand(struct Player* _player, struct PlayingCard* comm_cards[], 
         all_cards[i + CARDS_PER_PLAYER] = comm_cards[i];
     }
 
+    //This might be overengineered, but honestly ATM I can't think of a better place to try out function pointers
+    int (*handranks[10]) (struct PlayingCard*[], int) = {
+        detectRoyalFlush,
+        detectStraightFlush,
+        detectFOaK,
+        detectFullHouse,
+        detectFlush,
+        detectStraight,
+        detectTOaK,
+        detectTwoPair,
+        detectPair,
+        detectHighCard
+    };
+
     //Calculate scores for each individual rank
-    _player->scores[0] = detectRoyalFlush(all_cards, CARDS_PER_PLAYER + rev_cards_count);
-    _player->scores[1] = detectStraightFlush(all_cards, CARDS_PER_PLAYER + rev_cards_count);
-    _player->scores[2] = detectFOaK(all_cards, CARDS_PER_PLAYER + rev_cards_count);
-    _player->scores[3] = detectFullHouse(all_cards, CARDS_PER_PLAYER + rev_cards_count);
-    _player->scores[4] = detectFlush(all_cards, CARDS_PER_PLAYER + rev_cards_count);
-    _player->scores[5] = detectStraight(all_cards, CARDS_PER_PLAYER + rev_cards_count);
-    _player->scores[6] = detectTOaK(all_cards, CARDS_PER_PLAYER + rev_cards_count);
-    _player->scores[7] = detectTwoPair(all_cards, CARDS_PER_PLAYER + rev_cards_count);
-    _player->scores[8] = detectPair(all_cards, CARDS_PER_PLAYER + rev_cards_count);
-    _player->scores[9] = detectHighCard(all_cards, CARDS_PER_PLAYER + rev_cards_count);
+    for (int i = 0; i < 10; i++){
+        _player->scores[i] = (*handranks[i]) (all_cards, CARDS_PER_PLAYER + rev_cards_count);
+    }
 }
