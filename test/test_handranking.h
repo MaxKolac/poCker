@@ -390,3 +390,40 @@ void test_straightNotPresent(struct PlayingCard* deck[]){
     int result1 = detectStraight(cards1, 5);
     assert(result1 == 0);
 }
+
+void test_TOaKPresent(struct PlayingCard* deck[]){
+    //Detect a simple TOaK
+    struct PlayingCard* cards1[] = {
+        &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * SPADES + FOUR - 1]
+    };
+    //Detect the highest TOaK
+    struct PlayingCard* cards2[] = {
+        &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + FIVE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + FIVE - 1]
+    };
+    int result1 = detectTOaK(cards1, 3);
+    int result2 = detectTOaK(cards2, 6);
+    assert(result1 == FOUR);
+    assert(result2 == FIVE);
+}
+
+void test_TOaKNotPresent(struct PlayingCard* deck[]){
+    //For now, just make sure the PC does not explode
+    struct PlayingCard* cards1[] = {
+        &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + THREE - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + FIVE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + ACE - 1]
+    };
+    int result1 = detectTOaK(cards1, 6);
+    assert(result1 == 0);
+}
+

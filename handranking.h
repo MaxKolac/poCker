@@ -459,6 +459,7 @@ int detectStraight(struct PlayingCard* cards[], int cards_count){
  * \param   cards Array of pointers to playing cards.
  * \param   cards_count Size of the cards array.
  * \return  Tie breaker score to help determine a winner in case of a tie. Higher score wins. If a Three Of a Kind was not present, 0 is returned.
+ * \warning As of right now, this function will NOT work properly if you introduce the ability to play with more than 1 full deck!
  *
  * Three Of a Kind is a hand which consists of 3 cards of equal value.
  * For example: TTT23, 666Q2, 999AQ
@@ -469,7 +470,45 @@ int detectStraight(struct PlayingCard* cards[], int cards_count){
  * The score of a Three Of a Kind is simply the value of the card the TOaK is made of.
  */
 int detectTOaK(struct PlayingCard* cards[], int cards_count){
-    return 0;
+    //NOTE: Code copied & slightly modified from detectFOaK since these two hands don't differ all that much
+    //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
+    enum Pip found_pips[cards_count];
+    int found_pips_size = 0;
+    int found_pips_counts[cards_count];
+    for (int i = 0; i < cards_count; i++){
+        found_pips_counts[i] = 0;
+    }
+
+    //Count on how many occurrences of which Pips there are in the cards
+    for (int i = 0; i < cards_count; i++){
+        for (int j = 0; j <= found_pips_size; j++){
+            if (found_pips[j] == cards[i]->pips){
+                found_pips_counts[j]++;
+                break;
+            }
+            if (j == found_pips_size){
+                found_pips[found_pips_size] = cards[i]->pips;
+                found_pips_counts[found_pips_size]++;
+                found_pips_size++;
+                break;
+            }
+        }
+    }
+
+    //Debug
+    //for (int i = 0; i < found_pips_size; i++){
+    //    printf("Found %d %s\n", found_pips_counts[i], getPipName(found_pips[i]));
+    //
+
+    //Find the highest TOaK and save its pip
+    int highest_toak = -1;
+    for (int i = 0; i < found_pips_size; i++){
+        if (found_pips_counts[i] >= 3){
+            highest_toak = highest_toak == -1 ? found_pips[i] : mathMax(2, highest_toak, found_pips[i]);
+        }
+    }
+    //No TOaKs found, return zero, otherwise, return the highest card
+    return highest_toak == -1 ? 0 : highest_toak;
 }
 
 /** \brief  Detects if the given card set would result in a Two Pair.
