@@ -17,6 +17,8 @@ void test_handrankingPerform(struct PlayingCard deck[]){
     test_fullHouseNotPresent(deck);
     test_flushPresent(deck);
     test_flushNotPresent(deck);
+    test_straightPresent(deck);
+    test_straightNotPresent(deck);
 }
 
 void test_royalFlushPresent(struct PlayingCard deck[]){
@@ -321,4 +323,70 @@ void test_flushNotPresent(struct PlayingCard* deck[]){
     int result2 = detectFlush(cards2, 8);
     assert(result1 == 0);
     assert(result2 == 0);
+}
+
+void test_straightPresent(struct PlayingCard* deck[]){
+    //Detect a simple Straight from among a mixed hand of cards
+    struct PlayingCard* cards1[] = {
+        &deck[PIPS_PER_SUIT * SPADES + SEVEN - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + SIX - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + ACE - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + EIGHT - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + FIVE - 1]
+    };
+    //Make sure that multiple cards of the same value don't break the consecutivity
+    struct PlayingCard* cards2[] = {
+        &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * SPADES + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + JACK - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + TEN - 1],
+        &deck[PIPS_PER_SUIT * SPADES + NINE - 1]
+    };
+    //Make sure that multiple duplicates don't cause the incorrect card being returned
+    struct PlayingCard* cards3[] = {
+        &deck[PIPS_PER_SUIT * DIAMONDS + KING - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * SPADES + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + JACK - 1],
+        &deck[PIPS_PER_SUIT * SPADES + JACK - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + JACK - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + TEN - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + TEN - 1],
+        &deck[PIPS_PER_SUIT * SPADES + NINE - 1]
+    };
+    //Detect the highest card of a Straight
+    struct PlayingCard* cards4[] = {
+        &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
+        &deck[PIPS_PER_SUIT * SPADES + TWO - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + SIX - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + THREE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + EIGHT - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + SEVEN - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + NINE - 1]
+    };
+    int result1 = detectStraight(cards1, 6);
+    int result2 = detectStraight(cards2, 7);
+    int result3 = detectStraight(cards3, 9);
+    int result4 = detectStraight(cards4, 8);
+    assert(result1 == EIGHT);
+    assert(result2 == KING);
+    assert(result3 == KING);
+    assert(result4 == NINE);
+}
+
+void test_straightNotPresent(struct PlayingCard* deck[]){
+    //5 cards of the same value does not constitute a Straight
+    struct PlayingCard* cards1[] = {
+        &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
+        &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
+    };
+    int result1 = detectStraight(cards1, 5);
+    assert(result1 == 0);
 }

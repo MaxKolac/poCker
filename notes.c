@@ -45,4 +45,5 @@
 *   Commonly used for data that is accessed frequently. If no registry place is available, they will
 *   reside inside RAM. Unable to create pointers to them.
 *
+*   Apparently the compiler is fine with accidentally assigning values in the IF instructions as a condition.
 */

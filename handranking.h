@@ -392,6 +392,66 @@ int detectFlush(struct PlayingCard* cards[], int cards_count){
  * The score of a Straight is simply the value of the highest card.
  */
 int detectStraight(struct PlayingCard* cards[], int cards_count){
+    //To not meddle with the array passed as parameter, create a temporary copy
+    struct PlayingCard* sorted_cards[cards_count];
+    for (int i = 0; i < cards_count; i++){
+        sorted_cards[i] = cards[i];
+    }
+
+    //Sort this array in a descending order
+    for (int i = 1; i < cards_count; i++){
+        if (sorted_cards[i - 1]->pips >= sorted_cards[i]->pips){
+            continue;
+        }
+
+        //J indicates the index of the I card's first discovered greater/equal card than itself
+        int j = i - 2;
+        //1. Find the first greater/equal card to the left of the current card
+        while (j >= 0 && sorted_cards[j]->pips < sorted_cards[i]->pips){
+            j--;
+        }
+        //2. And put it in front it. This means pull out the I card,
+        //  move everything between J and I by one index
+        //  and put the I card in the J + 1 spot
+        struct PlayingCard* temp = sorted_cards[i];
+        for (int k = i; k > j + 1; k--){
+            sorted_cards[k] = sorted_cards[k - 1];
+        }
+        sorted_cards[j + 1] = temp;
+    }
+
+    //Debug
+    for (int i = 0; i < cards_count - 1; i++){
+        assert(sorted_cards[i]->pips >= sorted_cards[i + 1]->pips);
+        printf("%d, ", sorted_cards[i]->pips);
+    }
+    printf("%d", sorted_cards[cards_count - 1]->pips);
+
+    //Find out if there exists a subarray consisting of 5 cards where each subsequent card is smaller by 1 from the previous one.
+    //Multiple cards of the same value do not break the consecutivity.
+    //This variable counts cards, not relations between them. One card is considered consecutive to itself.
+    int consecutive_cards = 1;
+    //Duplicate cards is the amount of duplicates in the currently detected consecutive streak. One card is considered a duplicate of itself.
+    int duplicate_cards = 0;
+    for (int i = 1; i < cards_count; i++){
+        if (sorted_cards[i - 1]->pips == sorted_cards[i]->pips + 1){
+            consecutive_cards++;
+        }
+        else if (sorted_cards[i - 1]->pips == sorted_cards[i]->pips){
+            duplicate_cards++;
+        }
+        else {
+        //if (sorted_cards[i - 1]->pips != sorted_cards[i]->pips){
+            consecutive_cards = 1;
+            duplicate_cards = 0;
+        }
+
+        if (consecutive_cards == 5){
+            return sorted_cards[i - 4 - duplicate_cards]->pips;
+        }
+    }
+
+    //No subarray of 5 consecutive cards found, return zero.
     return 0;
 }
 
