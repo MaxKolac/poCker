@@ -10,6 +10,7 @@ int isNumber(char[]);
 int mathClamp(int, int, int);
 int randRange(int, int);
 int mathMax(int, ...);
+int prompt(int);
 
 /** \brief  Checks if the given char array can be considered a number.
  * \param   s A char array to check.
@@ -79,4 +80,23 @@ int mathMax(int count, ...) {
     va_end(args);
 
     return max;
+}
+
+/**
+ * \brief Prompts the user for an integer.
+ * \param max_length The maximum length of the integer.
+ * \return The first input from user which was a valid integer.
+ *
+ *  This function will not return for as long as user is giving strings which are not valid integers.
+ */
+int prompt(int max_length){
+    char input[max_length];
+    int result = 0;
+    do {
+        gets_s(&input, max_length);
+        if (isNumber(input)){
+            result = atoll(&input);
+        }
+    } while (!isNumber(input));
+    return result;
 }

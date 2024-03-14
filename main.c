@@ -29,21 +29,13 @@ int main()
 
     //Game loop
     for (;;){
-        //Setup
-        char input[10];
-        bool input_is_valid = false;
-
-        //Prompt the user for how many funds should all players start with.
-        int ini_funds_per_player;
+        //     --   Setup   --
+        //User setting - initial funds per player
+        int ini_funds_per_player = -1;
         do {
             printf("Set the initial amount of funds for each player. Min - %d, Max - %d: ", MIN_FUNDS_PER_PLAYER, MAX_FUNDS_PER_PLAYER);
-            gets_s(&input, 10);
-            if (isNumber(input)){
-                int input_as_int = atoll(&input);
-                input_is_valid = MIN_FUNDS_PER_PLAYER <= input_as_int && input_as_int <= MAX_FUNDS_PER_PLAYER;
-                ini_funds_per_player = input_as_int;
-            }
-        } while (!input_is_valid);
+            ini_funds_per_player = prompt(5);
+        } while (ini_funds_per_player < MIN_FUNDS_PER_PLAYER || MAX_FUNDS_PER_PLAYER < ini_funds_per_player);
         //Debug
         //printf("Initial funds per player: %d", ini_funds_per_player);
 
