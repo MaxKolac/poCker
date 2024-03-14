@@ -6,7 +6,7 @@
 */
 
 void distributeCards(struct PlayingCard[], struct Player*[], struct PlayingCard*[]);
-void buildDeck(struct PlayingCard[]);
+void buildDeck(struct PlayingCard[], bool);
 
 /** \brief  Distributes random playing cards to players' hands and selects community cards.
  * \param   deck An array of previously generated playing cards.
@@ -28,9 +28,8 @@ void distributeCards(struct PlayingCard deck[],
         indexes[i] = randRange(0, DECK_LENGTH - 1);
     }
     //Debug
-    //for (int i = 0; i < indexes_count; i++){
+    //for (int i = 0; i < indexes_count; i++)
     //    printf("%d\n", indexes[i]);
-    //}
 
     //Compare all array elements to ensure that they are unique.
     //It starts from the first element and compares it to all elements after it.
@@ -51,7 +50,8 @@ void distributeCards(struct PlayingCard deck[],
         }
     }
     //Debug - check for uniqueness
-    //for (int i = 0; i < indexes_count - 1; i++){
+    //for (int i = 0; i < indexes_count - 1; i++)
+    //{
     //    for (int j = i + 1; j < indexes_count; j++){
     //        printf("[i = %d] = %d; [j = %d] = %d;\n", i, indexes[i], j, indexes[j]);
     //        assert(indexes[i] != indexes[j]);
@@ -82,16 +82,16 @@ void distributeCards(struct PlayingCard deck[],
         indexes[selectedIndex] = -1;
     }
     //Debug
-    //for (int i = 0; i < indexes_count; i++){
+    //for (int i = 0; i < indexes_count; i++)
     //    assert(indexes[i] == -1);
-    //}
 }
 
 /**
 *   \brief Builds a deck of playing cards containing 4 suits & 13 cards for each suit.
 *   \param targetArray The array of PlayingCards to build the deck in.
+*   \param print_addrs If true, console will print out memory address of each card. For debug purposes.
 */
-void buildDeck(struct PlayingCard targetArray[]){
+void buildDeck(struct PlayingCard targetArray[], bool print_addrs){
     for (int i = 0; i < SUITS_COUNT; i++){
         for (int j = 0; j < PIPS_PER_SUIT; j++){
             targetArray[PIPS_PER_SUIT * i + j].suit = i;
@@ -100,10 +100,12 @@ void buildDeck(struct PlayingCard targetArray[]){
         }
     }
     //Debug
-    for (int i = 0; i < DECK_LENGTH; i++){
-        char buffer[30];
-        getCardName(&targetArray[i], buffer, 30);
-        printf("%s at %p\n", buffer, &targetArray[i]);
-        //printf("%s of %s at %p\n", getPipName(targetArray[i].pips), getSuitName(targetArray[i].suit), &targetArray[i]);
+    if (print_addrs){
+        for (int i = 0; i < DECK_LENGTH; i++){
+            char buffer[30];
+            getCardName(&targetArray[i], buffer, 30);
+            printf("%s at %p\n", buffer, &targetArray[i]);
+            //printf("%s of %s at %p\n", getPipName(targetArray[i].pips), getSuitName(targetArray[i].suit), &targetArray[i]);
+        }
     }
 }

@@ -6,7 +6,10 @@
 * Still, cumbersome unit-tests are better than none. *shrug*
 */
 
-void test_handrankingPerform(struct PlayingCard deck[]){
+void test_handrankingPerform(){
+    struct PlayingCard deck[DECK_LENGTH];
+    buildDeck(&deck, true);
+
     test_royalFlushPresent(deck);
     test_royalFlushNotPresent(deck);
     test_straightFlushPresent(deck);
