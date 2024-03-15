@@ -51,4 +51,7 @@
 *   Function pointers need to be inside the extra brackets. Otherwise it just look like we are declaring a new function.
 *   The syntax is: return_type (*pointer_name)(arg_type_one, arg_type_two, ...) = &function_to_point_at
 *
+*   https://gsamaras.wordpress.com/code/caution-when-reading-char-with-scanf-c/
+*   When using scanf() to get user's input as a single character, remember to put a space before it like this:
+*   scanf(" %c", &input);
 */

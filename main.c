@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <tgmath.h>
 #include <time.h>
 #include "constants.h"
 #include "utils.h"
@@ -13,18 +14,46 @@
 int main()
 {
     //Uncomment this to run unit-tests
-    test_handrankingPerform();
-    return 0;
+    //test_handrankingPerform();
+    //return 0;
 
     //  --  Settings    --
     //Initial funds per player
+    //Amount of funds each player gets at the beginning of the game.
     int ini_funds_per_player = -1;
     do {
-        printf("Set the initial amount of funds for each player. Min - %d, Max - %d: ", MIN_FUNDS_PER_PLAYER, MAX_FUNDS_PER_PLAYER);
-        ini_funds_per_player = prompt(5);
+        char msg[128];
+        snprintf(msg,
+                 sizeof(msg),
+                 "Set the initial amount of funds for each player. Min - %d, Max - %d",
+                 MIN_FUNDS_PER_PLAYER,
+                 MAX_FUNDS_PER_PLAYER);
+        ini_funds_per_player = prompt_i(6, msg);
     } while (ini_funds_per_player < MIN_FUNDS_PER_PLAYER || MAX_FUNDS_PER_PLAYER < ini_funds_per_player);
     //Debug
-    //printf("Initial funds per player: %d", ini_funds_per_player);
+    printf("Initial funds per player: %d\n", ini_funds_per_player);
+
+    //Fixed-limit or no-limit
+    //No-limit game means that the maximum amount of the bet isn't set, meaning players can bet as much as all of their funds.
+    //There is only the minimum amount of bet, equaling the big blind amount.
+    //Fixed-limit game restricts players to two fixes bet amounts, small limit which equals the big blind, and high limit
+    //which equals two times the big blind.
+    bool limit_fixed = prompt_b("Should the betting limits be fixed?");
+    //Debug
+    printf("Limits are fixed: %s\n", limit_fixed ? "true" : "false");
+
+    //Big blind amount
+    //This amount will influence the minimum bet amount and the pot's initial amount.
+    //Small blind amount is automatically set to be half of it, rounded down.
+    //Player first to the dealer has to pay the small blind, and the next of him has to pay the big blind.
+    //Action starts on the third player and (assuming no raises) ends on the big blind player.
+    int big_blind = -1;
+    do {
+        big_blind = prompt_i(6, "Set the big blind amount. Minimum is 2, maximum is 10% of funds per player");
+    } while (big_blind < 2 || floorf(ini_funds_per_player * 0.1) < big_blind);
+    int small_blind = floorf(big_blind / 2);
+    //Debug
+    printf("Big blind: %d, Small blind: %d\n", big_blind, small_blind);
 
     //  --  Game setup   --
     //Seeds the random number generator with current time since epoch.
@@ -51,9 +80,7 @@ int main()
         //    printf("\t%s of %s\n", getPipName(comm_cards[i]->pips), getSuitName(comm_cards[i]->suit));
         //}
 
-        //TODO: Should all player pay a mandatory fee upon a new round?
-
-        //  --  Round loop  --
+        //  --  Single betting round loop  --
         int turns_limit = PLAYER_COUNT;
         int player_index = 0;
         unsigned int pot = 0;

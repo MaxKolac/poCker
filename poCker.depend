@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
 1709155750 source:c:\users\ja\documents\github\pocker\playingcard.c
 
-1709581279 source:c:\users\ja\documents\github\pocker\main.c
+1710527978 source:c:\users\ja\documents\github\pocker\main.c
 	<stdbool.h>
 	<stdio.h>
 	<stdlib.h>
+	<tgmath.h>
 	<time.h>
 	"constants.h"
 	"utils.h"
@@ -17,13 +18,14 @@
 1709668981 c:\users\ja\documents\github\pocker\playingcard.h
 	<string.h>
 
-1710165629 c:\users\ja\documents\github\pocker\utils.h
+1710528040 c:\users\ja\documents\github\pocker\utils.h
 	<ctype.h>
 	<stdarg.h>
+	<string.h>
 
-1709572397 c:\users\ja\documents\github\pocker\constants.h
+1710523009 c:\users\ja\documents\github\pocker\constants.h
 
-1709665264 c:\users\ja\documents\github\pocker\dealer.h
+1710441312 c:\users\ja\documents\github\pocker\dealer.h
 	<assert.h>
 
 1710340144 c:\users\ja\documents\github\pocker\handranking.h
@@ -34,6 +36,6 @@
 	<stdbool.h>
 	"playingcard.h"
 
-1710341285 c:\users\ja\documents\github\pocker\test\test_handranking.h
+1710441325 c:\users\ja\documents\github\pocker\test\test_handranking.h
 	<assert.h>
 
