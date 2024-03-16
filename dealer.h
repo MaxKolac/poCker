@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <handranking.h>
 
 /**
 * \file     dealer.h
@@ -7,6 +8,7 @@
 
 void distributeCards(struct PlayingCard[], struct Player*[], struct PlayingCard*[]);
 void buildDeck(struct PlayingCard[], bool);
+void scorePlayersHand(struct Player*, struct PlayingCard*[], int);
 
 /** \brief  Distributes random playing cards to players' hands and selects community cards.
  * \param   deck An array of previously generated playing cards.
@@ -107,5 +109,36 @@ void buildDeck(struct PlayingCard targetArray[], bool print_addrs){
             printf("%s at %p\n", buffer, &targetArray[i]);
             //printf("%s of %s at %p\n", getPipName(targetArray[i].pips), getSuitName(targetArray[i].suit), &targetArray[i]);
         }
+    }
+}
+
+
+void scorePlayersHand(struct Player* _player, struct PlayingCard* comm_cards[], int rev_cards_count){
+    //Build an array containing all cards to analyze
+    struct PlayingCard* all_cards[CARDS_PER_PLAYER + rev_cards_count];
+    for (int i = 0; i < CARDS_PER_PLAYER; i++){
+        all_cards[i] = _player->current_hand[i];
+    }
+    for (int i = 0; i < rev_cards_count; i++){
+        all_cards[i + CARDS_PER_PLAYER] = comm_cards[i];
+    }
+
+    //This might be overengineered, but honestly ATM I can't think of a better place to try out function pointers
+    int (*handranks[10]) (struct PlayingCard*[], int) = {
+        detectRoyalFlush,
+        detectStraightFlush,
+        detectFOaK,
+        detectFullHouse,
+        detectFlush,
+        detectStraight,
+        detectTOaK,
+        detectTwoPair,
+        detectPair,
+        detectHighCard
+    };
+
+    //Calculate scores for each individual rank
+    for (int i = 0; i < 10; i++){
+        _player->scores[i] = (*handranks[i]) (all_cards, CARDS_PER_PLAYER + rev_cards_count);
     }
 }
