@@ -4,12 +4,11 @@
 #include <tgmath.h>
 #include <time.h>
 #include "constants.h"
-#include "utils.h"
-#include "playingcard.h"
-#include "player.h"
 #include "dealer.h"
+#include "player.h"
+#include "playingcard.h"
 #include "handranking.h"
-#include "test/test_handranking.h"
+#include "utils.h"
 
 int main()
 {
