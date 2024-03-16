@@ -1,28 +1,24 @@
-#include <assert.h>
-#include <handranking.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include "constants.h"
+#include "handranking.h"
+#include "player.h"
+#include "playingcard_enums.h"
+#include "playingcard.h"
+#include "utils.h"
 
 /**
-* \file     dealer.h
-* \brief    Contains function-equivalents of what a real-life table dealer would do in a real poker game.
-*/
-
-void distributeCards(struct PlayingCard[], struct Player*[], struct PlayingCard*[]);
-void buildDeck(struct PlayingCard[], bool);
-void scorePlayersHand(struct Player*, struct PlayingCard*[], int);
-
-/** \brief  Distributes random playing cards to players' hands and selects community cards.
- * \param   deck An array of previously generated playing cards.
- * \param   player_hands Array of pointers which will be populated with addresses to deck's elements.
- * \param   comm_cards Array of pointers which will be populated with addresses to deck's elements.
+ *  \brief Distributes random playing cards to players' hands and selects community cards.
+ *  \param deck An array of previously generated playing cards.
+ *  \param player_hands Array of pointers which will be populated with addresses to deck's elements.
+ *  \param comm_cards Array of pointers which will be populated with addresses to deck's elements.
  *
  *  First, it generates an array of random numbers which will symbolize playing cards' index in the deck.
  *  Then, this array will be checked and modified to ensure that all elements are unique.
  *  Lastly, players' hands and community card arrays are populated with addresses to cards with randomly selected indexes.
  *  Each used index is replaced with -1 to ensure no player and community card were given the same card.
  */
-void distributeCards(struct PlayingCard deck[],
-                     struct Player* players[],
-                     struct PlayingCard* comm_cards[]){
+void distributeCards(struct PlayingCard deck[], struct Player* players[], struct PlayingCard* comm_cards[]){
     //Generate an array of random numbers in range of deck's array length.
     int indexes_count = PLAYER_COUNT * CARDS_PER_PLAYER + COMM_CARDS_COUNT;
     int indexes[indexes_count];
@@ -89,10 +85,10 @@ void distributeCards(struct PlayingCard deck[],
 }
 
 /**
-*   \brief Builds a deck of playing cards containing 4 suits & 13 cards for each suit.
-*   \param targetArray The array of PlayingCards to build the deck in.
-*   \param print_addrs If true, console will print out memory address of each card. For debug purposes.
-*/
+ *  \brief Builds a deck of playing cards containing 4 suits & 13 cards for each suit.
+ *  \param targetArray The array of PlayingCards to build the deck in.
+ *  \param print_addrs If true, console will print out memory address of each card. For debug purposes.
+ */
 void buildDeck(struct PlayingCard targetArray[], bool print_addrs){
     for (int i = 0; i < SUITS_COUNT; i++){
         for (int j = 0; j < PIPS_PER_SUIT; j++){
@@ -112,7 +108,9 @@ void buildDeck(struct PlayingCard targetArray[], bool print_addrs){
     }
 }
 
-
+/**
+ *  \brief TODO
+ */
 void scorePlayersHand(struct Player* _player, struct PlayingCard* comm_cards[], int rev_cards_count){
     //Build an array containing all cards to analyze
     struct PlayingCard* all_cards[CARDS_PER_PLAYER + rev_cards_count];

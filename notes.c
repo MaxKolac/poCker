@@ -54,4 +54,15 @@
 *   https://gsamaras.wordpress.com/code/caution-when-reading-char-with-scanf-c/
 *   When using scanf() to get user's input as a single character, remember to put a space before it like this:
 *   scanf(" %c", &input);
+*
+*   https://stackoverflow.com/a/57221903/21342746
+*   Defining global consts to make sure they are redefined in other files that include them should
+*   be done as in following example:
+*    - file.h includes:
+*   extern const type var_name; (this is only declaration)
+*    - file.c includes:
+*   const type var_name = value; (this is the definition)
+*   To quote Eugene Sh. from the answer above the linked one:
+*   "Don't define variables (even const) in h files. extern them there.
+*   The rule of thumb - if it is creating an object in memory - it should not be in the header."
 */

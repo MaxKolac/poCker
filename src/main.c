@@ -1,22 +1,18 @@
+#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <tgmath.h>
 #include <time.h>
 #include "constants.h"
-#include "utils.h"
-#include "playingcard.h"
-#include "player.h"
 #include "dealer.h"
+#include "player.h"
+#include "playingcard.h"
 #include "handranking.h"
-#include "test/test_handranking.h"
+#include "utils.h"
 
 int main()
 {
-    //Uncomment this to run unit-tests
-    //test_handrankingPerform();
-    //return 0;
-
     //  --  Settings    --
     //Initial funds per player
     //Amount of funds each player gets at the beginning of the game.

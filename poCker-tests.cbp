@@ -2,38 +2,24 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="poCker" />
+		<Option title="poCker-tests" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/poCker" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/poCker-tests" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-w" />
 				</Compiler>
-			</Target>
-			<Target title="Release">
-				<Option output="bin/Release/poCker" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
-				<Option type="1" />
-				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-O2" />
-				</Compiler>
-				<Linker>
-					<Add option="-s" />
-				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="notes.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="src/constants.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -46,29 +32,30 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/handranking.h" />
-		<Unit filename="src/main.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/player.h" />
 		<Unit filename="src/playingcard.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/playingcard.h" />
-		<Unit filename="src/playingcard_enums.h" />
 		<Unit filename="src/utils.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/utils.h" />
-		<Extensions>
-			<DoxyBlocks>
-				<comment_style block="0" line="0" />
-				<doxyfile_project />
-				<doxyfile_build />
-				<doxyfile_warnings warn_if_undocumented="1" />
-				<doxyfile_output />
-				<doxyfile_dot />
-				<general />
-			</DoxyBlocks>
-		</Extensions>
+		<Unit filename="test/AllTests.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test/CuTest.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test/CuTest.h" />
+		<Unit filename="test/StrUtil.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test/test_handranking.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test/test_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
