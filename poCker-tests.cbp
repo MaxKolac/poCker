@@ -31,7 +31,21 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="main.c">
+		<Unit filename="src/utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test/AllTests.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test/CuTest.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test/CuTest.h" />
+		<Unit filename="test/StrUtil.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test/test_handranking.h" />
+		<Unit filename="test/test_utils.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions />

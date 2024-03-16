@@ -31,22 +31,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="constants.h" />
-		<Unit filename="dealer.h" />
-		<Unit filename="handranking.h" />
-		<Unit filename="main.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="notes.c">
 			<Option compilerVar="CC" />
-			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="player.h" />
-		<Unit filename="playingcard.h" />
-		<Unit filename="test/test_handranking.h">
-			<Option target="Debug" />
+		<Unit filename="src/constants.h" />
+		<Unit filename="src/dealer.h" />
+		<Unit filename="src/handranking.h" />
+		<Unit filename="src/main.c">
+			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="utils.h" />
+		<Unit filename="src/player.h" />
+		<Unit filename="src/playingcard.h" />
+		<Unit filename="src/utils.h" />
 		<Extensions>
 			<DoxyBlocks>
 				<comment_style block="0" line="0" />
