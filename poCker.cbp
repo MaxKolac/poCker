@@ -34,6 +34,9 @@
 		<Unit filename="notes.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/constants.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/constants.h" />
 		<Unit filename="src/dealer.c">
 			<Option compilerVar="CC" />
@@ -51,6 +54,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/playingcard.h" />
+		<Unit filename="src/playingcard_enums.h" />
 		<Unit filename="src/utils.c">
 			<Option compilerVar="CC" />
 		</Unit>

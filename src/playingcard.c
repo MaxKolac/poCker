@@ -2,6 +2,10 @@
 #include <string.h>
 #include "playingcard_enums.h"
 
+const int PIPS_PER_SUIT = 13;
+const int SUITS_COUNT = 4;
+const int DECK_LENGTH = SUITS_COUNT * PIPS_PER_SUIT;
+
 /**
  *  \brief Returns a string literal containing the name of the given Pip enumerator.
  *  \param pips Pip enumerator to get the name of.

@@ -9,10 +9,6 @@
  *           No idea why the source file does not see its own header, but putting those enums in a separate file worked.
  */
 
-const int PIPS_PER_SUIT = 13;
-const int SUITS_COUNT = 4;
-const int DECK_LENGTH = SUITS_COUNT * PIPS_PER_SUIT;
-
 /** \brief Represents a symbol in a card deck. */
 enum Suit {
     HEARTS,
