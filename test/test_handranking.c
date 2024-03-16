@@ -1,30 +1,26 @@
-#include <assert.h>
+#include <stdbool.h>
+#include "CuTest.h"
+#include "../src/playingcard.h"
 
-/**
-* \brief Unit-tests for handranking.h file.
-* CppUTest refuses to just distribute a pre-compiled version and their repository won't open on my VSCode.
-* Still, cumbersome unit-tests are better than none. *shrug*
-*/
-
-void test_handrankingPerform(){
+void test_handrankingPerform(CuTest* ct){
     struct PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, true);
 
-    test_royalFlushPresent(deck);
-    test_royalFlushNotPresent(deck);
-    test_straightFlushPresent(deck);
-    test_straightFlushNotPresent(deck);
-    test_FOaKPresent(deck);
-    test_FOaKNotPresent(deck);
-    test_fullHousePresent(deck);
-    test_fullHouseNotPresent(deck);
-    test_flushPresent(deck);
-    test_flushNotPresent(deck);
-    test_straightPresent(deck);
-    test_straightNotPresent(deck);
+    test_royalFlushPresent(ct, deck);
+    test_royalFlushNotPresent(ct, deck);
+    test_straightFlushPresent(ct, deck);
+    test_straightFlushNotPresent(ct, deck);
+    test_FOaKPresent(ct, deck);
+    test_FOaKNotPresent(ct, deck);
+    test_fullHousePresent(ct, deck);
+    test_fullHouseNotPresent(ct, deck);
+    test_flushPresent(ct, deck);
+    test_flushNotPresent(ct, deck);
+    test_straightPresent(ct, deck);
+    test_straightNotPresent(ct, deck);
 }
 
-void test_royalFlushPresent(struct PlayingCard deck[]){
+void test_royalFlushPresent(CuTest* ct, struct PlayingCard deck[]){
     struct PlayingCard* cards[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + SEVEN - 1], //Seven of Diamonds
         &deck[PIPS_PER_SUIT * CLUBS + KING - 1], //King of Clubs
@@ -35,10 +31,10 @@ void test_royalFlushPresent(struct PlayingCard deck[]){
         &deck[PIPS_PER_SUIT * CLUBS + JACK - 1], //Jack of Clubs
     };
     int result = detectRoyalFlush(cards, 7);
-    assert(result == 1);
+    CuAssert(ct, "", result == 1);
 }
 
-void test_royalFlushNotPresent(struct PlayingCard deck[]){
+void test_royalFlushNotPresent(CuTest* ct, struct PlayingCard deck[]){
     struct PlayingCard* cards[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + SEVEN - 1], //Seven of Diamonds
         &deck[PIPS_PER_SUIT * CLUBS + KING - 1], //King of Clubs
@@ -49,10 +45,10 @@ void test_royalFlushNotPresent(struct PlayingCard deck[]){
         &deck[PIPS_PER_SUIT * CLUBS + JACK - 1], //Jack of Clubs
     };
     int result = detectRoyalFlush(cards, 7);
-    assert(result == 0);
+    CuAssert(ct, "", result == 0);
 }
 
-void test_straightFlushPresent(struct PlayingCard deck[]){
+void test_straightFlushPresent(CuTest* ct, struct PlayingCard deck[]){
     struct PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + EIGHT - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + TEN - 1],
@@ -80,12 +76,12 @@ void test_straightFlushPresent(struct PlayingCard deck[]){
     int result1 = detectStraightFlush(cards1, 5);
     int result2 = detectStraightFlush(cards2, 6);
     int result3 = detectStraightFlush(cards3, 7);
-    assert(result1 == TEN);
-    assert(result2 == SIX);
-    assert(result3 == QUEEN);
+    CuAssert(ct, "", result1 == TEN);
+    CuAssert(ct, "", result2 == SIX);
+    CuAssert(ct, "", result3 == QUEEN);
 }
 
-void test_straightFlushNotPresent(struct PlayingCard deck[]){
+void test_straightFlushNotPresent(CuTest* ct, struct PlayingCard deck[]){
     struct PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + EIGHT - 1],
         &deck[PIPS_PER_SUIT * HEARTS + TEN - 1],
@@ -113,12 +109,12 @@ void test_straightFlushNotPresent(struct PlayingCard deck[]){
     int result1 = detectStraightFlush(cards1, 5);
     int result2 = detectStraightFlush(cards2, 6);
     int result3 = detectStraightFlush(cards3, 7);
-    assert(result1 == 0);
-    assert(result2 == 0);
-    assert(result3 == 0);
+    CuAssert(ct, "", result1 == 0);
+    CuAssert(ct, "", result2 == 0);
+    CuAssert(ct, "", result3 == 0);
 }
 
-void test_FOaKPresent(struct PlayingCard deck[]){
+void test_FOaKPresent(CuTest* ct, struct PlayingCard deck[]){
     struct PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1],
         &deck[PIPS_PER_SUIT * CLUBS + TEN - 1],
@@ -153,12 +149,12 @@ void test_FOaKPresent(struct PlayingCard deck[]){
     int result1 = detectFOaK(cards1, 5);
     int result2 = detectFOaK(cards2, 10);
     int result3 = detectFOaK(cards3, 10);
-    assert(result1 == 309);
-    assert(result2 == 708);
-    assert(result3 == 113);
+    CuAssert(ct, "", result1 == 309);
+    CuAssert(ct, "", result2 == 708);
+    CuAssert(ct, "", result3 == 113);
 }
 
-void test_FOaKNotPresent(struct PlayingCard deck[]){
+void test_FOaKNotPresent(CuTest* ct, struct PlayingCard deck[]){
     struct PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1],
         &deck[PIPS_PER_SUIT * CLUBS + TEN - 1],
@@ -193,12 +189,12 @@ void test_FOaKNotPresent(struct PlayingCard deck[]){
     int result1 = detectFOaK(cards1, 5);
     int result2 = detectFOaK(cards2, 10);
     int result3 = detectFOaK(cards3, 10);
-    assert(result1 == 0);
-    assert(result2 == 0);
-    assert(result3 == 0);
+    CuAssert(ct, "", result1 == 0);
+    CuAssert(ct, "", result2 == 0);
+    CuAssert(ct, "", result3 == 0);
 }
 
-void test_fullHousePresent(struct PlayingCard* deck[]){
+void test_fullHousePresent(CuTest* ct, struct PlayingCard* deck[]){
     struct PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1],
         &deck[PIPS_PER_SUIT * CLUBS + ACE - 1],
@@ -232,12 +228,12 @@ void test_fullHousePresent(struct PlayingCard* deck[]){
     int result1 = detectFullHouse(cards1, 5);
     int result2 = detectFullHouse(cards2, 8);
     int result3 = detectFullHouse(cards3, 10);
-    assert(result1 == 313);
-    assert(result2 == 904);
-    assert(result3 == 1211);
+    CuAssert(ct, "", result1 == 313);
+    CuAssert(ct, "", result2 == 904);
+    CuAssert(ct, "", result3 == 1211);
 }
 
-void test_fullHouseNotPresent(struct PlayingCard* deck[]){
+void test_fullHouseNotPresent(CuTest* ct, struct PlayingCard* deck[]){
     //Check that a simple TOaK is not treated as Full House
     struct PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
@@ -245,10 +241,10 @@ void test_fullHouseNotPresent(struct PlayingCard* deck[]){
         &deck[PIPS_PER_SUIT * SPADES + KING - 1]
     };
     int result1 = detectFullHouse(cards1, 3);
-    assert(result1 == 0);
+    CuAssert(ct, "", result1 == 0);
 }
 
-void test_flushPresent(struct PlayingCard* deck[]){
+void test_flushPresent(CuTest* ct, struct PlayingCard* deck[]){
     //Check for a simple Flush
     struct PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
@@ -296,12 +292,12 @@ void test_flushPresent(struct PlayingCard* deck[]){
     int result1 = detectFlush(cards1, 8);
     int result2 = detectFlush(cards2, 7);
     int result3 = detectFlush(cards3, 10);
-    assert(result1 == 2003323);
-    assert(result2 == 2180609);
-    assert(result3 == 1674925);
+    CuAssert(ct, "", result1 == 2003323);
+    CuAssert(ct, "", result2 == 2180609);
+    CuAssert(ct, "", result3 == 1674925);
 }
 
-void test_flushNotPresent(struct PlayingCard* deck[]){
+void test_flushNotPresent(CuTest* ct, struct PlayingCard* deck[]){
     //Duplicate cards do not count towards a Flush
     struct PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
@@ -324,11 +320,11 @@ void test_flushNotPresent(struct PlayingCard* deck[]){
     };
     int result1 = detectFlush(cards1, 6);
     int result2 = detectFlush(cards2, 8);
-    assert(result1 == 0);
-    assert(result2 == 0);
+    CuAssert(ct, "", result1 == 0);
+    CuAssert(ct, "", result2 == 0);
 }
 
-void test_straightPresent(struct PlayingCard* deck[]){
+void test_straightPresent(CuTest* ct, struct PlayingCard* deck[]){
     //Detect a simple Straight from among a mixed hand of cards
     struct PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * SPADES + SEVEN - 1],
@@ -375,13 +371,13 @@ void test_straightPresent(struct PlayingCard* deck[]){
     int result2 = detectStraight(cards2, 7);
     int result3 = detectStraight(cards3, 9);
     int result4 = detectStraight(cards4, 8);
-    assert(result1 == EIGHT);
-    assert(result2 == KING);
-    assert(result3 == KING);
-    assert(result4 == NINE);
+    CuAssert(ct, "", result1 == EIGHT);
+    CuAssert(ct, "", result2 == KING);
+    CuAssert(ct, "", result3 == KING);
+    CuAssert(ct, "", result4 == NINE);
 }
 
-void test_straightNotPresent(struct PlayingCard* deck[]){
+void test_straightNotPresent(CuTest* ct, struct PlayingCard* deck[]){
     //5 cards of the same value does not constitute a Straight
     struct PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1],
@@ -391,10 +387,10 @@ void test_straightNotPresent(struct PlayingCard* deck[]){
         &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
     };
     int result1 = detectStraight(cards1, 5);
-    assert(result1 == 0);
+    CuAssert(ct, "", result1 == 0);
 }
 
-void test_TOaKPresent(struct PlayingCard* deck[]){
+void test_TOaKPresent(CuTest* ct, struct PlayingCard* deck[]){
     //Detect a simple TOaK
     struct PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
@@ -412,11 +408,11 @@ void test_TOaKPresent(struct PlayingCard* deck[]){
     };
     int result1 = detectTOaK(cards1, 3);
     int result2 = detectTOaK(cards2, 6);
-    assert(result1 == FOUR);
-    assert(result2 == FIVE);
+    CuAssert(ct, "", result1 == FOUR);
+    CuAssert(ct, "", result2 == FIVE);
 }
 
-void test_TOaKNotPresent(struct PlayingCard* deck[]){
+void test_TOaKNotPresent(CuTest* ct, struct PlayingCard* deck[]){
     //For now, just make sure the PC does not explode
     struct PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1],
@@ -427,6 +423,11 @@ void test_TOaKNotPresent(struct PlayingCard* deck[]){
         &deck[PIPS_PER_SUIT * SPADES + ACE - 1]
     };
     int result1 = detectTOaK(cards1, 6);
-    assert(result1 == 0);
+    CuAssert(ct, "", result1 == 0);
 }
 
+CuSuite* HandrankingGetSuite(){
+    CuSuite* suite = CuSuiteNew();
+    SUITE_ADD_TEST(suite, test_handrankingPerform);
+    return suite;
+}
