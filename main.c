@@ -66,40 +66,70 @@ int main()
 
     //  --  Game loop   --
     bool gameOver = false;
+    int dealer_player = 0;
+    int s_blind_player = 1;
+    int b_blind_player = 2;
+    assert(PLAYER_COUNT >= 3);
     do {
-        distributeCards(deck, players, comm_cards);
-        //Debug
-        //for (int i = 0; i < PLAYER_COUNT; i++){
-        //    printf("Player %d's cards:\n", i);
-        //    for (int j = 0; j < CARDS_PER_PLAYER; j++){
-        //        printf("\t%s of %s\n", getPipName(players[i]->current_hand[j]->pips), getSuitName(players[i]->current_hand[j]->suit));
-        //    }
-        //}
-        //printf("Community cards:\n");
-        //for (int i = 0; i < COMM_CARDS_COUNT; i++){
-        //    printf("\t%s of %s\n", getPipName(comm_cards[i]->pips), getSuitName(comm_cards[i]->suit));
-        //}
-
-        //  --  Single betting round loop  --
-        int turns_limit = PLAYER_COUNT;
-        int player_index = 0;
+        int current_player = 0;
+        int revealed_community_cards = 0;
         unsigned int pot = 0;
-        for (int turn = 0; turn < turns_limit; turn++){
-            //Player chooses an action based on the cards
 
-            //Consequence of their action
-            //If someone raises, raise turns_limit
+        distributeCards(deck, players, comm_cards);
 
-            player_index = (player_index + 1) % PLAYER_COUNT;
+        //Play four betting rounds: pre-flop, flop, turn, river
+        for (int betting_round = 0; betting_round < 4; betting_round++){
+            unsigned int bet = 0;
+            //In each round, small blind is the first to act
+            current_player = (dealer_player + 1) % PLAYER_COUNT;
+
+            //If it's the pre-flop round, force blind players to bet in, without affecting the turns variable
+            if (betting_round == 0){
+                players[s_blind_player]->funds -= small_blind;
+                pot -= small_blind;
+                players[b_blind_player]->funds -= big_blind;
+                pot += big_blind;
+                bet = big_blind;
+                current_player = (b_blind_player + 1) % PLAYER_COUNT;
+            }
+
+            //  --  Single round of betting loop  --
+            for (int turns = PLAYER_COUNT; turns > 0; turns--){ //This condition is shady, this loop will likely be changed for something else
+                //Player chooses an action based on the cards
+
+                //Consequence of their action
+                //If someone raises ???
+
+                //Move onto the next player who hasn't folded
+                do {
+                    current_player = (current_player + 1) % PLAYER_COUNT;
+                } while (players[current_player]->folded);
+            }
+
+            //Reveal community cards
+            switch (betting_round){
+            case 0:
+                revealed_community_cards = 3;
+                break;
+            case 1:
+            case 2:
+                revealed_community_cards++;
+                break;
+            }
         }
 
-        //Compare cards
-
-        //Decide the winner(s)
-
-        //Split the pot
+        //Compare cards, decide the winner(s) and split the pot
+        for (int i = 0; i < PLAYER_COUNT; i++){
+            scorePlayersHand(players[i], comm_cards, revealed_community_cards);
+        }
 
         //Check if everyone but one player has money left - gameOver condition
+
+        //Pass the dealer button to the next player
+        //This also causes the blind player status to move
+        dealer_player = (dealer_player + 1) % PLAYER_COUNT;
+        s_blind_player = (s_blind_player + 1) % PLAYER_COUNT;
+        b_blind_player = (b_blind_player + 1) % PLAYER_COUNT;
     } while (gameOver);
     return 0;
 }
