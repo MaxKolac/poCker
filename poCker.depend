@@ -58,11 +58,11 @@
 	<stdbool.h>
 	"playingcard.h"
 
-1710612085 c:\users\ja\documents\github\pocker\src\playingcard.h
+1710612663 c:\users\ja\documents\github\pocker\src\playingcard.h
 	<string.h>
 	"playingcard_enums.h"
 
-1710611454 c:\users\ja\documents\github\pocker\src\playingcard_enums.h
+1710612663 c:\users\ja\documents\github\pocker\src\playingcard_enums.h
 
 1710611294 source:c:\users\ja\documents\github\pocker\src\handranking.c
 	<limits.h>
@@ -83,7 +83,7 @@
 
 1710522509 source:c:\users\ja\documents\github\pocker\notes.c
 
-1710609880 source:c:\users\ja\documents\github\pocker\src\playingcard.c
+1710612088 source:c:\users\ja\documents\github\pocker\src\playingcard.c
 	<stdio.h>
 	<string.h>
 	"playingcard_enums.h"
@@ -109,4 +109,6 @@
 
 1710591365 c:\users\ja\documents\github\pocker\src\utils.h
 	<stdbool.h>
+
+1710612038 source:c:\users\ja\documents\github\pocker\src\constants.c
 

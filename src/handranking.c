@@ -6,6 +6,8 @@
 #include "playingcard_enums.h"
 #include "utils.h"
 
+static int countPipsInCards(enum Pip[], int[], struct PlayingCard*[], int);
+
 /**
  *  \brief Detects if the given card set would result in a Royal Flush.
  *  \param cards Array of pointers to playing cards.
@@ -181,32 +183,8 @@ int detectStraightFlush(struct PlayingCard* cards[], int cards_count){
 int detectFOaK(struct PlayingCard* cards[], int cards_count){
     //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
     enum Pip found_pips[cards_count];
-    int found_pips_size = 0;
     int found_pips_counts[cards_count];
-    for (int i = 0; i < cards_count; i++){
-        found_pips_counts[i] = 0;
-    }
-
-    //Count on how many occurrences of which Pips there are in the cards
-    for (int i = 0; i < cards_count; i++){
-        for (int j = 0; j <= found_pips_size; j++){
-            if (found_pips[j] == cards[i]->pips){
-                found_pips_counts[j]++;
-                break;
-            }
-            if (j == found_pips_size){
-                found_pips[found_pips_size] = cards[i]->pips;
-                found_pips_counts[found_pips_size]++;
-                found_pips_size++;
-                break;
-            }
-        }
-    }
-
-    //Debug
-    //for (int i = 0; i < found_pips_size; i++){
-    //    printf("Found %d %s\n", found_pips_counts[i], getPipName(found_pips[i]));
-    //
+    int found_pips_size = countPipsInCards(found_pips, found_pips_counts, cards, cards_count);
 
     //Find the highest FOaK and save its pip
     int highest_foak = -1;
@@ -219,9 +197,8 @@ int detectFOaK(struct PlayingCard* cards[], int cards_count){
     if (highest_foak == -1){
         return 0;
     }
-
     //After finding highest FOaK, find the highest value card that is not a part of that FOaK
-    int highest_kicker = INT_MIN;
+    int highest_kicker = -1;
     for (int i = 0; i < found_pips_size; i++){
         if (found_pips[i] != highest_foak){
             highest_kicker = mathMax(2, highest_kicker, found_pips[i]);
@@ -248,30 +225,10 @@ int detectFOaK(struct PlayingCard* cards[], int cards_count){
  *  ("trio" card value) * 100 + (pair card value)
  */
 int detectFullHouse(struct PlayingCard* cards[], int cards_count){
-    //Copied and pasted from FOaK code
     //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
     enum Pip found_pips[cards_count];
-    int found_pips_size = 0;
     int found_pips_counts[cards_count];
-    for (int i = 0; i < cards_count; i++){
-        found_pips_counts[i] = 0;
-    }
-
-    //Count on how many occurrences of which Pips there are in the cards
-    for (int i = 0; i < cards_count; i++){
-        for (int j = 0; j <= found_pips_size; j++){
-            if (found_pips[j] == cards[i]->pips){
-                found_pips_counts[j]++;
-                break;
-            }
-            if (j == found_pips_size){
-                found_pips[found_pips_size] = cards[i]->pips;
-                found_pips_counts[found_pips_size]++;
-                found_pips_size++;
-                break;
-            }
-        }
-    }
+    int found_pips_size = countPipsInCards(found_pips, found_pips_counts, cards, cards_count);
 
     //Find the highest FOaK and save its pip
     int highest_toak = -1;
@@ -284,7 +241,6 @@ int detectFullHouse(struct PlayingCard* cards[], int cards_count){
     if (highest_toak == -1){
         return 0;
     }
-
     //After finding highest TOaK, find the highest value pair that is not a part of that TOaK
     int highest_pair = -1;
     for (int i = 0; i < found_pips_size; i++){
@@ -474,35 +430,10 @@ int detectStraight(struct PlayingCard* cards[], int cards_count){
  *  The score of a Three Of a Kind is simply the value of the card the TOaK is made of.
  */
 int detectTOaK(struct PlayingCard* cards[], int cards_count){
-    //NOTE: Code copied & slightly modified from detectFOaK since these two hands don't differ all that much
     //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
     enum Pip found_pips[cards_count];
-    int found_pips_size = 0;
     int found_pips_counts[cards_count];
-    for (int i = 0; i < cards_count; i++){
-        found_pips_counts[i] = 0;
-    }
-
-    //Count on how many occurrences of which Pips there are in the cards
-    for (int i = 0; i < cards_count; i++){
-        for (int j = 0; j <= found_pips_size; j++){
-            if (found_pips[j] == cards[i]->pips){
-                found_pips_counts[j]++;
-                break;
-            }
-            if (j == found_pips_size){
-                found_pips[found_pips_size] = cards[i]->pips;
-                found_pips_counts[found_pips_size]++;
-                found_pips_size++;
-                break;
-            }
-        }
-    }
-
-    //Debug
-    //for (int i = 0; i < found_pips_size; i++){
-    //    printf("Found %d %s\n", found_pips_counts[i], getPipName(found_pips[i]));
-    //
+    int found_pips_size = countPipsInCards(found_pips, found_pips_counts, cards, cards_count);
 
     //Find the highest TOaK and save its pip
     int highest_toak = -1;
@@ -570,4 +501,42 @@ int detectPair(struct PlayingCard* cards[], int cards_count){
  */
 int detectHighCard(struct PlayingCard* cards[], int cards_count){
     return 0;
+}
+
+/**
+ *  \brief Takes a deck of cards and counts the amounts of each pip in the deck.
+ *  \returns The size of the found_pips array which was filled by the function. found_pips and found_pips_counts share the same length.
+ *  found_pips and found_pips_counts should be initialized with cards_count lengths before calling this function.
+ *  To ensure that the function does not reach outside of those arrays, they should preferably be initialized with the length of cards_count.
+ */
+static int countPipsInCards(enum Pip found_pips[], int found_pips_counts[], struct PlayingCard* cards[], int cards_count){
+    //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
+    //Initial setup
+    int found_pips_size = 0;
+    for (int i = 0; i < cards_count; i++){
+        found_pips[i] = 0;
+        found_pips_counts[i] = 0;
+    }
+
+    //Count on how many occurrences of which Pips there are in the cards
+    for (int i = 0; i < cards_count; i++){
+        for (int j = 0; j <= found_pips_size; j++){
+            if (found_pips[j] == cards[i]->pips){
+                found_pips_counts[j]++;
+                break;
+            }
+            if (j == found_pips_size){
+                found_pips[found_pips_size] = cards[i]->pips;
+                found_pips_counts[found_pips_size]++;
+                found_pips_size++;
+                break;
+            }
+        }
+    }
+    //Debug
+    //for (int i = 0; i < found_pips_size; i++){
+    //    printf("Found %d %s\n", found_pips_counts[i], getPipName(found_pips[i]));
+    //
+
+    return found_pips_size;
 }

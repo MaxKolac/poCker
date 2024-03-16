@@ -33,7 +33,7 @@
 	<stdlib.h>
 	<string.h>
 
-1710611294 source:c:\users\ja\documents\github\pocker\src\handranking.c
+1710619032 source:c:\users\ja\documents\github\pocker\src\handranking.c
 	<limits.h>
 	<math.h>
 	<stdbool.h>
@@ -42,11 +42,11 @@
 	"playingcard_enums.h"
 	"utils.h"
 
-1710612085 c:\users\ja\documents\github\pocker\src\playingcard.h
+1710612663 c:\users\ja\documents\github\pocker\src\playingcard.h
 	<string.h>
 	"playingcard_enums.h"
 
-1710606576 source:c:\users\ja\documents\github\pocker\test\test_handranking.c
+1710615788 source:c:\users\ja\documents\github\pocker\test\test_handranking.c
 	<stdbool.h>
 	"CuTest.h"
 	"../src/playingcard.h"
@@ -70,7 +70,7 @@
 	<stdbool.h>
 	"playingcard.h"
 
-1710611454 c:\users\ja\documents\github\pocker\src\playingcard_enums.h
+1710612663 c:\users\ja\documents\github\pocker\src\playingcard_enums.h
 
 1710612088 source:c:\users\ja\documents\github\pocker\src\playingcard.c
 	<stdio.h>
