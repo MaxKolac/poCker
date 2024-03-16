@@ -1,5 +1,5 @@
-#ifndef player.h
-#define player.h
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <stdbool.h>
 #include "playingcard.h"
@@ -21,4 +21,4 @@ struct Player {
     struct PlayingCard* current_hand[2];
 };
 
-#endif // player
+#endif // PLAYER_H
