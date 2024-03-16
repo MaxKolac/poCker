@@ -9,6 +9,17 @@
 * Higher scores win ties. Each method calculates their tie break score differently.
 */
 
+int detectRoyalFlush(struct PlayingCard*[], int);
+int detectStraightFlush(struct PlayingCard*[], int);
+int detectFOaK(struct PlayingCard*[], int);
+int detectFullHouse(struct PlayingCard*[], int);
+int detectFlush(struct PlayingCard*[], int);
+int detectStraight(struct PlayingCard*[], int);
+int detectTOaK(struct PlayingCard*[], int);
+int detectTwoPair(struct PlayingCard*[], int);
+int detectPair(struct PlayingCard*[], int);
+int detectHighCard(struct PlayingCard*[], int);
+
 /** \brief  Detects if the given card set would result in a Royal Flush.
  * \param   cards Array of pointers to playing cards.
  * \param   cards_count Size of the cards array.
