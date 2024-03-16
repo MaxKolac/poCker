@@ -18,6 +18,8 @@ void test_handrankingPerform(CuTest* ct){
     test_flushNotPresent(ct, deck);
     test_straightPresent(ct, deck);
     test_straightNotPresent(ct, deck);
+    test_twoPairPresent(ct, deck);
+    test_twoPairNotPresent(ct, deck);
 }
 
 void test_royalFlushPresent(CuTest* ct, struct PlayingCard deck[]){
@@ -424,6 +426,58 @@ void test_TOaKNotPresent(CuTest* ct, struct PlayingCard* deck[]){
     };
     int result1 = detectTOaK(cards1, 6);
     CuAssert(ct, "", result1 == 0);
+}
+
+void test_twoPairPresent(CuTest* ct, struct PlayingCard* deck[]){
+    //Detect a simple two pair
+    struct PlayingCard* cards1[] = {
+        &deck[PIPS_PER_SUIT * CLUBS + THREE - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + THREE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + NINE - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + SIX - 1]
+    };
+    //Another one for good measure
+    struct PlayingCard* cards2[] = {
+        &deck[PIPS_PER_SUIT * SPADES + FIVE - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + ACE - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + EIGHT - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * SPADES + EIGHT - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + ACE - 1]
+    };
+    int result1 = detectTwoPair(cards1, 7);
+    int result2 = detectTwoPair(cards2, 7);
+    CuAssert(ct, "", result1 == (400 * QUEEN) + (20 * THREE) + NINE);
+    CuAssert(ct, "", result2 == (400 * ACE) + (20 * EIGHT) + QUEEN);
+}
+
+void test_twoPairNotPresent(CuTest* ct, struct PlayingCard* deck[]){
+    //Make sure that one pair doesnt count as two pairs
+    struct PlayingCard* cards1[] = {
+        &deck[PIPS_PER_SUIT * CLUBS + THREE - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + THREE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + NINE - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + SIX - 1]
+    };
+    //FOaK shouldn't be counter as a two pair (??)
+    struct PlayingCard* cards2[] = {
+        &deck[PIPS_PER_SUIT * CLUBS + THREE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + NINE - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + THREE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + THREE - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + THREE - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + SIX - 1]
+    };
+    int result1 = detectTwoPair(cards1, 5);
+    int result2 = detectTwoPair(cards2, 7);
+    CuAssert(ct, "", result1 == 0);
+    CuAssert(ct, "", result2 == 0);
 }
 
 CuSuite* HandrankingGetSuite(){

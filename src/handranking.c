@@ -464,7 +464,46 @@ int detectTOaK(struct PlayingCard* cards[], int cards_count){
  *  (value of higher pair card * 20 ^ 2) + (value of lower pair card * 20) + (value of kicker card)
  */
 int detectTwoPair(struct PlayingCard* cards[], int cards_count){
-    return 0;
+    //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
+    enum Pip found_pips[cards_count];
+    int found_pips_counts[cards_count];
+    int found_pips_size = countPipsInCards(found_pips, found_pips_counts, cards, cards_count);
+
+    //Find the higher pair and save its pip
+    int higher_pair = -1;
+    for (int i = 0; i < found_pips_size; i++){
+        if (found_pips_counts[i] >= 2){
+            higher_pair = higher_pair == -1 ? found_pips[i] : mathMax(2, higher_pair, found_pips[i]);
+        }
+    }
+    //No pairs found, return zero
+    if (higher_pair == -1){
+        return 0;
+    }
+
+    //After finding higher pair, find the lower pair, which is the highest pip except the one already found
+    int lower_pair = -1;
+    for (int i = 0; i < found_pips_size; i++){
+        if (found_pips[i] != higher_pair && found_pips_counts[i] >= 2){
+            lower_pair = mathMax(2, lower_pair, found_pips[i]);
+        }
+    }
+
+    //No second pair, return 0
+    if (lower_pair == -1){
+        return 0;
+    }
+
+    //Now find the greatest kicker card
+    int kicker_card = -1;
+    for (int i = 0; i < found_pips_size; i++){
+        if (found_pips[i] != higher_pair && found_pips[i] != lower_pair){
+            kicker_card = mathMax(2, kicker_card, found_pips[i]);
+        }
+    }
+
+    //Calculate and return total score
+    return higher_pair * pow(20, 2) + lower_pair * 20 + kicker_card;
 }
 
 /**
