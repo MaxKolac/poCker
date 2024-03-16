@@ -35,6 +35,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/constants.h" />
+		<Unit filename="src/dealer.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/dealer.h" />
 		<Unit filename="src/handranking.c">
 			<Option compilerVar="CC" />
