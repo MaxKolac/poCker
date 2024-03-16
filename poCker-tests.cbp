@@ -34,6 +34,7 @@
 		<Unit filename="src/utils.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/utils.h" />
 		<Unit filename="test/AllTests.c">
 			<Option compilerVar="CC" />
 		</Unit>
