@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,10 +13,6 @@
 
 int main()
 {
-    //Uncomment this to run unit-tests
-    //test_handrankingPerform();
-    //return 0;
-
     //  --  Settings    --
     //Initial funds per player
     //Amount of funds each player gets at the beginning of the game.
