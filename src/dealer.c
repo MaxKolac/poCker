@@ -1,8 +1,11 @@
 #include <stdbool.h>
+#include <stdio.h>
 #include "constants.h"
 #include "handranking.h"
 #include "player.h"
+#include "playingcard_enums.h"
 #include "playingcard.h"
+#include "utils.h"
 
 /**
  *  \brief Distributes random playing cards to players' hands and selects community cards.

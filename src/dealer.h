@@ -2,6 +2,7 @@
 #define DEALER_H
 
 #include "player.h"
+#include "playingcard_enums.h"
 #include "playingcard.h"
 
 /**

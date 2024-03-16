@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "playingcard.h"
+#include "playingcard_enums.h"
+#include "utils.h"
 
 /**
  *  \brief Detects if the given card set would result in a Royal Flush.
