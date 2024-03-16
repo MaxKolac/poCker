@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1279786268 source:c:\users\ja\documents\github\pocker\test\cutest.c
+	<assert.h>
+	<setjmp.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<math.h>
+	"CuTest.h"
+
+1279786268 c:\users\ja\documents\github\pocker\test\cutest.h
+	<setjmp.h>
+	<stdarg.h>
+
