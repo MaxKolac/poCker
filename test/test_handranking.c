@@ -623,6 +623,78 @@ void test_highCardCalculations(CuTest* ct){
     CuAssert(ct, "", result4 == 2164209);
 }
 
+void test_cardSortingInDescendingOrder(CuTest* ct){
+    struct PlayingCard deck[DECK_LENGTH];
+    buildDeck(&deck, false);
+
+    struct PlayingCard* cards[] = {
+        &deck[PIPS_PER_SUIT * SPADES + KING - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + JACK - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + THREE - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
+
+        &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + TEN - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + SIX - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + KING - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + EIGHT - 1],
+
+        &deck[PIPS_PER_SUIT * HEARTS + TEN - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + NINE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + JACK - 1]
+    };
+    sortCardsInDescOrder(cards, 13);
+    for (int i = 0; i < 12; i++){
+        CuAssert(ct, "", cards[i]->pips >= cards[i + 1]->pips);
+    }
+}
+
+void test_pipCounting(CuTest* ct){
+    struct PlayingCard deck[DECK_LENGTH];
+    buildDeck(&deck, false);
+
+    struct PlayingCard* cards[] = {
+        &deck[PIPS_PER_SUIT * SPADES + KING - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + JACK - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + JACK - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + THREE - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
+
+        &deck[PIPS_PER_SUIT * HEARTS + JACK - 1],
+        &deck[PIPS_PER_SUIT * SPADES + TEN - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + EIGHT - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + KING - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + EIGHT - 1],
+
+        &deck[PIPS_PER_SUIT * HEARTS + TEN - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + NINE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + JACK - 1],
+        //KING, JACK, THREE, FOUR, TEN, EIGHT, NINE
+    };
+    int cards_count = 13;
+    enum Pip found_pips[cards_count];
+    int found_pips_counts[cards_count];
+
+    int found_pips_size = countPipsInCards(found_pips, found_pips_counts, cards, cards_count);
+
+    CuAssert(ct, "", found_pips_size == 7);
+    CuAssert(ct, "", found_pips[0] == KING);
+    CuAssert(ct, "", found_pips[1] == JACK);
+    CuAssert(ct, "", found_pips[2] == THREE);
+    CuAssert(ct, "", found_pips[3] == FOUR);
+    CuAssert(ct, "", found_pips[4] == TEN);
+    CuAssert(ct, "", found_pips[5] == EIGHT);
+    CuAssert(ct, "", found_pips[6] == NINE);
+    CuAssert(ct, "", found_pips_counts[0] == 2);
+    CuAssert(ct, "", found_pips_counts[1] == 4);
+    CuAssert(ct, "", found_pips_counts[2] == 1);
+    CuAssert(ct, "", found_pips_counts[3] == 1);
+    CuAssert(ct, "", found_pips_counts[4] == 2);
+    CuAssert(ct, "", found_pips_counts[5] == 2);
+    CuAssert(ct, "", found_pips_counts[6] == 1);
+}
+
 CuSuite* HandrankingGetSuite(){
     CuSuite* suite = CuSuiteNew();
     SUITE_ADD_TEST(suite, test_royalFlushPresent);
@@ -644,5 +716,7 @@ CuSuite* HandrankingGetSuite(){
     SUITE_ADD_TEST(suite, test_pairPresent);
     SUITE_ADD_TEST(suite, test_pairNotPresent);
     SUITE_ADD_TEST(suite, test_highCardCalculations);
+    SUITE_ADD_TEST(suite, test_cardSortingInDescendingOrder);
+    SUITE_ADD_TEST(suite, test_pipCounting);
     return suite;
 }
