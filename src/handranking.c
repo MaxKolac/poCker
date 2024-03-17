@@ -6,8 +6,6 @@
 #include "playingcard_enums.h"
 #include "utils.h"
 
-static int countPipsInCards(enum Pip[], int[], struct PlayingCard*[], int);
-
 /**
  *  \brief Detects if the given card set would result in a Royal Flush.
  *  \param cards Array of pointers to playing cards.
@@ -356,36 +354,7 @@ int detectStraight(struct PlayingCard* cards[], int cards_count){
     for (int i = 0; i < cards_count; i++){
         sorted_cards[i] = cards[i];
     }
-
     //Sort this array in a descending order
-    for (int i = 1; i < cards_count; i++){
-        if (sorted_cards[i - 1]->pips >= sorted_cards[i]->pips){
-            continue;
-        }
-
-        //J indicates the index of the I card's first discovered greater/equal card than itself
-        int j = i - 2;
-        //1. Find the first greater/equal card to the left of the current card
-        while (j >= 0 && sorted_cards[j]->pips < sorted_cards[i]->pips){
-            j--;
-        }
-        //2. And put it in front it. This means pull out the I card,
-        //  move everything between J and I by one index
-        //  and put the I card in the J + 1 spot
-        struct PlayingCard* temp = sorted_cards[i];
-        for (int k = i; k > j + 1; k--){
-            sorted_cards[k] = sorted_cards[k - 1];
-        }
-        sorted_cards[j + 1] = temp;
-    }
-
-    //Debug
-    //for (int i = 0; i < cards_count - 1; i++){
-        //assert(sorted_cards[i]->pips >= sorted_cards[i + 1]->pips);
-        //printf("%d, ", sorted_cards[i]->pips);
-    //
-    //printf("%d", sorted_cards[cards_count - 1]->pips);
-
     //Find out if there exists a subarray consisting of 5 cards where each subsequent card is smaller by 1 from the previous one.
     //Multiple cards of the same value do not break the consecutivity.
 
@@ -593,7 +562,7 @@ int detectHighCard(struct PlayingCard* cards[], int cards_count){
  *  found_pips and found_pips_counts should be initialized with cards_count lengths before calling this function.
  *  To ensure that the function does not reach outside of those arrays, they should preferably be initialized with the length of cards_count.
  */
-static int countPipsInCards(enum Pip found_pips[], int found_pips_counts[], struct PlayingCard* cards[], int cards_count){
+int countPipsInCards(enum Pip found_pips[], int found_pips_counts[], struct PlayingCard* cards[], int cards_count){
     //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
     //Initial setup
     int found_pips_size = 0;
