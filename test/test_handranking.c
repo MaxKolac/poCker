@@ -581,7 +581,46 @@ void test_pairNotPresent(CuTest* ct){
 void test_highCardCalculations(CuTest* ct){
     struct PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
-
+    //Simple test
+    struct PlayingCard* cards1[] = {
+        &deck[PIPS_PER_SUIT * DIAMONDS + KING - 1], //12 * 20 ^ 4 = 1 920 000
+        &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1],   //4 * 20 ^ 1 = 80
+        &deck[PIPS_PER_SUIT * CLUBS + TEN - 1],     //9 * 20 ^ 2 = 3 600
+        &deck[PIPS_PER_SUIT * SPADES + JACK - 1],   //10 * 20 ^ 3 = 80 000
+        &deck[PIPS_PER_SUIT * HEARTS + TWO - 1]     //1 * 20 ^ 0 = 1
+    };  //sum = 2 003 681
+    //Less than 5 cards is still calculated correctly
+    struct PlayingCard* cards2[] = {
+        &deck[PIPS_PER_SUIT * CLUBS + JACK - 1],    //10 * 20 ^ 2   = 4000
+        &deck[PIPS_PER_SUIT * DIAMONDS + NINE - 1], //8 * 20 ^ 1    = 160
+        &deck[PIPS_PER_SUIT * SPADES + FIVE - 1]    //4 * 20 ^ 0    = 4
+    };
+    //More than 5 cards correctly considers only 5 greatest cards
+    struct PlayingCard* cards3[] = {
+        &deck[PIPS_PER_SUIT * SPADES + JACK - 1],   //10 * 20 ^ 3  = 80 000
+        &deck[PIPS_PER_SUIT * HEARTS + NINE - 1],   //8 * 20 ^ 2   = 3 200
+        &deck[PIPS_PER_SUIT * CLUBS + FIVE - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + EIGHT - 1],//7 * 20 ^ 1   = 140
+        &deck[PIPS_PER_SUIT * CLUBS + QUEEN - 1],   //11 * 20 ^ 4  = 1 760 000
+        &deck[PIPS_PER_SUIT * DIAMONDS + SEVEN - 1],//6 * 20 ^ 0   = 6
+        &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1]
+    };//sum = 1 843 346
+    //Cards with same value are not abandoned during calculation
+    struct PlayingCard* cards4[] = {
+        &deck[PIPS_PER_SUIT * SPADES + JACK - 1],   //10 * 20 ^ 3   = 80 000
+        &deck[PIPS_PER_SUIT * HEARTS + ACE - 1],    //13 * 20 ^ 4   = 2 080 000
+        &deck[PIPS_PER_SUIT * DIAMONDS + JACK - 1], //10 * 20 ^ 2   = 4000
+        &deck[PIPS_PER_SUIT * SPADES + JACK - 1],   //10 * 20 ^ 1   = 200
+        &deck[PIPS_PER_SUIT * CLUBS + TEN - 1]      // 9 * 20 ^ 0   = 9
+    };//sum = 2 164 209
+    int result1 = detectHighCard(cards1, 5);
+    int result2 = detectHighCard(cards2, 3);
+    int result3 = detectHighCard(cards3, 7);
+    int result4 = detectHighCard(cards4, 5);
+    CuAssert(ct, "", result1 == 2003681);
+    CuAssert(ct, "", result2 == 4164);
+    CuAssert(ct, "", result3 == 1843346);
+    CuAssert(ct, "", result4 == 2164209);
 }
 
 CuSuite* HandrankingGetSuite(){
