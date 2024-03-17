@@ -355,6 +355,7 @@ int detectStraight(struct PlayingCard* cards[], int cards_count){
         sorted_cards[i] = cards[i];
     }
     //Sort this array in a descending order
+    sortCardsInDescOrder(sorted_cards, cards_count);
     //Find out if there exists a subarray consisting of 5 cards where each subsequent card is smaller by 1 from the previous one.
     //Multiple cards of the same value do not break the consecutivity.
 
@@ -553,7 +554,17 @@ int detectPair(struct PlayingCard* cards[], int cards_count){
  *  Sum of (card value * 20 ^ n) for all 5 cards in descending order, where n = 4 -> 0
  */
 int detectHighCard(struct PlayingCard* cards[], int cards_count){
-    return 0;
+    struct PlayingCard* sorted_cards[cards_count];
+    for (int i = 0; i < cards_count; i++){
+        sorted_cards[i] = cards[i];
+    }
+    sortCardsInDescOrder(sorted_cards, cards_count);
+
+    int score = 0;
+    for (int i = 0; i < mathMin(2, 5, cards_count); i++){
+        score += sorted_cards[i]->pips * pow(20, mathMin(2, 5, cards_count) - i - 1);
+    }
+    return score;
 }
 
 /**
@@ -590,4 +601,36 @@ int countPipsInCards(enum Pip found_pips[], int found_pips_counts[], struct Play
     //    printf("Found %d %s\n", found_pips_counts[i], getPipName(found_pips[i]));
     //
     return found_pips_size;
+}
+
+/**
+ *  \brief Sorts the elements of the given array to be sorted in descending order of card values.
+ *  \param sorted_cards The array to sort. Its elements will have their indexes modified.
+ *  \param cards_count The length of the array.
+ */
+void sortCardsInDescOrder(struct PlayingCard* sorted_cards[], int cards_count){
+    for (int i = 1; i < cards_count; i++){
+        if (sorted_cards[i - 1]->pips >= sorted_cards[i]->pips){
+            continue;
+        }
+        //J indicates the index of the I card's first discovered greater/equal card than itself
+        int j = i - 2;
+        //1. Find the first greater/equal card to the left of the current card
+        while (j >= 0 && sorted_cards[j]->pips < sorted_cards[i]->pips){
+            j--;
+        }
+        //2. And put it in front it. This means pull out the I card,
+        //  move everything between J and I by one index
+        //  and put the I card in the J + 1 spot
+        struct PlayingCard* temp = sorted_cards[i];
+        for (int k = i; k > j + 1; k--){
+            sorted_cards[k] = sorted_cards[k - 1];
+        }
+        sorted_cards[j + 1] = temp;
+    }
+    //Debug
+    //for (int i = 0; i < cards_count - 1; i++){
+        //assert(sorted_cards[i]->pips >= sorted_cards[i + 1]->pips);
+        //printf("%d, ", sorted_cards[i]->pips);
+    //
 }

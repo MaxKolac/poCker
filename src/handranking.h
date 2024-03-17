@@ -22,5 +22,6 @@ int detectTwoPair(struct PlayingCard*[], int);
 int detectPair(struct PlayingCard*[], int);
 int detectHighCard(struct PlayingCard*[], int);
 int countPipsInCards(enum Pip[], int[], struct PlayingCard*[], int);
+void sortCardsInDescOrder(struct PlayingCard*[], int);
 
 #endif // HANDRANKING_H
