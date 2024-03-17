@@ -20,6 +20,8 @@ void test_handrankingPerform(CuTest* ct){
     test_straightNotPresent(ct, deck);
     test_twoPairPresent(ct, deck);
     test_twoPairNotPresent(ct, deck);
+    test_pairPresent(ct, deck);
+    test_pairNotPresent(ct, deck);
 }
 
 void test_royalFlushPresent(CuTest* ct, struct PlayingCard deck[]){
@@ -476,6 +478,88 @@ void test_twoPairNotPresent(CuTest* ct, struct PlayingCard* deck[]){
     };
     int result1 = detectTwoPair(cards1, 5);
     int result2 = detectTwoPair(cards2, 7);
+    CuAssert(ct, "", result1 == 0);
+    CuAssert(ct, "", result2 == 0);
+}
+
+void test_pairPresent(CuTest* ct, struct PlayingCard* deck[]){
+    //Simple detection #1
+    struct PlayingCard* cards1[] = {
+        &deck[PIPS_PER_SUIT * CLUBS + THREE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + NINE - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + THREE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + EIGHT - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + SIX - 1]
+    };
+    //Simple detection #2
+    struct PlayingCard* cards2[] = {
+        &deck[PIPS_PER_SUIT * DIAMONDS + KING - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * SPADES + SIX - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + JACK - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + EIGHT - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + SIX - 1]
+    };
+    //Detect higher pair among 2
+    struct PlayingCard* cards3[] = {
+        &deck[PIPS_PER_SUIT * CLUBS + FIVE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + SIX - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + SIX - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + THREE - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + TWO - 1]
+    };
+    //Detect higher pair among 3
+    struct PlayingCard* cards4[] = {
+        &deck[PIPS_PER_SUIT * SPADES + SEVEN - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + TWO - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + FIVE - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + TWO - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + FIVE - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + SEVEN - 1]
+    };
+    //Not enough kicker cards still gives a score
+    struct PlayingCard* cards5[] = {
+        &deck[PIPS_PER_SUIT * DIAMONDS + THREE - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1]
+    };
+    int result1 = detectPair(cards1, 7);
+    int result2 = detectPair(cards2, 7);
+    int result3 = detectPair(cards3, 7);
+    int result4 = detectPair(cards4, 7);
+    int result5 = detectPair(cards5, 3);
+    CuAssert(ct, "", result1 == (THREE * pow(20, 3) + QUEEN * pow(20, 2) + NINE * 20 + EIGHT));
+    CuAssert(ct, "", result2 == (SIX * pow(20, 3) + KING * pow(20, 2) + QUEEN * 20 + JACK));
+    CuAssert(ct, "", result3 == (SIX * pow(20, 3) + FIVE * pow(20, 2) + FOUR * 20 + THREE));
+    CuAssert(ct, "", result4 == (SEVEN * pow(20, 3) + FIVE * pow(20, 2) + FOUR * 20 + TWO));
+    CuAssert(ct, "", result5 == (FOUR * pow(20, 3) + THREE * pow(20, 2)));
+}
+
+void test_pairNotPresent(CuTest* ct, struct PlayingCard* deck[]){
+    //No pair #1
+    struct PlayingCard* cards1[] = {
+        &deck[PIPS_PER_SUIT * SPADES + JACK - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + NINE - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + FIVE - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + SEVEN - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1]
+    };
+    //No pair #2
+    struct PlayingCard* cards2[] = {
+        &deck[PIPS_PER_SUIT * DIAMONDS + ACE - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + EIGHT - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + SEVEN - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + THREE - 1],
+        &deck[PIPS_PER_SUIT * SPADES + FOUR - 1]
+    };
+    int result1 = detectPair(cards1, 5);
+    int result2 = detectPair(cards2, 5);
     CuAssert(ct, "", result1 == 0);
     CuAssert(ct, "", result2 == 0);
 }

@@ -521,10 +521,55 @@ int detectTwoPair(struct PlayingCard* cards[], int cards_count){
  *  If two or more players have a set of cards with the exact same values, tie becomes unbreakable.
  *
  *  The score of a Pair is calculated as follows:
- *  (pair card value * 20 ^ 3) + (highest non-pair card * 20 ^ 2) + (2nd highest non-pair card * 20) + (lowest non-pair card)
+ *  (pair card value * 20 ^ 3) + (highest non-pair card * 20 ^ 2) + (2nd highest non-pair card * 20) + (3rd highest non-pair card)
  */
 int detectPair(struct PlayingCard* cards[], int cards_count){
-    return 0;
+    //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
+    enum Pip found_pips[cards_count];
+    int found_pips_counts[cards_count];
+    int found_pips_size = countPipsInCards(found_pips, found_pips_counts, cards, cards_count);
+
+    //Find the highest pair and save its pip
+    int pair_card = -1;
+    for (int i = 0; i < found_pips_size; i++){
+        if (found_pips_counts[i] >= 2){
+            pair_card = pair_card == -1 ? found_pips[i] : mathMax(2, pair_card, found_pips[i]);
+        }
+    }
+    //No pairs found, return zero
+    if (pair_card == -1){
+        return 0;
+    }
+
+    //After finding highest pair, remove the pair_card from found_pips
+    for (int i = 0; i < found_pips_size; i++){
+        if (found_pips[i] != pair_card)
+            continue;
+        for (int j = i; j < found_pips_size - 1; j++){
+            found_pips[j] = found_pips[j + 1];
+            found_pips_counts[j] = found_pips_counts[j + 1];
+        }
+        break;
+    }
+    found_pips_size--;
+
+    //Pick 3 highest unique cards
+    int high_kicker = 0, mid_kicker = 0, low_kicker = 0;
+    for (int i = 0; i < 3 * found_pips_size; i++){
+        int index = i % found_pips_size;
+        if (i < found_pips_size){
+            high_kicker = high_kicker == 0 ? found_pips[index] : mathMax(2, high_kicker, found_pips[index]);
+        }
+        else if (i < found_pips_size * 2 && found_pips[index] != high_kicker){
+            mid_kicker = mid_kicker == 0 ? found_pips[index] : mathMax(2, mid_kicker, found_pips[index]);
+        }
+        else if (i < found_pips_size * 3 && found_pips[index] != high_kicker && found_pips[index] != mid_kicker){
+            low_kicker = low_kicker == 0 ? found_pips[index] : mathMax(2, low_kicker, found_pips[index]);
+        }
+    }
+
+    //Calculate final score
+    return pair_card * pow(20, 3) + high_kicker * pow(20, 2) + mid_kicker * 20 + low_kicker;
 }
 
 /**
@@ -556,7 +601,6 @@ static int countPipsInCards(enum Pip found_pips[], int found_pips_counts[], stru
         found_pips[i] = 0;
         found_pips_counts[i] = 0;
     }
-
     //Count on how many occurrences of which Pips there are in the cards
     for (int i = 0; i < cards_count; i++){
         for (int j = 0; j <= found_pips_size; j++){
@@ -576,6 +620,5 @@ static int countPipsInCards(enum Pip found_pips[], int found_pips_counts[], stru
     //for (int i = 0; i < found_pips_size; i++){
     //    printf("Found %d %s\n", found_pips_counts[i], getPipName(found_pips[i]));
     //
-
     return found_pips_size;
 }
