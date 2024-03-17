@@ -81,6 +81,24 @@ int mathMax(int count, ...) {
 }
 
 /**
+ *  \brief Returns the smallest integer provided in arguments.
+ *  \param count Amount of integers in the arguments.
+ *  \param ... Integers to compare.
+ */
+int mathMin(int count, ...){
+    va_list args;
+    int min = INT_MAX;
+    va_start(args, count);
+    for (int i = 0; i < count; i++){
+        int value = va_arg(args, int);
+        if (value < min)
+            min = value;
+    }
+    va_end(args);
+    return min;
+}
+
+/**
  *  \brief Prompts the user with a message for an integer value.
  *  \param max_length The maximum amount of input characters to consider
  *  \param msg The message to show to the user. The function appends a colon with a space at the end automatically.
