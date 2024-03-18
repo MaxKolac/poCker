@@ -104,22 +104,21 @@ int prompt_i(int max_length, char* msg){
  *  \returns User's choice as bool.
  *
  *  The function will not end until the user provides one of the two possible, case-insensitive inputs.
+ *  Only the first character of user's input will be evaluated. That means that for example: "yFFFF" will be considered true.
  *  Y and y returns True, N and n returns false.
- *
- *  \warning If user spams a lot of characters, each will be processed individually, causing a lot of spam.
  */
 bool prompt_b(char* msg){
-    char input;
+    char input[5];
     bool input_valid = false;
     bool result;
     do {
         printf("%s (Y/N): ", msg);
-        scanf(" %c", &input);
-        if (input == 'y' || input == 'Y'){
+        gets_s(&input, 5);
+        if (input[0] == 'y' || input[0] == 'Y'){
             result = true;
             input_valid = true;
         }
-        else if (input == 'n' || input == 'N'){
+        else if (input[0] == 'n' || input[0] == 'N'){
             result = false;
             input_valid = true;
         }
