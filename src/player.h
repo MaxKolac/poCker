@@ -6,7 +6,7 @@
 
 /**
 * \file player.h
-* \brief Contains only a Player struct.
+* \brief Contains a Player struct and related functions.
 */
 
 /** \brief Represents a single player. */
@@ -20,5 +20,7 @@ struct Player {
     /** \brief Pointers to player's playing cards in his hand. */
     struct PlayingCard* current_hand[2];
 };
+
+void resetScores(struct Player);
 
 #endif // PLAYER_H
