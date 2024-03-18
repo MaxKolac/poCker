@@ -32,7 +32,7 @@ int main()
     //Fixed-limit or no-limit
     //No-limit game means that the maximum amount of the bet isn't set, meaning players can bet as much as all of their funds.
     //There is only the minimum amount of bet, equaling the big blind amount.
-    //Fixed-limit game restricts players to two fixes bet amounts, small limit which equals the big blind, and high limit
+    //Fixed-limit game restricts players to two fixed bet amounts, small limit which equals the big blind, and high limit
     //which equals two times the big blind.
     bool limit_fixed = prompt_b("Should the betting limits be fixed?");
     //Debug
@@ -41,7 +41,7 @@ int main()
     //Big blind amount
     //This amount will influence the minimum bet amount and the pot's initial amount.
     //Small blind amount is automatically set to be half of it, rounded down.
-    //Player first to the dealer has to pay the small blind, and the next of him has to pay the big blind.
+    //Player first to the left of the dealer has to pay the small blind, and the next of him has to pay the big blind.
     //Action starts on the third player and (assuming no raises) ends on the big blind player.
     int big_blind = -1;
     do {
@@ -58,7 +58,7 @@ int main()
     struct PlayingCard deck[DECK_LENGTH];
     struct PlayingCard* comm_cards[COMM_CARDS_COUNT];
     struct Player players[PLAYER_COUNT];
-    buildDeck(&deck, false);
+    buildDeck(deck, false);
     for (int i = 0; i < PLAYER_COUNT; i++){
         players[i].folded = false;
         players[i].funds = ini_funds_per_player;
@@ -87,7 +87,7 @@ int main()
             //If it's the pre-flop round, force blind players to bet in, without affecting the turns variable
             if (betting_round == 0){
                 players[s_blind_player].funds -= small_blind;
-                pot -= small_blind;
+                pot += small_blind;
                 players[b_blind_player].funds -= big_blind;
                 pot += big_blind;
                 bet = big_blind;
