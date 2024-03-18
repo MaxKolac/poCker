@@ -109,7 +109,11 @@ void buildDeck(struct PlayingCard targetArray[], bool print_addrs){
 }
 
 /**
- *  \brief TODO
+ *  \brief Analyzes Player's hand using functions inside handranking.c and saves scores in Player.scores array.
+ *  \param _player The player whose hand will be scored.
+ *  \param comm_cards An array of pointers to current community cards.
+ *  \param rev_cards_count How many community cards have been revealed by dealer.
+ *  For more info on how scores work, refer to handranking.h documentation.
  */
 void scorePlayersHand(struct Player _player, struct PlayingCard* comm_cards[], int rev_cards_count){
     //Build an array containing all cards to analyze
