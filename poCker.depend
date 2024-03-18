@@ -39,7 +39,7 @@
 1710441325 c:\users\ja\documents\github\pocker\test\test_handranking.h
 	<assert.h>
 
-1710621416 source:c:\users\ja\documents\github\pocker\src\dealer.c
+1710783075 source:c:\users\ja\documents\github\pocker\src\dealer.c
 	<stdbool.h>
 	<stdio.h>
 	"constants.h"
@@ -54,7 +54,7 @@
 1710694655 c:\users\ja\documents\github\pocker\src\handranking.h
 	"player.h"
 
-1710621416 c:\users\ja\documents\github\pocker\src\player.h
+1710783164 c:\users\ja\documents\github\pocker\src\player.h
 	<stdbool.h>
 	"playingcard.h"
 
@@ -73,7 +73,7 @@
 	"playingcard_enums.h"
 	"utils.h"
 
-1710778623 source:c:\users\ja\documents\github\pocker\src\utils.c
+1710782490 source:c:\users\ja\documents\github\pocker\src\utils.c
 	<ctype.h>
 	<stdarg.h>
 	<stdbool.h>
@@ -81,14 +81,14 @@
 	<stdlib.h>
 	<string.h>
 
-1710522509 source:c:\users\ja\documents\github\pocker\notes.c
+1710621416 source:c:\users\ja\documents\github\pocker\notes.c
 
 1710621416 source:c:\users\ja\documents\github\pocker\src\playingcard.c
 	<stdio.h>
 	<string.h>
 	"playingcard_enums.h"
 
-1710610713 source:c:\users\ja\documents\github\pocker\src\main.c
+1710783211 source:c:\users\ja\documents\github\pocker\src\main.c
 	<assert.h>
 	<stdbool.h>
 	<stdio.h>
@@ -102,7 +102,7 @@
 	"handranking.h"
 	"utils.h"
 
-1710611332 c:\users\ja\documents\github\pocker\src\dealer.h
+1710783117 c:\users\ja\documents\github\pocker\src\dealer.h
 	"player.h"
 	"playingcard_enums.h"
 	"playingcard.h"
@@ -111,4 +111,7 @@
 	<stdbool.h>
 
 1710621416 source:c:\users\ja\documents\github\pocker\src\constants.c
+
+1710783198 source:c:\users\ja\documents\github\pocker\src\player.c
+	"player.h"
 

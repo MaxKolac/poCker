@@ -18,7 +18,7 @@
  *  Lastly, players' hands and community card arrays are populated with addresses to cards with randomly selected indexes.
  *  Each used index is replaced with -1 to ensure no player and community card were given the same card.
  */
-void distributeCards(struct PlayingCard deck[], struct Player* players[], struct PlayingCard* comm_cards[]){
+void distributeCards(struct PlayingCard deck[], struct Player players[], struct PlayingCard* comm_cards[]){
     //Generate an array of random numbers in range of deck's array length.
     int indexes_count = PLAYER_COUNT * CARDS_PER_PLAYER + COMM_CARDS_COUNT;
     int indexes[indexes_count];
@@ -65,7 +65,7 @@ void distributeCards(struct PlayingCard deck[], struct Player* players[], struct
             while (indexes[selectedIndex] == -1){
                 selectedIndex = (selectedIndex + 1) % indexes_count;
             }
-            players[i]->current_hand[j] = &(deck[indexes[selectedIndex]]);
+            players[i].current_hand[j] = &deck[indexes[selectedIndex]];
             indexes[selectedIndex] = -1;
         }
     }
@@ -111,11 +111,11 @@ void buildDeck(struct PlayingCard targetArray[], bool print_addrs){
 /**
  *  \brief TODO
  */
-void scorePlayersHand(struct Player* _player, struct PlayingCard* comm_cards[], int rev_cards_count){
+void scorePlayersHand(struct Player _player, struct PlayingCard* comm_cards[], int rev_cards_count){
     //Build an array containing all cards to analyze
     struct PlayingCard* all_cards[CARDS_PER_PLAYER + rev_cards_count];
     for (int i = 0; i < CARDS_PER_PLAYER; i++){
-        all_cards[i] = _player->current_hand[i];
+        all_cards[i] = _player.current_hand[i];
     }
     for (int i = 0; i < rev_cards_count; i++){
         all_cards[i + CARDS_PER_PLAYER] = comm_cards[i];
@@ -137,6 +137,6 @@ void scorePlayersHand(struct Player* _player, struct PlayingCard* comm_cards[], 
 
     //Calculate scores for each individual rank
     for (int i = 0; i < 10; i++){
-        _player->scores[i] = (*handranks[i]) (all_cards, CARDS_PER_PLAYER + rev_cards_count);
+        _player.scores[i] = (*handranks[i]) (all_cards, CARDS_PER_PLAYER + rev_cards_count);
     }
 }

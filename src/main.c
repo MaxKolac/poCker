@@ -57,8 +57,13 @@ int main()
     srand(time(NULL));
     struct PlayingCard deck[DECK_LENGTH];
     struct PlayingCard* comm_cards[COMM_CARDS_COUNT];
-    struct Player* players[PLAYER_COUNT];
+    struct Player players[PLAYER_COUNT];
     buildDeck(&deck, false);
+    for (int i = 0; i < PLAYER_COUNT; i++){
+        players[i].folded = false;
+        players[i].funds = ini_funds_per_player;
+        resetScores(players[i]);
+    }
 
     //  --  Game loop   --
     bool gameOver = false;
@@ -81,9 +86,9 @@ int main()
 
             //If it's the pre-flop round, force blind players to bet in, without affecting the turns variable
             if (betting_round == 0){
-                players[s_blind_player]->funds -= small_blind;
+                players[s_blind_player].funds -= small_blind;
                 pot -= small_blind;
-                players[b_blind_player]->funds -= big_blind;
+                players[b_blind_player].funds -= big_blind;
                 pot += big_blind;
                 bet = big_blind;
                 current_player = (b_blind_player + 1) % PLAYER_COUNT;
@@ -99,7 +104,7 @@ int main()
                 //Move onto the next player who hasn't folded
                 do {
                     current_player = (current_player + 1) % PLAYER_COUNT;
-                } while (players[current_player]->folded);
+                } while (players[current_player].folded);
             }
 
             //Reveal community cards
