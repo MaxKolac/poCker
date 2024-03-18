@@ -47,6 +47,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="test/CuTest.h" />
+		<Unit filename="test/README.txt" />
 		<Unit filename="test/StrUtil.c">
 			<Option compilerVar="CC" />
 		</Unit>
