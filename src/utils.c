@@ -5,25 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//TODO: this one needs HEAVY refactor
-//powers of 10 are instantly discarded as not numbers
-//null terminator at 0 position is treated as number
-/**
- *  \brief NEED REFACTOR !
- */
-int isNumber(char s[]){
-    for (int i = 0; s[i] != '\0'; i++){
-        if (isdigit(s[i]) == 0){
-            return 0;
-        }
-    }
-    //Empty char array is NOT a number
-    if (s[0] == '/0'){
-        return 0;
-    }
-    return 1;
-}
-
 /**
 *   \brief Clamps a value to be constrained in a range.
 *   \param val The value to clamp.
@@ -99,12 +80,12 @@ int mathMin(int count, ...){
 }
 
 /**
- *  \brief Prompts the user with a message for an integer value.
+ *  \brief Prompts the user with a message for a positive non-zero integer value.
  *  \param max_length The maximum amount of input characters to consider
  *  \param msg The message to show to the user. The function appends a colon with a space at the end automatically.
- *  \returns The first input from user that can be considered a valid integer.
+ *  \returns The first input from user that can be considered a positive non-zero integer.
  *
- *  The function will not end until the user provides a valid string which can be considered an integer.
+ *  The function will not end until the user provides a valid string which can be considered an valid returnable integer.
  */
 int prompt_i(int max_length, char* msg){
     char input[max_length];
@@ -112,10 +93,8 @@ int prompt_i(int max_length, char* msg){
     do {
         printf("%s: ", msg);
         gets_s(&input, max_length);
-        if (isNumber(input)){
-            result = atoll(&input);
-        }
-    } while (!isNumber(input));
+        result = atoll(&input);
+    } while (result <= 0);
     return result;
 }
 

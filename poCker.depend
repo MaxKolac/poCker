@@ -39,7 +39,7 @@
 1710441325 c:\users\ja\documents\github\pocker\test\test_handranking.h
 	<assert.h>
 
-1710611473 source:c:\users\ja\documents\github\pocker\src\dealer.c
+1710621416 source:c:\users\ja\documents\github\pocker\src\dealer.c
 	<stdbool.h>
 	<stdio.h>
 	"constants.h"
@@ -49,22 +49,22 @@
 	"playingcard.h"
 	"utils.h"
 
-1710612034 c:\users\ja\documents\github\pocker\src\constants.h
+1710621416 c:\users\ja\documents\github\pocker\src\constants.h
 
-1710610704 c:\users\ja\documents\github\pocker\src\handranking.h
+1710694655 c:\users\ja\documents\github\pocker\src\handranking.h
 	"player.h"
 
-1710607145 c:\users\ja\documents\github\pocker\src\player.h
+1710621416 c:\users\ja\documents\github\pocker\src\player.h
 	<stdbool.h>
 	"playingcard.h"
 
-1710612663 c:\users\ja\documents\github\pocker\src\playingcard.h
+1710621416 c:\users\ja\documents\github\pocker\src\playingcard.h
 	<string.h>
 	"playingcard_enums.h"
 
-1710612663 c:\users\ja\documents\github\pocker\src\playingcard_enums.h
+1710621416 c:\users\ja\documents\github\pocker\src\playingcard_enums.h
 
-1710611294 source:c:\users\ja\documents\github\pocker\src\handranking.c
+1710697596 source:c:\users\ja\documents\github\pocker\src\handranking.c
 	<limits.h>
 	<math.h>
 	<stdbool.h>
@@ -73,7 +73,7 @@
 	"playingcard_enums.h"
 	"utils.h"
 
-1710591499 source:c:\users\ja\documents\github\pocker\src\utils.c
+1710778623 source:c:\users\ja\documents\github\pocker\src\utils.c
 	<ctype.h>
 	<stdarg.h>
 	<stdbool.h>
@@ -83,7 +83,7 @@
 
 1710522509 source:c:\users\ja\documents\github\pocker\notes.c
 
-1710612088 source:c:\users\ja\documents\github\pocker\src\playingcard.c
+1710621416 source:c:\users\ja\documents\github\pocker\src\playingcard.c
 	<stdio.h>
 	<string.h>
 	"playingcard_enums.h"
@@ -107,8 +107,8 @@
 	"playingcard_enums.h"
 	"playingcard.h"
 
-1710591365 c:\users\ja\documents\github\pocker\src\utils.h
+1710778677 c:\users\ja\documents\github\pocker\src\utils.h
 	<stdbool.h>
 
-1710612038 source:c:\users\ja\documents\github\pocker\src\constants.c
+1710621416 source:c:\users\ja\documents\github\pocker\src\constants.c
 

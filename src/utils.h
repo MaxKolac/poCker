@@ -8,7 +8,6 @@
  *  \brief  Contains a collection of miscellaneous functions.
  */
 
-int isNumber(char[]);
 int mathClamp(int, int, int);
 int randRange(int, int);
 int mathMax(int, ...);
