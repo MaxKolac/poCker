@@ -144,3 +144,46 @@ void scorePlayersHand(struct Player _player, struct PlayingCard* comm_cards[], i
         _player.scores[i] = (*handranks[i]) (all_cards, CARDS_PER_PLAYER + rev_cards_count);
     }
 }
+
+/**
+ *  \brief TODO
+ */
+int decideWinners(struct Player players[], int winners[]){
+
+}
+
+/**
+ *  \brief Checks that the player is allowed to do their action.
+ *  \return True, if the player is allowed. False, otherwise.
+ *  This function checks the following:
+ *  - can Player afford their raise
+ *  - can Player afford their call, and if not, have they betted all their funds
+ *  - is Player trying to raise a bet to an amount smaller than the current bet
+ *  - if the game has fixed limits, does Player's raise doesn't exceede the high limit
+ */
+bool checkPlayerDecisionValidity(struct Player _player,
+                                 int player_decision,
+                                 unsigned int current_bet,
+                                 bool limits_fixed,
+                                 int b_blind_amount)
+{
+    //TODO: VERIFY THIS AND ADD PROPER CHECKS FOR FIXED LIMIT TYPE GAME
+    //For raises:
+    if (player_decision > 0){
+        //They can afford it
+        return _player.funds >= player_decision &&
+               //Player's raise actually raises the bet, and does not reduce or match it
+               player_decision > current_bet //&&
+               //TODO: differing rules from different sources on what limit-fixed game is
+               //If the game has fixed limits, make sure their bet does not exceede it
+               //(!limits_fixed || (limits_fixed && player_decision <= b_blind_amount * 2))
+    }
+    //For calls/checks:
+    else if (player_decision == 0){
+        //If player wishes to call/check when not able to afford it, they must bet all their last funds
+        //return _player.funds < current_bet ?
+
+    }
+    //For folds, no checks need to be performed
+    return true;
+}

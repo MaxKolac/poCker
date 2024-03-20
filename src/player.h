@@ -19,8 +19,11 @@ struct Player {
     int scores[10];
     /** \brief Pointers to player's playing cards in his hand. */
     struct PlayingCard* current_hand[2];
+    /** \brief Whether or not this player is controlled through AI or by human. */
+    bool isHuman;
 };
 
+int takeAction(struct Player);
 void resetScores(struct Player);
 
 #endif // PLAYER_H
