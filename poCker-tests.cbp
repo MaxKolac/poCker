@@ -51,6 +51,9 @@
 		<Unit filename="test/StrUtil.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="test/test_dealer.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="test/test_handranking.c">
 			<Option compilerVar="CC" />
 		</Unit>

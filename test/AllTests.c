@@ -11,6 +11,7 @@ void RunAllTests(void) {
     //CuSuiteAddSuite(suite, StrUtilGetSuite());
     CuSuiteAddSuite(suite, UtilsGetSuite());
     CuSuiteAddSuite(suite, HandrankingGetSuite());
+    CuSuiteAddSuite(suite, DealerGetSuite());
 
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);
