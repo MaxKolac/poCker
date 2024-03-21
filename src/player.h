@@ -23,7 +23,7 @@ struct Player {
     bool isHuman;
 };
 
-int takeAction(struct Player);
-void resetScores(struct Player);
+int takeAction(struct Player*);
+void resetScores(struct Player*);
 
 #endif // PLAYER_H

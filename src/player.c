@@ -5,7 +5,7 @@
 /**
  *  \brief TODO
  */
- int takeAction(struct Player self){
+ int takeAction(struct Player *self){
     return 0;
  }
 
@@ -14,8 +14,8 @@
  *  \brief Resets player's scores to an array of zeros.
  *  Remember that C does not have zero-initialization. The scores array WILL be filled with gibberish data.
  */
-void resetScores(struct Player _player){
+void resetScores(struct Player *self){
     for (int i = 0; i < 10; i++){
-        _player.scores[i] = 0;
+        self->scores[i] = 0;
     }
 }
