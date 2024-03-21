@@ -37,7 +37,7 @@ int main()
     //TODO: i'm unable to find a site which would finally explain the following:
     // - fixed limits means that players can only raise by high and small limits, or by any amount inbetween?
     //bool limit_fixed = prompt_b("Should the betting limits be fixed?");
-    bool limit_fixes = false;
+    bool limit_fixed = false;
     //Debug
     //printf("Limits are fixed: %s\n", limit_fixed ? "true" : "false");
 
@@ -101,7 +101,7 @@ int main()
             //  --  Single round of betting loop  --
             for (int turns = PLAYER_COUNT - 1; turns > 0; turns--){
                 //This player has folded, skip his turn and move onto the next
-                if (player[current_player].folded){
+                if (players[current_player].folded){
                     current_player = (current_player + 1) % PLAYER_COUNT;
                     continue;
                 }
@@ -111,8 +111,9 @@ int main()
                 int player_decision;
                 bool decisionValid = false;
                 do {
-                    player_decision = takeAction(player[current_player]);
-                    decisionValid = checkPlayerDecisionValidity(player[current_player],
+                    player_decision = takeAction(players[current_player]);
+                    player_decision = mathClamp(player_decision, -1, players[current_player].funds);
+                    decisionValid = checkPlayerDecisionValidity(players[current_player],
                                                                 player_decision,
                                                                 bet,
                                                                 limit_fixed,
@@ -123,7 +124,6 @@ int main()
                 // 0 < player_decision signifies a RAISE by player_decision amount
                 // 0 == player_decision signifies a CALL/CHECK
                 // 0 > player_decision signifies a FOLD
-                player_decision = mathClamp(player_decision, -1, players[current_player].funds);
                 if (0 <= player_decision){
                     players[current_player].funds -= player_decision;
                     pot += player_decision;
@@ -198,7 +198,7 @@ int main()
         //Otherwise, pay it to individual winners evenly.
         //In the event of a pot indivisible by winner's count, the remainder is paid to the player to the left of dealer.
         else {
-            for (int i = 0; i < winners_count){
+            for (int i = 0; i < winners_count; i++){
                 int amount = floorf(pot / winners_count);
                 players[winners[i]].funds += amount;
                 pot -= amount;
