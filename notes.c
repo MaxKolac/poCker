@@ -65,4 +65,11 @@
 *   To quote Eugene Sh. from the answer above the linked one:
 *   "Don't define variables (even const) in h files. extern them there.
 *   The rule of thumb - if it is creating an object in memory - it should not be in the header."
+*
+*   AddressSanitizer is for detection of memory leaks, dangling pointers and all that.
+*   Apparently this lib does not come with the GCC GNU compiler for Windows???
+*   In case you ever figure out how to use this, make sure that:
+*   -fsanitize=address -static-libasan -g
+*   is added to both compiler AND linker options + you rebuild the whole project once you remove ASan.
+*   Object files created this way still have SANA in them and things will not compile if you don't rebuild the whole project.
 */
