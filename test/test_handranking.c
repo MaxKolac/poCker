@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdbool.h>
 #include "CuTest.h"
 #include "../src/playingcard.h"

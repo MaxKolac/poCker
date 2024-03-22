@@ -12,7 +12,7 @@
 	<setjmp.h>
 	<stdarg.h>
 
-1711118099 source:c:\users\ja\documents\github\pocker\test\alltests.c
+1711119773 source:c:\users\ja\documents\github\pocker\test\alltests.c
 	"CuTest.h"
 
 1710621416 source:c:\users\ja\documents\github\pocker\test\strutil.c
@@ -46,7 +46,8 @@
 	<string.h>
 	"playingcard_enums.h"
 
-1710700244 source:c:\users\ja\documents\github\pocker\test\test_handranking.c
+1711119878 source:c:\users\ja\documents\github\pocker\test\test_handranking.c
+	<math.h>
 	<stdbool.h>
 	"CuTest.h"
 	"../src/playingcard.h"
@@ -82,7 +83,7 @@
 1711041223 source:c:\users\ja\documents\github\pocker\src\player.c
 	"player.h"
 
-1711118766 source:c:\users\ja\documents\github\pocker\test\test_dealer.c
+1711119773 source:c:\users\ja\documents\github\pocker\test\test_dealer.c
 	<stdbool.h>
 	"CuTest.h"
 	"../src/dealer.h"
