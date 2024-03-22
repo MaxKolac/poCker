@@ -13,7 +13,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add option="-w" />
 				</Compiler>
 			</Target>
 		</Build>
@@ -32,10 +31,15 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/handranking.h" />
+		<Unit filename="src/player.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/player.h" />
 		<Unit filename="src/playingcard.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/playingcard.h" />
+		<Unit filename="src/playingcard_enums.h" />
 		<Unit filename="src/utils.c">
 			<Option compilerVar="CC" />
 		</Unit>

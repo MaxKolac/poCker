@@ -146,10 +146,54 @@ void scorePlayersHand(struct Player _player, struct PlayingCard* comm_cards[], i
 }
 
 /**
- *  \brief TODO
+ *  \brief Compares the scores of all players on the same tier (scores array index). Populates the winners array with player indexes who function deemed as winners.
+ *  \param players The Players array to compare score-wise.
+ *  \param players_count The length of players array.
+ *  \param winners An array which the function will populate with player indexes who are to be awarded the pot or part of it.
+ *  \returns The size of the resulting winners array, or how many players are winners.
  */
-int decideWinners(struct Player players[], int winners[]){
+int decideWinners(struct Player players[], int players_count, int *winners){
+    int possible_winners[players_count];
+    int possible_winners_count = 0;
+    int score_tier = -1;
 
+    //Get all players who have a non-zero score on the same tier
+    for (int i = 0; i < 10; i++){
+        for (int j = 0; j < players_count; j++){
+            if (players[j].scores[i] > 0){
+                possible_winners[possible_winners_count] = j;
+                possible_winners_count++;
+                score_tier = i;
+            }
+        }
+        if (possible_winners_count > 0){
+            break;
+        }
+    }
+
+    //Only one player had a non-zero score? They win without a shadow of a doubt
+    if (possible_winners_count == 1){
+        winners[0] = possible_winners[0];
+        return 1;
+    }
+
+    //More than 1 player had a non-zero score? Oh boy.
+    int winners_count = 0;
+    int highest_score = 0;
+    for (int i = 0; i < possible_winners_count; i++){
+        //Player with a higher score overrides the previous contender for a winner
+        if (players[possible_winners[i]].scores[score_tier] > highest_score){
+            highest_score = players[possible_winners[i]].scores[score_tier];
+            winners_count = 1;
+            winners[0] = possible_winners[i];
+        }
+        //If they have both the exact same score, we have a tie
+        else if (players[possible_winners[i]].scores[score_tier] == highest_score){
+            winners[winners_count] = possible_winners[i];
+            winners_count++;
+        }
+    }
+    return winners_count;
 }
 
 /**
@@ -173,7 +217,7 @@ bool checkPlayerDecisionValidity(struct Player _player,
         //They can afford it
         return _player.funds >= player_decision &&
                //Player's raise actually raises the bet, and does not reduce or match it
-               player_decision > current_bet //&&
+               player_decision > current_bet; //&&
                //TODO: differing rules from different sources on what limit-fixed game is
                //If the game has fixed limits, make sure their bet does not exceede it
                //(!limits_fixed || (limits_fixed && player_decision <= b_blind_amount * 2))
