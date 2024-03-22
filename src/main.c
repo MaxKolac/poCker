@@ -65,7 +65,7 @@ int main()
     for (int i = 0; i < PLAYER_COUNT; i++){
         players[i].folded = false;
         players[i].funds = ini_funds_per_player;
-        resetScores(players[i]);
+        resetScores(&players[i]);
     }
 
     //  --  Game loop   --
@@ -111,7 +111,7 @@ int main()
                 int player_decision;
                 bool decisionValid = false;
                 do {
-                    player_decision = takeAction(players[current_player]);
+                    player_decision = takeAction(&players[current_player]);
                     player_decision = mathClamp(player_decision, -1, players[current_player].funds);
                     decisionValid = checkPlayerDecisionValidity(players[current_player],
                                                                 player_decision,
@@ -188,7 +188,7 @@ int main()
             for (int i = 0; i < PLAYER_COUNT; i++){
                 scorePlayersHand(players[i], comm_cards, revealed_community_cards);
             }
-            winners_count = decideWinners(players, winners);
+            winners_count = decideWinners(players, PLAYER_COUNT, winners);
         }
 
         //If we have a single winner, they take the whole pot;
