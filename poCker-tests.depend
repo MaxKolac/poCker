@@ -12,7 +12,8 @@
 	<setjmp.h>
 	<stdarg.h>
 
-1711119773 source:c:\users\ja\documents\github\pocker\test\alltests.c
+1711122135 source:c:\users\ja\documents\github\pocker\test\alltests.c
+	<stdio.h>
 	"CuTest.h"
 
 1710621416 source:c:\users\ja\documents\github\pocker\test\strutil.c
