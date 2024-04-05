@@ -1,3 +1,5 @@
+#include "playingcard.h"
+
 #include <stdio.h>
 #include <string.h>
 #include "playingcard_enums.h"

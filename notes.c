@@ -72,4 +72,9 @@
 *   -fsanitize=address -static-libasan -g
 *   is added to both compiler AND linker options + you rebuild the whole project once you remove ASan.
 *   Object files created this way still have SANA in them and things will not compile if you don't rebuild the whole project.
+*
+*   Apparently, it is a better practice for source files to include their own header.
+*   This way the compiler will catch if you change a function implementation parameter list and
+*   forget to do the same with its declaration in the header.
+*   https://stackoverflow.com/a/30817652/21342746
 */

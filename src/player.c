@@ -1,6 +1,4 @@
 #include "player.h"
-//First time a source file needs an explicit reference to its own header
-//Things will likely break in the future, I can smell it
 
 /**
  *  \brief TODO
