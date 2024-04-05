@@ -1,0 +1,297 @@
+<html class=" vjvushfin naqvurr mxncgi idc0_350"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Rules of Hold 'Em Poker for Computers (and people too!)</title>
+    </head>
+    <body>
+    <h1>Rules of Hold 'Em Poker for Computers (and people too!)</h1>
+    <p>
+    Based on <em>How to Play Winning Poker</em> by Avery Cardoza (ISBN
+    0-940685-04-3) and <em>Scarne's Guide to Modern Poker</em> by John
+    Scarne (ISBN 0-617-53076-3). Adapted for URCS by George Ferguson and
+    Chris Brown.
+    
+    </p><h2>Preliminaries</h2>
+    <ul>
+    <li>We will be playing <b>Texas Hold 'Em</b>, a version of seven-card
+    stud poker similar to Spit in the Ocean.
+    In this form of poker, each player receives two private <b>hole
+    cards</b>, and then five <b>common cards</b> are dealt (in three
+    phases) and are shared by all players. Players make the best five-card
+    poker hand possible (see below) using <b>one or both</b> of their
+    hole cards and four or three, respectively, of the common cards.
+    </li><li>We will be playing <b>limit poker</b>, with a low and a high
+    limit. The low limit is used in the first two betting rounds of each
+    game and the high limit in the third and fourth rounds.
+    </li><li>We will be playing with a <b>maximum number of raises</b> in any
+    betting round.
+    </li><li>We will be playing <b>freeze out</b> poker: each player <b>buys
+    in</b> to the game with some amount of cash, and the game continues
+    until one player has won the money. That is, no player can take money
+    off the table (except the final winner, of course).
+    </li><li>The dealer assigns <b>seating positions</b> to each player.
+    </li><li>The dealer assigns the <b>button</b> to one player, who is said to
+    be ``on the button.'' The button rotates clockwise from its initial
+    position.
+    </li></ul>
+    <em>
+    Implementation notes: All of these parameters (betting
+    limits, number of raises, initial buyin, etc.) should be configurable
+    at runtime.
+    </em><p><em>
+    You can assume that before each game you will be told how many players
+    there are, their positions, and the position of the button.
+    </em>
+    </p><p>
+    
+    </p><h2>The Ante</h2>
+    <ul>
+    <li>Each player <b>antes</b> one-half of the low betting limit into
+    the pot. We will round down to the nearest whole dollar (but not less
+    than one dollar).
+    </li></ul>
+    <p>
+    <em>
+    Implementation notes:
+    Keeping track of the amount of money in the pot will probably help you
+    decide what to do later.
+    </em>
+    </p><p>
+    
+    </p><h2>The Pre-Flop</h2>
+    <ul>
+    <li>The dealer deals two <b>hole cards</b> to each player.
+    </li></ul>
+    <em>
+    Implementation notes:
+    You will obviously need to represent the contents of your hand.
+    </em>
+    <p>
+    
+    </p><h2>First Betting Round</h2>
+    <ul>
+    <li>The player on the button must make a <b>blind</b> bet equal to
+    one-half the low betting limit (round down), or tap out for the bet
+    (described below).
+    </li><li>The next player must make a <b>straddle</b> bet equal to the low
+    betting limit (that is, they are raising one-half the low limit), or
+    they can fold, or they can tap out for the bet (see below).
+    </li><li>The next player has three options, assuming that previous bets
+    have left them <em>N</em> dollars behind:
+    <ol>
+    <li><b>fold</b>: Drop out of the game, losing anything bet so far.
+    </li><li><b>call</b>: Add <em>N</em> dollars to the pot.
+    </li><li><b>raise</b>: Add (<em>N</em> + low limit) dollars to the pot.
+    </li><li><b>tap out</b>: Only permitted if a player has less than
+    <em>N</em> dollars left. See below.
+    </li></ol>
+    There is a limit on the total number of raises by all players in a
+    single betting round (not including the straddle). If this limit is
+    reached, a player may only fold or call.
+    </li><li>This last step repeats for each succesive player until either
+    <dl>
+    <dd>(a) all players are paid up or tapped out; or
+    </dd><dd>(b) all but one player has folded, in which case that player wins
+    the pot immediately and the game is over.
+    </dd></dl>
+    </li><li>If a player cannot bet the full amount it takes to call (or make
+    the blind or straddle bet), they can bet all their remaining cash. The
+    player is then <b>tapped out</b>. 
+    The player keeps playing but makes no more bets (and, in particular,
+    cannot raise). If the player wins the hand, they win only the amount
+    in the pot at the time they tapped out, and the remainder of the pot
+    goes to the 2nd-highest hand(s). The exact details are spelled out
+    below.
+    </li></ul>
+    <em>
+    Implementation notes:
+    There is a lot of state involved in a betting round. However, a single
+    player need only track how much they owe to the pot and, in their
+    turn, make the decision to fold, call, or raise (at the appropriate
+    limit). One might even be able to assume that the dealer would keep
+    track of what you owe and tell you...
+    <p>
+    The decision to fold, call, or raise depends on the quality of your
+    hand, among other factors. So you obviously must be able to evaluate
+    hand quality.
+    </p></em><p><em>
+    Handling tapping out properly may require some effort, although much
+    of this may be on the part of the dealer.
+    </em>
+    </p><p>
+    
+    </p><h2>The Flop</h2>
+    <ul>
+    <li>The dealer deals <b>three common cards</b>.
+    </li></ul>
+    <em>
+    Implementation notes: You obviously need to represent the common cards
+    also and use them in evaluating your hand.
+    </em>
+    <p>
+    
+    </p><h2>Second Betting Round</h2>
+    <ul>
+    <li>Another betting round is held with the low betting limit, as
+    described above.
+    </li></ul>
+    <p>
+    
+    </p><h2>The Turn (a.k.a. Fourth Street)</h2>
+    <ul>
+    <li>The dealer deals <b>one more common card</b>.
+    </li></ul>
+    <p>
+    
+    </p><h2>Third Betting Round</h2>
+    <ul>
+    <li>Betting (including the first bet and all raises) in the third and
+    fourth rounds is at the high betting limit.
+    </li><li>There is no blind bet in the third and fourth betting rounds.
+    </li><li>Instead, the first-position player may <b>check</b>: bet nothing
+    and pass the decision to the next player. The next player may also
+    check. If all players check, the round is over (with nothing added to
+    the pot). If any player <b>opens</b> (by betting the high limit), no
+    more checks are allowed in that round.
+    </li><li>Once opened, betting proceeds as described above until all players
+    are paid up or only one player is left. Players can either call,
+    raise, fold, or tap out.
+    </li><li>If the game allows ``<b>check and raise</b>,'' then a player who
+    has checked may raise when the action comes around to them,
+    otherwise they may only call (or fold). After betting, a player
+    who has once checked may raise if the action returns to them
+    again.
+    </li></ul>
+    <p>
+    <em>
+    Implementation notes: Checking is a way for the players with
+    early positions to gain some ``positional advantage'' (that is, knowing
+    the actions of other players before acting themselves). Positional
+    play is a key to success, according to the experts.
+    </em>
+    </p><p>
+    
+    </p><h2>The River (a.k.a. Fifth Street)</h2>
+    <ul>
+    <li>The dealer deals <b>one final common card</b>.
+    </li><li>Another betting round is held with the high betting limit, as
+    described above.
+    </li></ul>
+    <p>
+    
+    </p><h2>The Showdown</h2>
+    <ul>
+    <li>The last player to have raised in the final betting round (or the
+    player who opened the betting, if there were no raises) is said to
+    be <b>called</b> and must show their hand.
+    </li><li>Each player remaining in the game may <b>beat</b> this hand by
+    showing and <b>announcing</b> a hand of a higher value.
+    </li><li>The player with the <b>highest hand</b> wins the pot. In the case of a
+    tie (exact rules in Cardoza or Scarne), the pot is split evenly.
+    Amounts are in whole dollars--odd amounts will be assigned by the
+    dealer.
+    </li><li>An alternative version of the showdown is so-called ``<b>cards
+    speak</b>.'' Unless playing cards speak, if a player announces a
+    sub-optimal hand for their cards, the announced hand (rather than the
+    highest hand possible) is official.
+    </li><li>Handling distribution of the pot in the event of a tie when one or
+    more players have tapped out is tricky. We have developed the
+    following method:
+    <ul>
+    <li>If no winning player has tapped out, the pot is split evenly as
+    described above.
+    </li><li>Otherwise, let each tied player <i>Pi</i> have an
+    <b>expectation</b> <i>Ei</i>. This is the amount that they can
+    (should) reasonably expect to win. For a non-tapped-out player, this
+    is the total amount of the pot. For a tapped-out player, it is the
+    amount in the pot <i>if their bet had been the last bet made in the
+    hand</i>. That is, the amount prior that betting round, plus all the
+    bets they covered up to and including their tap out bet. Note that this
+    includes players whose turn to bet came after the tapped out player
+    but who were calling or raising the tapped out player (although the
+    tapped out player's expectation only includes that part of those
+    players' bets that the tap out bet covered).
+    </li><li>Let the total of all tied players expectations be <i>E</i> (= sum
+    over <i>i</i> of <i>Ei</i>). Then, for each tied player <i>Pi</i>,
+    their share of the pot is <i>Ei / E</i>. Note that this handles the
+    special cases properly: a single winner has <i>Ei = E</i> and so wins
+    it all, <i>n</i> non-tapped-out winners each have <i>Ei = E</i> also,
+    and so win <i>1 / n</i> of the pot, and tapped-out players get a share
+    proportional to how long they stayed in the game (i.e., to how much
+    they put in the pot before tapping out).
+    </li></ul>
+    </li></ul>
+    <em>
+    Implementation notes: To participate in the showdown, you need to be
+    able to compare your hand to others. You can assume that the dealer
+    will be checking that player's cards support their stated value.
+    </em><p><em>
+    Handling the distribution of the pot is probably the dealers problem.
+    </em>
+    </p><p>
+    </p><hr>
+    <p>
+    </p><h2>Default Parameters</h2>
+    <p>
+    The following default parameters will in all probability be used for
+    our tournamment  games. Programs should be designed to configure these
+    parameters at runtime, however, rather than only being able to play
+    with one set of parameters.
+    </p><ul>
+    <li>Initial buyin: $1000
+    </li><li>Low betting limit: $10 (implies: ante=$2, blind=$5, straddle=$10)
+    </li><li>High betting limit: $20
+    </li><li>Maximum number of raises per round, all players: 3
+    </li><li>Check-and-raise allowed
+    </li><li>Not playing ``cards speak''---players must announce their hands
+    </li></ul>
+    <p>
+    </p><hr>
+    <p>
+    </p><h2>Rank of Hands for Poker</h2>
+    <dl compact="compact">
+    <dt><b>1. Straight Flush</b>:
+    </dt><dd>Five cards of the same suit in sequential (rank) order.
+    Ace can be high or low. Straight flushes are compared by
+    comparing the rank of their highest card (e.g., queen-high beats
+    seven-high). An ace-high straight flush is also called a <b>royal
+    flush</b> and cannot be beaten (but can be tied).
+    </dd><dt><b>2. Four of a Kind</b>:
+    </dt><dd>Four cards of the same rank. Compared by comparing their rank. The
+    fifth card is not used in comparing four-of-a-kinds (not that it
+    matters in a game without wildcards).
+    </dd><dt><b>3. Full House</b>:
+    </dt><dd>Three cards of one rank and two cards of another rank. Compared by
+    comparing the ranks of the three-of-a-kinds (e.g., ``7 7 7 2 2'' beats
+    ``5 5 5 A A''). Note that there cannot be ties between
+    three-of-a-kinds (in a game without wildcards).
+    </dd><dt><b>4. Flush</b>:
+    </dt><dd>Five cards of the same suit. Compared by comparing the ranks of
+    the five cards from highest to lowest (e.g., ``Q 10 9 5 3'' beats ``Q 10 8
+    7 6'').
+    </dd><dt><b>5. Straight</b>:
+    </dt><dd>Five cards in sequential (rank) order. Aces can be high or low.
+    Compared by comparing the rank of their highest card.
+    </dd><dt><b>6. Three of a Kind</b>:
+    </dt><dd>Three cards of the same rank. Compared by comparing the ranks. The
+    other two cards are not used in comparing three-of-a-kinds.
+    </dd><dt><b>7. Two Pair</b>:
+    </dt><dd>Two pairs of cards, each of the same rank. Compared by comparing
+    the ranks of the highest pairs, then the ranks of the lowest pairs,
+    and finally the ranks of the fifth card.
+    </dd><dt><b>8. One Pair</b>:
+    </dt><dd>One pair of cards of the same rank. Compared by comparing the
+    ranks of the pairs, then the ranks of the highest third cards, then
+    the next highest cards, and finally the lowest odd card.
+    </dd><dt><b>9. High Card</b>:
+    </dt><dd>Five cards not meeting any of the other categories. Compared by
+    comparing the ranks of each hand's highest card, then their second
+    highest, and so on to the lowest card in each hand.
+    </dd></dl>
+    <p>
+    </p><hr>
+    <em>
+    Last change: 9 Dec 1998 by ferguson
+    </em>
+    
+    
+</body></html>
