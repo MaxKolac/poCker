@@ -77,4 +77,10 @@
 *   This way the compiler will catch if you change a function implementation parameter list and
 *   forget to do the same with its declaration in the header.
 *   https://stackoverflow.com/a/30817652/21342746
+*
+*   Apparently, consts in C are not truly constant. They can't be used to create
+*   a struct member of array type with non-variadic length. A macro needs to be used instead, since
+*   macros are preprocessed before compilation. If a need ever arises to reference a const's addres, make use
+*   of the const instead of a macro, which has the same name with a _OBJ suffix (as a convention).
+*   https://stackoverflow.com/a/30583588/21342746
 */

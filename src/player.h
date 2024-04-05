@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include <stdbool.h>
+#include "constants.h"
 #include "playingcard.h"
 
 /**
@@ -18,7 +19,7 @@ typedef struct {
     /** \brief A score table for individual hand ranks to help break up ties. See handranking.c for more info. */
     int scores[10];
     /** \brief Pointers to player's playing cards in his hand. */
-    PlayingCard* current_hand[2];
+    PlayingCard* current_hand[CARDS_PER_PLAYER];
     /** \brief Whether or not this player is controlled through AI or by human. */
     bool isHuman;
 } Player;

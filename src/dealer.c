@@ -129,7 +129,7 @@ void scorePlayersHand(Player _player, PlayingCard* comm_cards[], int rev_cards_c
     }
 
     //This might be overengineered, but honestly ATM I can't think of a better place to try out function pointers
-    int (*handranks[10]) (PlayingCard*[], int) = {
+    int (*handranks[SCORE_TABLE_SIZE]) (PlayingCard*[], int) = {
         detectRoyalFlush,
         detectStraightFlush,
         detectFOaK,
@@ -143,7 +143,7 @@ void scorePlayersHand(Player _player, PlayingCard* comm_cards[], int rev_cards_c
     };
 
     //Calculate scores for each individual rank
-    for (int i = 0; i < 10; i++){
+    for (int i = 0; i < SCORE_TABLE_SIZE; i++){
         _player.scores[i] = (*handranks[i]) (all_cards, CARDS_PER_PLAYER + rev_cards_count);
     }
 }
@@ -161,7 +161,7 @@ int decideWinners(Player players[], int players_count, int *winners){
     int score_tier = -1;
 
     //Get all players who have a non-zero score on the same tier
-    for (int i = 0; i < 10; i++){
+    for (int i = 0; i < SCORE_TABLE_SIZE; i++){
         for (int j = 0; j < players_count; j++){
             if (players[j].scores[i] > 0){
                 possible_winners[possible_winners_count] = j;
