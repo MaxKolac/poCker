@@ -24,7 +24,7 @@ typedef struct {
     bool isHuman;
 } Player;
 
-Player* PlayerCreateNew();
+Player* playerCreateNew();
 int takeAction(Player*);
 void resetScores(Player*);
 

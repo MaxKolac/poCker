@@ -2,11 +2,13 @@
 
 #include <stdlib.h>
 
-Player* PlayerCreateNew(){
+Player* playerCreateNew(){
     Player* self = ((Player*)malloc(sizeof(Player)));
     self->funds = 0;
     self->folded = false;
     resetScores(self);
+    self->current_hand[0] = NULL;
+    self->current_hand[1] = NULL;
     self->isHuman = false;
     return self;
 }
