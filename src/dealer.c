@@ -21,7 +21,7 @@
  *  Lastly, players' hands and community card arrays are populated with addresses to cards with randomly selected indexes.
  *  Each used index is replaced with -1 to ensure no player and community card were given the same card.
  */
-void distributeCards(struct PlayingCard deck[], struct Player players[], struct PlayingCard* comm_cards[]){
+void distributeCards(struct PlayingCard deck[], Player players[], struct PlayingCard* comm_cards[]){
     //Generate an array of random numbers in range of deck's array length.
     int indexes_count = PLAYER_COUNT * CARDS_PER_PLAYER + COMM_CARDS_COUNT;
     int indexes[indexes_count];
@@ -118,7 +118,7 @@ void buildDeck(struct PlayingCard targetArray[], bool print_addrs){
  *  \param rev_cards_count How many community cards have been revealed by dealer.
  *  For more info on how scores work, refer to handranking.h documentation.
  */
-void scorePlayersHand(struct Player _player, struct PlayingCard* comm_cards[], int rev_cards_count){
+void scorePlayersHand(Player _player, struct PlayingCard* comm_cards[], int rev_cards_count){
     //Build an array containing all cards to analyze
     struct PlayingCard* all_cards[CARDS_PER_PLAYER + rev_cards_count];
     for (int i = 0; i < CARDS_PER_PLAYER; i++){
@@ -155,7 +155,7 @@ void scorePlayersHand(struct Player _player, struct PlayingCard* comm_cards[], i
  *  \param winners An array which the function will populate with player indexes who are to be awarded the pot or part of it.
  *  \returns The size of the resulting winners array, or how many players are winners.
  */
-int decideWinners(struct Player players[], int players_count, int *winners){
+int decideWinners(Player players[], int players_count, int *winners){
     int possible_winners[players_count];
     int possible_winners_count = 0;
     int score_tier = -1;
@@ -208,7 +208,7 @@ int decideWinners(struct Player players[], int players_count, int *winners){
  *  - is Player trying to raise a bet to an amount smaller than the current bet
  *  - if the game has fixed limits, does Player's raise doesn't exceede the high limit
  */
-bool checkPlayerDecisionValidity(const struct Player* _player,
+bool checkPlayerDecisionValidity(const Player* _player,
                                  const struct GameRuleSet* rules,
                                  int player_decision,
                                  unsigned int current_bet)

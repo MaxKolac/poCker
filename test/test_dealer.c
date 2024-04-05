@@ -8,7 +8,7 @@ void test_scorePlayerHands(CuTest* ct){
 }
 
 void test_decideWinners_obviousWinner(CuTest* ct){
-    struct Player players[5];
+    Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
     }
@@ -22,7 +22,7 @@ void test_decideWinners_obviousWinner(CuTest* ct){
 }
 
 void test_decideWinners_onePlayerHasGreaterScoreButInLowerTier(CuTest* ct){
-    struct Player players[5];
+    Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
     }
@@ -37,7 +37,7 @@ void test_decideWinners_onePlayerHasGreaterScoreButInLowerTier(CuTest* ct){
 }
 
 void test_decideWinners_multiplePlayerSameScore(CuTest* ct){
-    struct Player players[5];
+    Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
     }
@@ -54,7 +54,7 @@ void test_decideWinners_multiplePlayerSameScore(CuTest* ct){
 }
 
 void test_decideWinners_correctlySelectWinner(CuTest* ct){
-    struct Player players[5];
+    Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
     }
@@ -72,7 +72,7 @@ void test_decideWinners_correctlySelectWinner(CuTest* ct){
 }
 
 void test_decideWinners_largerScoreInLowerTiersDontWin(CuTest* ct){
-    struct Player players[5];
+    Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
     }
@@ -92,7 +92,7 @@ void test_decideWinners_largerScoreInLowerTiersDontWin(CuTest* ct){
 }
 
 void test_decideWinners_miscTest1(CuTest* ct){
-    struct Player players[5];
+    Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
     }

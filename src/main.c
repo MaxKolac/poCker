@@ -26,7 +26,7 @@ int main()
     srand(time(NULL));
     struct PlayingCard deck[DECK_LENGTH];
     struct PlayingCard* comm_cards[COMM_CARDS_COUNT];
-    struct Player players[PLAYER_COUNT];
+    Player players[PLAYER_COUNT];
     buildDeck(deck, false);
     for (int i = 0; i < PLAYER_COUNT; i++){
         players[i].folded = false;

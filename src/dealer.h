@@ -12,10 +12,10 @@
 * \brief    Contains function-equivalents of what a real-life table dealer would do in a real poker game.
 */
 
-void distributeCards(struct PlayingCard[], struct Player[], struct PlayingCard*[]);
+void distributeCards(struct PlayingCard[], Player[], struct PlayingCard*[]);
 void buildDeck(struct PlayingCard[], bool);
-void scorePlayersHand(struct Player, struct PlayingCard*[], int);
-int decideWinners(struct Player[], int, int*);
-bool checkPlayerDecisionValidity(const struct Player*, const struct GameRuleSet*, int, unsigned int);
+void scorePlayersHand(Player, struct PlayingCard*[], int);
+int decideWinners(Player[], int, int*);
+bool checkPlayerDecisionValidity(const Player*, const struct GameRuleSet*, int, unsigned int);
 
 #endif // DEALER_H
