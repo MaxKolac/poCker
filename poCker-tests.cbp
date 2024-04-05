@@ -33,6 +33,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/gamerules.h" />
+		<Unit filename="src/gamestate.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/gamestate.h" />
 		<Unit filename="src/handranking.c">
 			<Option compilerVar="CC" />
 		</Unit>
