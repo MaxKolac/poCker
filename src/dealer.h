@@ -16,6 +16,6 @@ void distributeCards(PlayingCard[], Player[], PlayingCard*[]);
 void buildDeck(PlayingCard[], bool);
 void scorePlayersHand(Player, PlayingCard*[], int);
 int decideWinners(Player[], int, int*);
-bool checkPlayerDecisionValidity(const Player*, const struct GameRuleSet*, int, unsigned int);
+bool checkPlayerDecisionValidity(const Player*, const GameRuleSet*, int, unsigned int);
 
 #endif // DEALER_H

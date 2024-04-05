@@ -16,6 +16,7 @@ int main()
 {
     //  --  Settings    --
     struct GameRuleSet globalRules;
+    GameRuleSet globalRules;
     promptFundsPerPlayer(&globalRules);
     promptLimitFixed(&globalRules);
     promptBigBlind(&globalRules);

@@ -12,7 +12,7 @@ const int MAX_FUNDS_PER_PLAYER = 100000;
  *  \brief Prompts the user for the initial funds per player.
  *  \param grs The GameRuleSet struct to modify.
  */
-void promptFundsPerPlayer(struct GameRuleSet* grs){
+void promptFundsPerPlayer(GameRuleSet* grs){
     int ini_funds_per_player = -1;
     do {
         char msg[128];
@@ -32,7 +32,7 @@ void promptFundsPerPlayer(struct GameRuleSet* grs){
  *  \brief Prompts the user to make the game fixed-limit or no-limit.
  *  \param grs The GameRuleSet struct to modify.
  */
-void promptLimitFixed(struct GameRuleSet* grs){
+void promptLimitFixed(GameRuleSet* grs){
     //TODO: i'm unable to find a site which would finally explain the following:
     // - fixed limits means that players can only raise by high and small limits, or by any amount inbetween?
     bool limit_fixed = prompt_b("Should the betting limits be fixed?");
@@ -46,7 +46,7 @@ void promptLimitFixed(struct GameRuleSet* grs){
  *  \param grs The GameRuleSet struct to modify.
  *  \warning This needs to be called before setting the funds_per_player!
  */
-void promptBigBlind(struct GameRuleSet* grs){
+void promptBigBlind(GameRuleSet* grs){
     int big_blind = -1;
     do {
         big_blind = prompt_i(6, "Set the big blind amount. Minimum is 2, maximum is 10% of funds per player");

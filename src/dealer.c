@@ -209,7 +209,7 @@ int decideWinners(Player players[], int players_count, int *winners){
  *  - if the game has fixed limits, does Player's raise doesn't exceede the high limit
  */
 bool checkPlayerDecisionValidity(const Player* _player,
-                                 const struct GameRuleSet* rules,
+                                 const GameRuleSet* rules,
                                  int player_decision,
                                  unsigned int current_bet)
 {
