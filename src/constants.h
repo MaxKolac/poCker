@@ -8,8 +8,6 @@
 
 extern const int CARDS_PER_PLAYER;
 extern const int COMM_CARDS_COUNT;
-extern const int MIN_FUNDS_PER_PLAYER;
-extern const int MAX_FUNDS_PER_PLAYER;
 extern const int PLAYER_COUNT;
 
 #endif // CONSTANTS_H

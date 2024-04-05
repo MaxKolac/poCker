@@ -2,6 +2,7 @@
 #define DEALER_H
 
 #include <stdbool.h>
+#include "gamerules.h"
 #include "player.h"
 #include "playingcard_enums.h"
 #include "playingcard.h"
@@ -15,6 +16,6 @@ void distributeCards(struct PlayingCard[], struct Player[], struct PlayingCard*[
 void buildDeck(struct PlayingCard[], bool);
 void scorePlayersHand(struct Player, struct PlayingCard*[], int);
 int decideWinners(struct Player[], int, int*);
-bool checkPlayerDecisionValidity(struct Player, int, unsigned int, bool, int);
+bool checkPlayerDecisionValidity(const struct Player*, const struct GameRuleSet*, int, unsigned int);
 
 #endif // DEALER_H

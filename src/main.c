@@ -8,51 +8,17 @@
 #include "dealer.h"
 #include "player.h"
 #include "playingcard.h"
+#include "gamerules.h"
 #include "handranking.h"
 #include "utils.h"
 
 int main()
 {
     //  --  Settings    --
-    //Initial funds per player
-    //Amount of funds each player gets at the beginning of the game.
-    int ini_funds_per_player = -1;
-    do {
-        char msg[128];
-        snprintf(msg,
-                 sizeof(msg),
-                 "Set the initial amount of funds for each player. Min - %d, Max - %d",
-                 MIN_FUNDS_PER_PLAYER,
-                 MAX_FUNDS_PER_PLAYER);
-        ini_funds_per_player = prompt_i(6, msg);
-    } while (ini_funds_per_player < MIN_FUNDS_PER_PLAYER || MAX_FUNDS_PER_PLAYER < ini_funds_per_player);
-    //Debug
-    //printf("Initial funds per player: %d\n", ini_funds_per_player);
-
-    //Fixed-limit or no-limit
-    //No-limit game means that the maximum amount of the bet isn't set, meaning players can bet as much as all of their funds.
-    //There is only the minimum amount of bet, equaling the big blind amount.
-    //Fixed-limit game restricts players to two fixed bet amounts, small limit which equals the big blind, and high limit
-    //which equals two times the big blind.
-    //TODO: i'm unable to find a site which would finally explain the following:
-    // - fixed limits means that players can only raise by high and small limits, or by any amount inbetween?
-    //bool limit_fixed = prompt_b("Should the betting limits be fixed?");
-    bool limit_fixed = false;
-    //Debug
-    //printf("Limits are fixed: %s\n", limit_fixed ? "true" : "false");
-
-    //Big blind amount
-    //This amount will influence the minimum bet amount and the pot's initial amount.
-    //Small blind amount is automatically set to be half of it, rounded down.
-    //Player first to the left of the dealer has to pay the small blind, and the next of him has to pay the big blind.
-    //Action starts on the third player and (assuming no raises) ends on the big blind player.
-    int big_blind = -1;
-    do {
-        big_blind = prompt_i(6, "Set the big blind amount. Minimum is 2, maximum is 10% of funds per player");
-    } while (big_blind < 2 || floorf(ini_funds_per_player * 0.1) < big_blind);
-    int small_blind = floorf(big_blind / 2);
-    //Debug
-    //printf("Big blind: %d, Small blind: %d\n", big_blind, small_blind);
+    struct GameRuleSet globalRules;
+    promptFundsPerPlayer(&globalRules);
+    promptLimitFixed(&globalRules);
+    promptBigBlind(&globalRules);
 
     //  --  Game setup   --
     //Seeds the random number generator with current time since epoch.
@@ -64,7 +30,7 @@ int main()
     buildDeck(deck, false);
     for (int i = 0; i < PLAYER_COUNT; i++){
         players[i].folded = false;
-        players[i].funds = ini_funds_per_player;
+        players[i].funds = globalRules.funds_per_player;
         resetScores(&players[i]);
     }
 
@@ -90,11 +56,11 @@ int main()
 
             //If it's the pre-flop round, force blind players to bet in, without affecting the turns variable
             if (betting_round == 0){
-                players[s_blind_player].funds -= small_blind;
-                pot += small_blind;
-                players[b_blind_player].funds -= big_blind;
-                pot += big_blind;
-                bet = big_blind;
+                players[s_blind_player].funds -= globalRules.small_blind;
+                pot += globalRules.small_blind;
+                players[b_blind_player].funds -= globalRules.big_blind;
+                pot += globalRules.big_blind;
+                bet = globalRules.big_blind;
                 current_player = (b_blind_player + 1) % PLAYER_COUNT;
             }
 
@@ -113,11 +79,10 @@ int main()
                 do {
                     player_decision = takeAction(&players[current_player]);
                     player_decision = mathClamp(player_decision, -1, players[current_player].funds);
-                    decisionValid = checkPlayerDecisionValidity(players[current_player],
+                    decisionValid = checkPlayerDecisionValidity(&players[current_player],
+                                                                &globalRules,
                                                                 player_decision,
-                                                                bet,
-                                                                limit_fixed,
-                                                                big_blind);
+                                                                bet);
                 } while(!decisionValid);
 
                 //Consequence of player's actions

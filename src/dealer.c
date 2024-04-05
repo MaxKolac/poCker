@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "constants.h"
+#include "gamerules.h"
 #include "handranking.h"
 #include "player.h"
 #include "playingcard_enums.h"
@@ -205,17 +206,16 @@ int decideWinners(struct Player players[], int players_count, int *winners){
  *  - is Player trying to raise a bet to an amount smaller than the current bet
  *  - if the game has fixed limits, does Player's raise doesn't exceede the high limit
  */
-bool checkPlayerDecisionValidity(struct Player _player,
+bool checkPlayerDecisionValidity(const struct Player* _player,
+                                 const struct GameRuleSet* rules,
                                  int player_decision,
-                                 unsigned int current_bet,
-                                 bool limits_fixed,
-                                 int b_blind_amount)
+                                 unsigned int current_bet)
 {
     //TODO: VERIFY THIS AND ADD PROPER CHECKS FOR FIXED LIMIT TYPE GAME
     //For raises:
     if (player_decision > 0){
         //They can afford it
-        return _player.funds >= player_decision &&
+        return _player->funds >= player_decision &&
                //Player's raise actually raises the bet, and does not reduce or match it
                player_decision > current_bet; //&&
                //TODO: differing rules from different sources on what limit-fixed game is

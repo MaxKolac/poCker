@@ -42,6 +42,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/dealer.h" />
+		<Unit filename="src/gamerules.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/gamerules.h" />
 		<Unit filename="src/handranking.c">
 			<Option compilerVar="CC" />
 		</Unit>
