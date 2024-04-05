@@ -24,8 +24,8 @@ int main()
     //Seeds the random number generator with current time since epoch.
     //Should be called ONLY once.
     srand(time(NULL));
-    struct PlayingCard deck[DECK_LENGTH];
-    struct PlayingCard* comm_cards[COMM_CARDS_COUNT];
+    PlayingCard deck[DECK_LENGTH];
+    PlayingCard* comm_cards[COMM_CARDS_COUNT];
     Player players[PLAYER_COUNT];
     buildDeck(deck, false);
     for (int i = 0; i < PLAYER_COUNT; i++){

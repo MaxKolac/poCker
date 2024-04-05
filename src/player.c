@@ -1,5 +1,16 @@
 #include "player.h"
 
+#include <stdlib.h>
+
+Player* PlayerCreateNew(){
+    Player* self = ((Player*)malloc(sizeof(Player)));
+    self->funds = 0;
+    self->folded = false;
+    resetScores(self);
+    self->isHuman = false;
+    return self;
+}
+
 /**
  *  \brief TODO
  */

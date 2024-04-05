@@ -38,11 +38,11 @@ enum Pip {
 };
 
 /** \brief Represents a single playing card. */
-struct PlayingCard {
+typedef struct {
     /** \brief The card's symbol. */
     enum Suit suit;
     /** \brief The amount of symbols on a card. */
     enum Pip pips;
-};
+} PlayingCard;
 
 #endif // PLAYINGCARD_ENUMS_H

@@ -15,6 +15,6 @@ extern const int DECK_LENGTH;
 
 const char* getPipName(enum Pip);
 const char* getSuitName(enum Suit);
-void getCardName(struct PlayingCard*, char*, int);
+void getCardName(PlayingCard*, char*, int);
 
 #endif  //PLAYINGCARD_H

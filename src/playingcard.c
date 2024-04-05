@@ -54,6 +54,6 @@ const char* getSuitName(enum Suit _suits){
  *  \param buffer_size The length of the buffer array.
  *  The buffer will be filled with the card's name in a format of "Pips of Suit". For example "Ace of Spades".
  */
-void getCardName(struct PlayingCard* card, char* buffer, int buffer_size){
+void getCardName(PlayingCard* card, char* buffer, int buffer_size){
     snprintf(buffer, buffer_size, "%s of %s", getPipName(card->pips), getSuitName(card->suit));
 }

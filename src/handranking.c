@@ -21,7 +21,7 @@
  *  Since Royal Flush ties can't be broken, they don't have any scores calculated.
  *  The returned value is a simple integer behaving like a boolean indicating whether or not a Royal Flush was found.
  */
-int detectRoyalFlush(struct PlayingCard* cards[], int cards_count){
+int detectRoyalFlush(PlayingCard* cards[], int cards_count){
     //If program finds a card that could be a part of a Royal Flush, it remembers finding it in a 4 by 5 bool table.
     //Kinda like ticking off boxes on a bingo card, except the only way to get bingo is fill any suit's row.
     //If one suit column is filled with only trues, it means we have a Royal Flush.
@@ -84,13 +84,13 @@ int detectRoyalFlush(struct PlayingCard* cards[], int cards_count){
  *
  *  The score of a Straight Flush is equal to the highest card's value.
  */
-int detectStraightFlush(struct PlayingCard* cards[], int cards_count){
+int detectStraightFlush(PlayingCard* cards[], int cards_count){
     //Cards are sorted by suits, and then by their value.
     //Creating 4 lists of them, all in descending order.
     //Then, whichever list happens to have 5 or more cards
     //And they are all consecutive in relation to their neighboring cards
     //Result in a Straight Flush
-    struct PlayingCard* suit_arrays[SUITS_COUNT][cards_count];
+    PlayingCard* suit_arrays[SUITS_COUNT][cards_count];
     int suit_arrays_size[SUITS_COUNT];
     for (int i = 0; i < SUITS_COUNT; i++){
         suit_arrays_size[i] = 0;
@@ -180,7 +180,7 @@ int detectStraightFlush(struct PlayingCard* cards[], int cards_count){
  *  The score of a Four Of a Kind is calculated as follows:
  *  (value of card that makes the FOaK) * 100 + (value of 5th card)
  */
-int detectFOaK(struct PlayingCard* cards[], int cards_count){
+int detectFOaK(PlayingCard* cards[], int cards_count){
     //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
     enum Pip found_pips[cards_count];
     int found_pips_counts[cards_count];
@@ -224,7 +224,7 @@ int detectFOaK(struct PlayingCard* cards[], int cards_count){
  *  The score of a Full House is calculated as follows:
  *  ("trio" card value) * 100 + (pair card value)
  */
-int detectFullHouse(struct PlayingCard* cards[], int cards_count){
+int detectFullHouse(PlayingCard* cards[], int cards_count){
     //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
     enum Pip found_pips[cards_count];
     int found_pips_counts[cards_count];
@@ -269,8 +269,8 @@ int detectFullHouse(struct PlayingCard* cards[], int cards_count){
  *  The score of a Flush is calculated as follows:
  *  Sum of (cardValue * 20 ^ n) for cards in descending order, where n = 4 -> 0
  */
-int detectFlush(struct PlayingCard* cards[], int cards_count){
-    struct PlayingCard* suit_arrays[SUITS_COUNT][cards_count];
+int detectFlush(PlayingCard* cards[], int cards_count){
+    PlayingCard* suit_arrays[SUITS_COUNT][cards_count];
     int suit_arrays_size[SUITS_COUNT];
     for (int i = 0; i < SUITS_COUNT; i++){
         suit_arrays_size[i] = 0;
@@ -350,9 +350,9 @@ int detectFlush(struct PlayingCard* cards[], int cards_count){
  *
  *  The score of a Straight is simply the value of the highest card.
  */
-int detectStraight(struct PlayingCard* cards[], int cards_count){
+int detectStraight(PlayingCard* cards[], int cards_count){
     //To not meddle with the array passed as parameter, create a temporary copy
-    struct PlayingCard* sorted_cards[cards_count];
+    PlayingCard* sorted_cards[cards_count];
     for (int i = 0; i < cards_count; i++){
         sorted_cards[i] = cards[i];
     }
@@ -401,7 +401,7 @@ int detectStraight(struct PlayingCard* cards[], int cards_count){
  *
  *  The score of a Three Of a Kind is simply the value of the card the TOaK is made of.
  */
-int detectTOaK(struct PlayingCard* cards[], int cards_count){
+int detectTOaK(PlayingCard* cards[], int cards_count){
     //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
     enum Pip found_pips[cards_count];
     int found_pips_counts[cards_count];
@@ -435,7 +435,7 @@ int detectTOaK(struct PlayingCard* cards[], int cards_count){
  *  The score of a Two Pair is calculated as follows:
  *  (value of higher pair card * 20 ^ 2) + (value of lower pair card * 20) + (value of kicker card)
  */
-int detectTwoPair(struct PlayingCard* cards[], int cards_count){
+int detectTwoPair(PlayingCard* cards[], int cards_count){
     //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
     enum Pip found_pips[cards_count];
     int found_pips_counts[cards_count];
@@ -495,7 +495,7 @@ int detectTwoPair(struct PlayingCard* cards[], int cards_count){
  *  The score of a Pair is calculated as follows:
  *  (pair card value * 20 ^ 3) + (highest non-pair card * 20 ^ 2) + (2nd highest non-pair card * 20) + (3rd highest non-pair card)
  */
-int detectPair(struct PlayingCard* cards[], int cards_count){
+int detectPair(PlayingCard* cards[], int cards_count){
     //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
     enum Pip found_pips[cards_count];
     int found_pips_counts[cards_count];
@@ -555,8 +555,8 @@ int detectPair(struct PlayingCard* cards[], int cards_count){
  *  The score of a High Card is calculated as follows:
  *  Sum of (card value * 20 ^ n) for all 5 cards in descending order, where n = 4 -> 0
  */
-int detectHighCard(struct PlayingCard* cards[], int cards_count){
-    struct PlayingCard* sorted_cards[cards_count];
+int detectHighCard(PlayingCard* cards[], int cards_count){
+    PlayingCard* sorted_cards[cards_count];
     for (int i = 0; i < cards_count; i++){
         sorted_cards[i] = cards[i];
     }
@@ -575,7 +575,7 @@ int detectHighCard(struct PlayingCard* cards[], int cards_count){
  *  found_pips and found_pips_counts should be initialized with cards_count lengths before calling this function.
  *  To ensure that the function does not reach outside of those arrays, they should preferably be initialized with the length of cards_count.
  */
-int countPipsInCards(enum Pip found_pips[], int found_pips_counts[], struct PlayingCard* cards[], int cards_count){
+int countPipsInCards(enum Pip found_pips[], int found_pips_counts[], PlayingCard* cards[], int cards_count){
     //Treat those two arrays like dictionaries, where each unique pip is a key and their count is the value.
     //Initial setup
     int found_pips_size = 0;
@@ -610,7 +610,7 @@ int countPipsInCards(enum Pip found_pips[], int found_pips_counts[], struct Play
  *  \param sorted_cards The array to sort. Its elements will have their indexes modified.
  *  \param cards_count The length of the array.
  */
-void sortCardsInDescOrder(struct PlayingCard* sorted_cards[], int cards_count){
+void sortCardsInDescOrder(PlayingCard* sorted_cards[], int cards_count){
     for (int i = 1; i < cards_count; i++){
         if (sorted_cards[i - 1]->pips >= sorted_cards[i]->pips){
             continue;
@@ -624,7 +624,7 @@ void sortCardsInDescOrder(struct PlayingCard* sorted_cards[], int cards_count){
         //2. And put it in front it. This means pull out the I card,
         //  move everything between J and I by one index
         //  and put the I card in the J + 1 spot
-        struct PlayingCard* temp = sorted_cards[i];
+        PlayingCard* temp = sorted_cards[i];
         for (int k = i; k > j + 1; k--){
             sorted_cards[k] = sorted_cards[k - 1];
         }

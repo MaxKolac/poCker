@@ -4,9 +4,9 @@
 #include "../src/playingcard.h"
 
 void test_royalFlushPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
-    struct PlayingCard* cards[] = {
+    PlayingCard* cards[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + SEVEN - 1], //Seven of Diamonds
         &deck[PIPS_PER_SUIT * CLUBS + KING - 1], //King of Clubs
         &deck[PIPS_PER_SUIT * CLUBS + ACE - 1], //Ace of Clubs
@@ -20,9 +20,9 @@ void test_royalFlushPresent(CuTest* ct){
 }
 
 void test_royalFlushNotPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
-    struct PlayingCard* cards[] = {
+    PlayingCard* cards[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + SEVEN - 1], //Seven of Diamonds
         &deck[PIPS_PER_SUIT * CLUBS + KING - 1], //King of Clubs
         &deck[PIPS_PER_SUIT * CLUBS + ACE - 1], //Ace of Clubs
@@ -36,16 +36,16 @@ void test_royalFlushNotPresent(CuTest* ct){
 }
 
 void test_straightFlushPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + EIGHT - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + TEN - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + NINE - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + SIX - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + SEVEN - 1]
     };
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * SPADES + TWO - 1],
         &deck[PIPS_PER_SUIT * CLUBS + THREE - 1],
         &deck[PIPS_PER_SUIT * SPADES + THREE - 1],
@@ -53,7 +53,7 @@ void test_straightFlushPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * SPADES + SIX - 1],
         &deck[PIPS_PER_SUIT * SPADES + FIVE - 1]
     };
-    struct PlayingCard* cards3[] = {
+    PlayingCard* cards3[] = {
         &deck[PIPS_PER_SUIT * HEARTS + QUEEN - 1],
         &deck[PIPS_PER_SUIT * HEARTS + TEN - 1],
         &deck[PIPS_PER_SUIT * CLUBS + TEN - 1],
@@ -71,16 +71,16 @@ void test_straightFlushPresent(CuTest* ct){
 }
 
 void test_straightFlushNotPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + EIGHT - 1],
         &deck[PIPS_PER_SUIT * HEARTS + TEN - 1],
         &deck[PIPS_PER_SUIT * CLUBS + NINE - 1],
         &deck[PIPS_PER_SUIT * HEARTS + SEVEN - 1],
         &deck[PIPS_PER_SUIT * HEARTS + SIX - 1]
     };
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + FIVE - 1],
         &deck[PIPS_PER_SUIT * CLUBS + EIGHT - 1],
         &deck[PIPS_PER_SUIT * CLUBS + NINE - 1],
@@ -88,7 +88,7 @@ void test_straightFlushNotPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * DIAMONDS + SIX - 1],
         &deck[PIPS_PER_SUIT * CLUBS + TEN - 1]
     };
-    struct PlayingCard* cards3[] = {
+    PlayingCard* cards3[] = {
         &deck[PIPS_PER_SUIT * SPADES + EIGHT - 1],
         &deck[PIPS_PER_SUIT * SPADES + TEN - 1],
         &deck[PIPS_PER_SUIT * SPADES + NINE - 1],
@@ -106,16 +106,16 @@ void test_straightFlushNotPresent(CuTest* ct){
 }
 
 void test_FOaKPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1],
         &deck[PIPS_PER_SUIT * CLUBS + TEN - 1],
         &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
         &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1]
     };
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1],
         &deck[PIPS_PER_SUIT * CLUBS + EIGHT - 1],
         &deck[PIPS_PER_SUIT * CLUBS + NINE - 1],
@@ -127,7 +127,7 @@ void test_FOaKPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * CLUBS + EIGHT - 1],
         &deck[PIPS_PER_SUIT * CLUBS + EIGHT - 1]
     };
-    struct PlayingCard* cards3[] = {
+    PlayingCard* cards3[] = {
         &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
         &deck[PIPS_PER_SUIT * SPADES + ACE - 1],
         &deck[PIPS_PER_SUIT * SPADES + TWO - 1],
@@ -148,16 +148,16 @@ void test_FOaKPresent(CuTest* ct){
 }
 
 void test_FOaKNotPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1],
         &deck[PIPS_PER_SUIT * CLUBS + TEN - 1],
         &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
         &deck[PIPS_PER_SUIT * SPADES + FIVE - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1]
     };
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1],
         &deck[PIPS_PER_SUIT * CLUBS + EIGHT - 1],
         &deck[PIPS_PER_SUIT * CLUBS + NINE - 1],
@@ -169,7 +169,7 @@ void test_FOaKNotPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * CLUBS + EIGHT - 1],
         &deck[PIPS_PER_SUIT * CLUBS + FIVE - 1]
     };
-    struct PlayingCard* cards3[] = {
+    PlayingCard* cards3[] = {
         &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
         &deck[PIPS_PER_SUIT * SPADES + ACE - 1],
         &deck[PIPS_PER_SUIT * SPADES + THREE - 1],
@@ -190,16 +190,16 @@ void test_FOaKNotPresent(CuTest* ct){
 }
 
 void test_fullHousePresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1],
         &deck[PIPS_PER_SUIT * CLUBS + ACE - 1],
         &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
         &deck[PIPS_PER_SUIT * SPADES + ACE - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1]
     };
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + FIVE - 1],
         &deck[PIPS_PER_SUIT * HEARTS + EIGHT - 1],
@@ -210,7 +210,7 @@ void test_fullHousePresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * DIAMONDS + TEN - 1]
     };
     //Check it properly detects the highest possible Full House
-    struct PlayingCard* cards3[] = {
+    PlayingCard* cards3[] = {
         &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + KING - 1],
         &deck[PIPS_PER_SUIT * SPADES + KING - 1],
@@ -231,10 +231,10 @@ void test_fullHousePresent(CuTest* ct){
 }
 
 void test_fullHouseNotPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Check that a simple TOaK is not treated as Full House
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + KING - 1],
         &deck[PIPS_PER_SUIT * SPADES + KING - 1]
@@ -244,10 +244,10 @@ void test_fullHouseNotPresent(CuTest* ct){
 }
 
 void test_flushPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Check for a simple Flush
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + KING - 1],
         &deck[PIPS_PER_SUIT * HEARTS + SEVEN - 1],
@@ -262,7 +262,7 @@ void test_flushPresent(CuTest* ct){
         //Score = 2 003 323
     };
     //Check that the better Flush has higher priority when both Flushes share the same suit
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * CLUBS + ACE - 1],
         &deck[PIPS_PER_SUIT * CLUBS + KING - 1],
         &deck[PIPS_PER_SUIT * CLUBS + QUEEN - 1],
@@ -275,7 +275,7 @@ void test_flushPresent(CuTest* ct){
         //Score = 2 180 609
     };
     //Check that the better Flush has higher priority when both Flushes have different suits
-    struct PlayingCard* cards3[] = {
+    PlayingCard* cards3[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + NINE - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + EIGHT - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + SIX - 1],
@@ -299,10 +299,10 @@ void test_flushPresent(CuTest* ct){
 }
 
 void test_flushNotPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Duplicate cards do not count towards a Flush
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
         &deck[PIPS_PER_SUIT * HEARTS + JACK - 1],
         &deck[PIPS_PER_SUIT * HEARTS + NINE - 1],
@@ -311,7 +311,7 @@ void test_flushNotPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1]
     };
     //No Flush present returns a zero
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
         &deck[PIPS_PER_SUIT * HEARTS + JACK - 1],
         &deck[PIPS_PER_SUIT * HEARTS + TEN - 1],
@@ -328,10 +328,10 @@ void test_flushNotPresent(CuTest* ct){
 }
 
 void test_straightPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Detect a simple Straight from among a mixed hand of cards
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * SPADES + SEVEN - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + SIX - 1],
         &deck[PIPS_PER_SUIT * HEARTS + ACE - 1],
@@ -340,7 +340,7 @@ void test_straightPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * DIAMONDS + FIVE - 1]
     };
     //Make sure that multiple cards of the same value don't break the consecutivity
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * HEARTS + KING - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + QUEEN - 1],
         &deck[PIPS_PER_SUIT * SPADES + QUEEN - 1],
@@ -350,7 +350,7 @@ void test_straightPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * SPADES + NINE - 1]
     };
     //Make sure that multiple duplicates don't cause the incorrect card being returned
-    struct PlayingCard* cards3[] = {
+    PlayingCard* cards3[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + KING - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + QUEEN - 1],
         &deck[PIPS_PER_SUIT * SPADES + QUEEN - 1],
@@ -362,7 +362,7 @@ void test_straightPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * SPADES + NINE - 1]
     };
     //Detect the highest card of a Straight
-    struct PlayingCard* cards4[] = {
+    PlayingCard* cards4[] = {
         &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
         &deck[PIPS_PER_SUIT * SPADES + TWO - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + SIX - 1],
@@ -383,10 +383,10 @@ void test_straightPresent(CuTest* ct){
 }
 
 void test_straightNotPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //5 cards of the same value does not constitute a Straight
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1],
         &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
         &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1],
@@ -398,16 +398,16 @@ void test_straightNotPresent(CuTest* ct){
 }
 
 void test_TOaKPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Detect a simple TOaK
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
         &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1],
         &deck[PIPS_PER_SUIT * SPADES + FOUR - 1]
     };
     //Detect the highest TOaK
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1],
         &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
         &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1],
@@ -422,10 +422,10 @@ void test_TOaKPresent(CuTest* ct){
 }
 
 void test_TOaKNotPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //For now, just make sure the PC does not explode
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1],
         &deck[PIPS_PER_SUIT * CLUBS + THREE - 1],
         &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1],
@@ -438,10 +438,10 @@ void test_TOaKNotPresent(CuTest* ct){
 }
 
 void test_twoPairPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Detect a simple two pair
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * CLUBS + THREE - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + THREE - 1],
         &deck[PIPS_PER_SUIT * SPADES + QUEEN - 1],
@@ -451,7 +451,7 @@ void test_twoPairPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * HEARTS + SIX - 1]
     };
     //Another one for good measure
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * SPADES + FIVE - 1],
         &deck[PIPS_PER_SUIT * HEARTS + QUEEN - 1],
         &deck[PIPS_PER_SUIT * CLUBS + ACE - 1],
@@ -467,10 +467,10 @@ void test_twoPairPresent(CuTest* ct){
 }
 
 void test_twoPairNotPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Make sure that one pair doesnt count as two pairs
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * CLUBS + THREE - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + THREE - 1],
         &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
@@ -478,7 +478,7 @@ void test_twoPairNotPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * HEARTS + SIX - 1]
     };
     //FOaK shouldn't be counter as a two pair (??)
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * CLUBS + THREE - 1],
         &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
         &deck[PIPS_PER_SUIT * CLUBS + NINE - 1],
@@ -494,10 +494,10 @@ void test_twoPairNotPresent(CuTest* ct){
 }
 
 void test_pairPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Simple detection #1
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * CLUBS + THREE - 1],
         &deck[PIPS_PER_SUIT * SPADES + FOUR - 1],
         &deck[PIPS_PER_SUIT * CLUBS + NINE - 1],
@@ -507,7 +507,7 @@ void test_pairPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * HEARTS + SIX - 1]
     };
     //Simple detection #2
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + KING - 1],
         &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
         &deck[PIPS_PER_SUIT * SPADES + SIX - 1],
@@ -517,7 +517,7 @@ void test_pairPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * DIAMONDS + SIX - 1]
     };
     //Detect higher pair among 2
-    struct PlayingCard* cards3[] = {
+    PlayingCard* cards3[] = {
         &deck[PIPS_PER_SUIT * CLUBS + FIVE - 1],
         &deck[PIPS_PER_SUIT * SPADES + SIX - 1],
         &deck[PIPS_PER_SUIT * HEARTS + SIX - 1],
@@ -527,7 +527,7 @@ void test_pairPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * HEARTS + TWO - 1]
     };
     //Detect higher pair among 3
-    struct PlayingCard* cards4[] = {
+    PlayingCard* cards4[] = {
         &deck[PIPS_PER_SUIT * SPADES + SEVEN - 1],
         &deck[PIPS_PER_SUIT * HEARTS + TWO - 1],
         &deck[PIPS_PER_SUIT * CLUBS + FIVE - 1],
@@ -537,7 +537,7 @@ void test_pairPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * HEARTS + SEVEN - 1]
     };
     //Not enough kicker cards still gives a score
-    struct PlayingCard* cards5[] = {
+    PlayingCard* cards5[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + THREE - 1],
         &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + FOUR - 1]
@@ -555,10 +555,10 @@ void test_pairPresent(CuTest* ct){
 }
 
 void test_pairNotPresent(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //No pair #1
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * SPADES + JACK - 1],
         &deck[PIPS_PER_SUIT * HEARTS + NINE - 1],
         &deck[PIPS_PER_SUIT * CLUBS + FIVE - 1],
@@ -566,7 +566,7 @@ void test_pairNotPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1]
     };
     //No pair #2
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + ACE - 1],
         &deck[PIPS_PER_SUIT * CLUBS + EIGHT - 1],
         &deck[PIPS_PER_SUIT * HEARTS + SEVEN - 1],
@@ -580,10 +580,10 @@ void test_pairNotPresent(CuTest* ct){
 }
 
 void test_highCardCalculations(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Simple test
-    struct PlayingCard* cards1[] = {
+    PlayingCard* cards1[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + KING - 1], //12 * 20 ^ 4 = 1 920 000
         &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1],   //4 * 20 ^ 1 = 80
         &deck[PIPS_PER_SUIT * CLUBS + TEN - 1],     //9 * 20 ^ 2 = 3 600
@@ -591,13 +591,13 @@ void test_highCardCalculations(CuTest* ct){
         &deck[PIPS_PER_SUIT * HEARTS + TWO - 1]     //1 * 20 ^ 0 = 1
     };  //sum = 2 003 681
     //Less than 5 cards is still calculated correctly
-    struct PlayingCard* cards2[] = {
+    PlayingCard* cards2[] = {
         &deck[PIPS_PER_SUIT * CLUBS + JACK - 1],    //10 * 20 ^ 2   = 4000
         &deck[PIPS_PER_SUIT * DIAMONDS + NINE - 1], //8 * 20 ^ 1    = 160
         &deck[PIPS_PER_SUIT * SPADES + FIVE - 1]    //4 * 20 ^ 0    = 4
     };
     //More than 5 cards correctly considers only 5 greatest cards
-    struct PlayingCard* cards3[] = {
+    PlayingCard* cards3[] = {
         &deck[PIPS_PER_SUIT * SPADES + JACK - 1],   //10 * 20 ^ 3  = 80 000
         &deck[PIPS_PER_SUIT * HEARTS + NINE - 1],   //8 * 20 ^ 2   = 3 200
         &deck[PIPS_PER_SUIT * CLUBS + FIVE - 1],
@@ -607,7 +607,7 @@ void test_highCardCalculations(CuTest* ct){
         &deck[PIPS_PER_SUIT * CLUBS + FOUR - 1]
     };//sum = 1 843 346
     //Cards with same value are not abandoned during calculation
-    struct PlayingCard* cards4[] = {
+    PlayingCard* cards4[] = {
         &deck[PIPS_PER_SUIT * SPADES + JACK - 1],   //10 * 20 ^ 3   = 80 000
         &deck[PIPS_PER_SUIT * HEARTS + ACE - 1],    //13 * 20 ^ 4   = 2 080 000
         &deck[PIPS_PER_SUIT * DIAMONDS + JACK - 1], //10 * 20 ^ 2   = 4000
@@ -625,10 +625,10 @@ void test_highCardCalculations(CuTest* ct){
 }
 
 void test_cardSortingInDescendingOrder(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
 
-    struct PlayingCard* cards[] = {
+    PlayingCard* cards[] = {
         &deck[PIPS_PER_SUIT * SPADES + KING - 1],
         &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1],
         &deck[PIPS_PER_SUIT * CLUBS + JACK - 1],
@@ -652,10 +652,10 @@ void test_cardSortingInDescendingOrder(CuTest* ct){
 }
 
 void test_pipCounting(CuTest* ct){
-    struct PlayingCard deck[DECK_LENGTH];
+    PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
 
-    struct PlayingCard* cards[] = {
+    PlayingCard* cards[] = {
         &deck[PIPS_PER_SUIT * SPADES + KING - 1],
         &deck[PIPS_PER_SUIT * HEARTS + JACK - 1],
         &deck[PIPS_PER_SUIT * CLUBS + JACK - 1],

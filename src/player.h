@@ -18,12 +18,12 @@ typedef struct {
     /** \brief A score table for individual hand ranks to help break up ties. See handranking.c for more info. */
     int scores[10];
     /** \brief Pointers to player's playing cards in his hand. */
-    struct PlayingCard* current_hand[2];
+    PlayingCard* current_hand[2];
     /** \brief Whether or not this player is controlled through AI or by human. */
     bool isHuman;
 } Player;
 
-
+Player* PlayerCreateNew();
 int takeAction(Player*);
 void resetScores(Player*);
 
