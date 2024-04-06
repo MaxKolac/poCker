@@ -26,21 +26,26 @@ GameState* gsCreateNew(const GameRuleSet* rules){
 /**
  *  \param player_dec_override Meant for unit-testing. A non-null value will override whatever the player's decision was. Keep in mind this value won't be validated!
  */
-void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet* ruleSet, int player_dec_override){
+void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet* ruleSet, const int* player_dec_override){
     //This player has folded, skip his turn
     if (!(players[state->current_player]->folded)){
         //Player chooses an action and check if they even can do that
         //Validity checks should not be done by players themselves (they might cheat lol)
         int player_decision;
-        bool decisionValid = false;
-        do {
-            player_decision = takeAction(players[state->current_player]);
-            player_decision = mathClamp(player_decision, -1, players[state->current_player]->funds);
-            decisionValid = checkPlayerDecisionValidity(players[state->current_player],
-                                                        ruleSet,
-                                                        player_decision,
-                                                        state->bet);
-        } while(!decisionValid);
+        if (player_dec_override == NULL){
+            bool decisionValid = false;
+            do {
+                player_decision = takeAction(players[state->current_player]);
+                player_decision = mathClamp(player_decision, -2, players[state->current_player]->funds);
+                decisionValid = checkPlayerDecisionValidity(players[state->current_player],
+                                                            ruleSet,
+                                                            player_decision,
+                                                            state->bet);
+            } while(!decisionValid);
+        }
+        else{
+            player_decision = *player_dec_override;
+        }
 
         //Consequence of player's actions
         // 0 < player_decision signifies a RAISE by player_decision amount
@@ -125,8 +130,8 @@ void gsPerformShowdown(GameState* state, Player* players[], const GameRuleSet* r
     //If the win occurred through everyone but one player folding:
     if (state->all_but_one_folded){
         //Find the player who did not fold, give them the whole pot
-            if (!players[i]->folded){
         for (int i = 0; i < rules->player_count; i++){
+            if (!players[i]->folded){
                 winners[0] = i;
                 winners_count = 1;
                 break;
@@ -138,7 +143,7 @@ void gsPerformShowdown(GameState* state, Player* players[], const GameRuleSet* r
         for (int i = 0; i < rules->player_count; i++){
             scorePlayersHand(players[i], comm_cards, state->revealed_comm_cards);
         }
-        winners_count = decideWinners(players, rules->player_count, winners);
+        winners_count = decideWinners(*players, rules->player_count, winners);
     }
 
     //If we have a single winner, they take the whole pot;

@@ -21,7 +21,7 @@ typedef struct {
 } GameState;
 
 GameState* gsCreateNew();
-void gsAdvancePlayerTurn(GameState*, Player*[], const GameRuleSet*, int);
+void gsAdvancePlayerTurn(GameState*, Player*[], const GameRuleSet*, const int*);
 void gsSetUpBettingRound(GameState*, Player*[], const GameRuleSet*);
 void gsConcludeBettingRound(GameState*);
 void gsPerformShowdown(GameState*, Player*[], const GameRuleSet*, const PlayingCard*[]);
