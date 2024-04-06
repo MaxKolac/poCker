@@ -9,9 +9,13 @@
 * \brief    Contains functions, constants and structs related to playing cards.
 */
 
-extern const int PIPS_PER_SUIT;
-extern const int SUITS_COUNT;
-extern const int DECK_LENGTH;
+#define PIPS_PER_SUIT 13
+#define SUITS_COUNT 4
+#define DECK_LENGTH (4 * 13)
+
+extern const int PIPS_PER_SUIT_OBJ;
+extern const int SUITS_COUNT_OBJ;
+extern const int DECK_LENGTH_OBJ;
 
 const char* getPipName(enum Pip);
 const char* getSuitName(enum Suit);
