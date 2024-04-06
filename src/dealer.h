@@ -14,7 +14,7 @@
 
 void distributeCards(PlayingCard[], Player[], PlayingCard*[], const GameRuleSet*);
 void buildDeck(PlayingCard[], bool);
-void scorePlayersHand(Player*, PlayingCard*[], int);
+void scorePlayersHand(Player*, const PlayingCard*[], int);
 int decideWinners(Player[], int, int*);
 bool checkPlayerDecisionValidity(const Player*, const GameRuleSet*, int, unsigned int);
 

@@ -118,7 +118,7 @@ void buildDeck(PlayingCard targetArray[], bool print_addrs){
  *  \param rev_cards_count How many community cards have been revealed by dealer.
  *  For more info on how scores work, refer to handranking.h documentation.
  */
-void scorePlayersHand(Player* _player, PlayingCard* comm_cards[], int rev_cards_count){
+void scorePlayersHand(Player* _player, const PlayingCard* comm_cards[], int rev_cards_count){
     //Build an array containing all cards to analyze
     PlayingCard* all_cards[CARDS_PER_PLAYER + rev_cards_count];
     for (int i = 0; i < CARDS_PER_PLAYER; i++){
