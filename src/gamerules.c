@@ -5,8 +5,30 @@
 #include "constants.h"
 #include "utils.h"
 
+const int MIN_PLAYER_COUNT = 3;
+const int MAX_PLAYER_COUNT = 12;
 const int MIN_FUNDS_PER_PLAYER = 100;
 const int MAX_FUNDS_PER_PLAYER = 100000;
+
+/**
+ *  \brief Prompts the user for the total amount of all players.
+ *  \param grs The GameRuleSet struct to modify.
+ */
+void promptPlayerCount(GameRuleSet* grs){
+    int player_count = -1;
+    do {
+        char msg[128];
+        snprintf(msg,
+                 sizeof(msg),
+                 "Enter the amount of players. Min - %d, Max - %d",
+                 MIN_PLAYER_COUNT,
+                 MAX_PLAYER_COUNT);
+        player_count = prompt_i(3, msg);
+    } while (player_count < MIN_PLAYER_COUNT || MAX_PLAYER_COUNT < player_count);
+    //Debug
+    //printf("Player count: %d\n", player_count);
+    grs->player_count = player_count;
+}
 
 /**
  *  \brief Prompts the user for the initial funds per player.

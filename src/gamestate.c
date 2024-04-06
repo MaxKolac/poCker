@@ -8,7 +8,7 @@
 #include "player.h"
 #include "utils.h"
 
-GameState* gsCreateNew(){
+GameState* gsCreateNew(const GameRuleSet* rules){
     GameState* state = ((GameState*)malloc(sizeof(GameState)));
     state->revealed_comm_cards = 0;
     state->dealer_player = 0;
@@ -16,14 +16,17 @@ GameState* gsCreateNew(){
     state->b_blind_player = 2;
     state->current_player = 0;
     state->betting_round = 0;
-    state->turns_left = PLAYER_COUNT - 1;
+    state->turns_left = rules->player_count - 1;
     state->pot = 0;
     state->bet = 0;
     state->all_but_one_folded = false;
     return state;
 }
 
-void gsAdvancePlayerTurn(GameState* state, Player* players[], GameRuleSet* ruleSet){
+/**
+ *  \param player_dec_override Meant for unit-testing. A non-null value will override whatever the player's decision was. Keep in mind this value won't be validated!
+ */
+void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet* ruleSet, int player_dec_override){
     //This player has folded, skip his turn
     if (!(players[state->current_player]->folded)){
         //Player chooses an action and check if they even can do that
@@ -50,7 +53,7 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], GameRuleSet* ruleS
 
             if (0 < player_decision){
                 state->bet = player_decision;
-                state->turns_left = PLAYER_COUNT - 1;
+                state->turns_left = ruleSet->player_count - 1;
             }
         }
         else if (-1 == player_decision){
@@ -58,12 +61,12 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], GameRuleSet* ruleS
             //Have everyone but one person folded?
             //This would indicate an auto-win of current pot for last unfolded player
             int folded_players = 0;
-            for (int i = 0; i < PLAYER_COUNT; i++){
+            for (int i = 0; i < ruleSet->player_count; i++){
                 if (players[i]->folded){
                     folded_players++;
                 }
             }
-            state->all_but_one_folded = folded_players == PLAYER_COUNT - 1;
+            state->all_but_one_folded = folded_players == ruleSet->player_count - 1;
         }
         else if (-2 == player_decision){
             //TODO: tapouts
@@ -74,7 +77,7 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], GameRuleSet* ruleS
             return;
         }
     }
-    state->current_player = (state->current_player + 1) % PLAYER_COUNT;
+    state->current_player = (state->current_player + 1) % ruleSet->player_count;
     state->turns_left--;
 }
 
@@ -91,7 +94,7 @@ void gsSetUpBettingRound(GameState* state, Player* players[], const GameRuleSet*
         players[state->b_blind_player]->funds -= ruleSet->big_blind;
         state->pot += ruleSet->big_blind;
         state->bet = ruleSet->big_blind;
-        state->current_player = (state->b_blind_player + 1) % PLAYER_COUNT;
+        state->current_player = (state->b_blind_player + 1) % ruleSet->player_count;
     }
 }
 
@@ -116,14 +119,14 @@ void gsConcludeBettingRound(GameState* state){
  *  If the win happened because of everyone else folding, only one player who did not fold is awarded the whole pot.
  *  Otherwise, everyone's hands are compared, winners are pulled and awarded their fair share.
  */
-void gsPerformShowdown(GameState* state, Player* players[], const PlayingCard* comm_cards[]){
-    int winners[PLAYER_COUNT];
+void gsPerformShowdown(GameState* state, Player* players[], const GameRuleSet* rules, const PlayingCard* comm_cards[]){
+    int winners[rules->player_count];
     int winners_count = 0;
     //If the win occurred through everyone but one player folding:
     if (state->all_but_one_folded){
         //Find the player who did not fold, give them the whole pot
-        for (int i = 0; i < PLAYER_COUNT; i++){
             if (!players[i]->folded){
+        for (int i = 0; i < rules->player_count; i++){
                 winners[0] = i;
                 winners_count = 1;
                 break;
@@ -132,10 +135,10 @@ void gsPerformShowdown(GameState* state, Player* players[], const PlayingCard* c
     }
     else {
         //Else, compare cards and decide the winner(s)
-        for (int i = 0; i < PLAYER_COUNT; i++){
+        for (int i = 0; i < rules->player_count; i++){
             scorePlayersHand(players[i], comm_cards, state->revealed_comm_cards);
         }
-        winners_count = decideWinners(players, PLAYER_COUNT, winners);
+        winners_count = decideWinners(players, rules->player_count, winners);
     }
 
     //If we have a single winner, they take the whole pot;
@@ -161,9 +164,9 @@ void gsPerformShowdown(GameState* state, Player* players[], const PlayingCard* c
  *  If the condition is true, this would indicate end of the game.
  *  This function also unmarks all Players with funds left. Broke players are marked as folded right away.
  */
-bool gsCheckGameOverCondition(GameState* state, Player* players[]){
+bool gsCheckGameOverCondition(GameState* state, Player* players[], const GameRuleSet* rules){
     int broke_players = 0;
-    for (int i = 0; i < PLAYER_COUNT; i++){
+    for (int i = 0; i < rules->player_count; i++){
         if (players[i]->funds > 0){
             players[i]->folded = false;
         }
@@ -172,15 +175,15 @@ bool gsCheckGameOverCondition(GameState* state, Player* players[]){
             broke_players++;
         }
     }
-    return broke_players == PLAYER_COUNT - 1;
+    return broke_players == rules->player_count - 1;
 }
 
 /**
  *  \brief Pass the dealer button to the next player. Done once after each full round.
  *  This also causes the blind player status to move.
  */
-void gsPassDealerButton(GameState* state){
-    state->dealer_player = (state->dealer_player + 1) % PLAYER_COUNT;
-    state->s_blind_player = (state->s_blind_player + 1) % PLAYER_COUNT;
-    state->b_blind_player = (state->b_blind_player + 1) % PLAYER_COUNT;
+void gsPassDealerButton(GameState* state, const GameRuleSet* rules){
+    state->dealer_player = (state->dealer_player + 1) % rules->player_count;
+    state->s_blind_player = (state->s_blind_player + 1) % rules->player_count;
+    state->b_blind_player = (state->b_blind_player + 1) % rules->player_count;
 }

@@ -21,9 +21,9 @@
  *  Lastly, players' hands and community card arrays are populated with addresses to cards with randomly selected indexes.
  *  Each used index is replaced with -1 to ensure no player and community card were given the same card.
  */
-void distributeCards(PlayingCard deck[], Player players[], PlayingCard* comm_cards[]){
+void distributeCards(PlayingCard deck[], Player players[], PlayingCard* comm_cards[], const GameRuleSet* rules){
     //Generate an array of random numbers in range of deck's array length.
-    int indexes_count = PLAYER_COUNT * CARDS_PER_PLAYER + COMM_CARDS_COUNT;
+    int indexes_count = rules->player_count * CARDS_PER_PLAYER + COMM_CARDS_COUNT;
     int indexes[indexes_count];
     for (int i = 0; i < indexes_count; i++){
         indexes[i] = randRange(0, DECK_LENGTH - 1);
@@ -62,7 +62,7 @@ void distributeCards(PlayingCard deck[], Player players[], PlayingCard* comm_car
     //Now assign addresses of playing cards under those indexes.
     //Indexes are chosen randomly too. Once an index is used, its value is set to -1.
     //If the chosen index is -1, keep searching for the first non-negative element and use that instead.
-    for (int i = 0; i < PLAYER_COUNT; i++){
+    for (int i = 0; i < rules->player_count; i++){
         for (int j = 0; j < CARDS_PER_PLAYER; j++){
             int selectedIndex = randRange(0, indexes_count - 1);
             while (indexes[selectedIndex] == -1){

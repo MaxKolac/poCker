@@ -8,6 +8,10 @@ extern const int MAX_FUNDS_PER_PLAYER;
 
 typedef struct {
     /**
+     *  Amount of all players, AI and humans included.
+     */
+    int player_count;
+    /**
      *  The amount of funds each Player will start out with.
      */
     int funds_per_player;
@@ -30,6 +34,7 @@ typedef struct {
     int small_blind;
 } GameRuleSet;
 
+void promptPlayerCount(GameRuleSet*);
 void promptFundsPerPlayer(GameRuleSet*);
 void promptLimitFixed(GameRuleSet*);
 void promptBigBlind(GameRuleSet*);

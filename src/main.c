@@ -17,6 +17,7 @@ int main()
 {
     //  --  Settings    --
     GameRuleSet globalRules;
+    promptPlayerCount(&globalRules);
     promptFundsPerPlayer(&globalRules);
     promptLimitFixed(&globalRules);
     promptBigBlind(&globalRules);
@@ -28,14 +29,13 @@ int main()
     PlayingCard deck[DECK_LENGTH];
     buildDeck(deck, false);
     PlayingCard* comm_cards[COMM_CARDS_COUNT];
-    Player* players[PLAYER_COUNT];
-    for (int i = 0; i < PLAYER_COUNT; i++){
+    Player* players[globalRules->player_count];
+    for (int i = 0; i < globalRules->player_count; i++){
         players[i] = playerCreateNew();
     }
 
     //  --  Game loop   --
     GameState* globalState;
-    assert(PLAYER_COUNT >= 3);
     bool gameOver = false;
     do {
         globalState = gsCreateNew();

@@ -12,7 +12,7 @@
 * \brief    Contains function-equivalents of what a real-life table dealer would do in a real poker game.
 */
 
-void distributeCards(PlayingCard[], Player[], PlayingCard*[]);
+void distributeCards(PlayingCard[], Player[], PlayingCard*[], const GameRuleSet*);
 void buildDeck(PlayingCard[], bool);
 void scorePlayersHand(Player*, PlayingCard*[], int);
 int decideWinners(Player[], int, int*);
