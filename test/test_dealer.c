@@ -3,10 +3,6 @@
 #include "../src/dealer.h"
 #include "../src/player.h"
 
-void test_scorePlayerHands(CuTest* ct){
-    //CuAssert(ct, "", false);
-}
-
 void test_decideWinners_obviousWinner(CuTest* ct){
     Player players[5];
     for (int i = 0; i < 5; i++){
@@ -110,13 +106,12 @@ void test_decideWinners_miscTest1(CuTest* ct){
 }
 
 void test_checkPlayerDecisionValidity(CuTest* ct){
-    //CuAssert(ct, "", false);
+    CuAssert(ct, "", false);
 }
 
 CuSuite* DealerGetSuite(){
     CuSuite* suite = CuSuiteNew();
-    //SUITE_ADD_TEST(suite, test_scorePlayerHands);
-    //SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity);
     SUITE_ADD_TEST(suite, test_decideWinners_obviousWinner);
     SUITE_ADD_TEST(suite, test_decideWinners_onePlayerHasGreaterScoreButInLowerTier);
     SUITE_ADD_TEST(suite, test_decideWinners_multiplePlayerSameScore);
