@@ -13,6 +13,12 @@ Player* playerCreateNew(){
     return self;
 }
 
+Player* playerCreateNew(int initial_funds){
+    Player* self = playerCreateNew();
+    self->funds = initial_funds;
+    return self;
+}
+
 /**
  *  \brief TODO
  */

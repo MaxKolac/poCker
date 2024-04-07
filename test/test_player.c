@@ -14,6 +14,20 @@ void test_player_checkConstructor(CuTest* ct){
     }
 }
 
+void test_player_checkConstructorWithParameters(CuTest* ct){
+    const int funds = 1000;
+    Player* player = playerCreateNew(funds);
+    CuAssert(ct, "Player starts with folded status", !player->folded);
+    CuAssert(ct, "Player starts with wrong funds", player->funds == funds);
+    CuAssert(ct, "Player starts marked as human", !player->isHuman);
+    for (int i = 0; i < SCORE_TABLE_SIZE; ++i){
+        CuAssert(ct, "", player->scores[i] == 0);
+    }
+    for (int i = 0; i < CARDS_PER_PLAYER; ++i){
+        CuAssert(ct, "", player->current_hand[i] == NULL);
+    }
+}
+
 void test_player_checkResettingScoresWorks(CuTest* ct){
     Player* player = playerCreateNew();
     player->scores[0] = 1;
@@ -34,6 +48,7 @@ void test_player_checkResettingScoresWorks(CuTest* ct){
 CuSuite* PlayerGetSuite(CuTest* ct){
     CuSuite* suite = CuSuiteNew();
     SUITE_ADD_TEST(suite, test_player_checkConstructor);
+    SUITE_ADD_TEST(suite, test_player_checkConstructorWithParameters);
     SUITE_ADD_TEST(suite, test_player_checkResettingScoresWorks);
     return suite;
 }
