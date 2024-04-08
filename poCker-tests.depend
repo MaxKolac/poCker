@@ -12,7 +12,7 @@
 	<setjmp.h>
 	<stdarg.h>
 
-1712330767 source:c:\users\ja\documents\github\pocker\test\alltests.c
+1712500480 source:c:\users\ja\documents\github\pocker\test\alltests.c
 	<stdio.h>
 	"CuTest.h"
 
@@ -72,7 +72,7 @@
 1712316537 c:\users\ja\documents\github\pocker\src\handranking.h
 	"player.h"
 
-1712317968 c:\users\ja\documents\github\pocker\src\player.h
+1712499281 c:\users\ja\documents\github\pocker\src\player.h
 	<stdbool.h>
 	"constants.h"
 	"playingcard.h"
@@ -88,7 +88,7 @@
 1712404787 source:c:\users\ja\documents\github\pocker\src\constants.c
 	"constants.h"
 
-1712316937 source:c:\users\ja\documents\github\pocker\src\player.c
+1712499275 source:c:\users\ja\documents\github\pocker\src\player.c
 	"player.h"
 	<stdlib.h>
 
@@ -115,7 +115,7 @@
 	"constants.h"
 	"utils.h"
 
-1712328123 source:c:\users\ja\documents\github\pocker\src\gamestate.c
+1712499540 source:c:\users\ja\documents\github\pocker\src\gamestate.c
 	"gamestate.h"
 	<stdbool.h>
 	<stdlib.h>
@@ -125,7 +125,7 @@
 	"player.h"
 	"utils.h"
 
-1712407339 c:\users\ja\documents\github\pocker\src\gamestate.h
+1712498414 c:\users\ja\documents\github\pocker\src\gamestate.h
 	<stdbool.h>
 	"constants.h"
 	"gamerules.h"
@@ -136,11 +136,11 @@
 	"CuTest.h"
 	"../src/gamerules.h"
 
-1712406032 source:c:\users\ja\documents\github\pocker\test\test_gamestate.c
+1712500346 source:c:\users\ja\documents\github\pocker\test\test_gamestate.c
 	"CuTest.h"
 	"../src/gamestate.h"
 
-1712401170 source:c:\users\ja\documents\github\pocker\test\test_player.c
+1712500399 source:c:\users\ja\documents\github\pocker\test\test_player.c
 	"CuTest.h"
 	"../src/player.h"
 
