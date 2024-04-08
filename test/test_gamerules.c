@@ -2,7 +2,7 @@
 #include "../src/gamerules.h"
 
 void test_gamerules_template(CuTest* ct){
-    CuAssert(ct, "", false);
+    CuAssert(ct, "TODO", false);
 }
 
 CuSuite* GamerulesGetSuite(CuTest* ct){

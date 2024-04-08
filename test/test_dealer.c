@@ -106,7 +106,7 @@ void test_decideWinners_miscTest1(CuTest* ct){
 }
 
 void test_checkPlayerDecisionValidity(CuTest* ct){
-    CuAssert(ct, "", false);
+    CuAssert(ct, "TODO", false);
 }
 
 CuSuite* DealerGetSuite(){
