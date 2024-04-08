@@ -20,7 +20,7 @@ typedef struct {
     unsigned int bet;
 } GameState;
 
-GameState* gsCreateNew();
+GameState* gsCreateNew(const GameRuleSet*);
 void gsAdvancePlayerTurn(GameState*, Player*[], const GameRuleSet*, const int*);
 void gsSetUpBettingRound(GameState*, Player*[], const GameRuleSet*);
 void gsConcludeBettingRound(GameState*);

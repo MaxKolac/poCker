@@ -25,7 +25,7 @@ typedef struct {
 } Player;
 
 Player* playerCreateNew();
-Player* playerCreateNew(int);
+Player* playerCreateNewWithFunds(int);
 int takeAction(Player*);
 void resetScores(Player*);
 

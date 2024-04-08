@@ -16,7 +16,7 @@ void test_player_checkConstructor(CuTest* ct){
 
 void test_player_checkConstructorWithParameters(CuTest* ct){
     const int funds = 1000;
-    Player* player = playerCreateNew(funds);
+    Player* player = playerCreateNewWithFunds(funds);
     CuAssert(ct, "Player starts with folded status", !player->folded);
     CuAssert(ct, "Player starts with wrong funds", player->funds == funds);
     CuAssert(ct, "Player starts marked as human", !player->isHuman);

@@ -46,14 +46,13 @@ int main()
             gsSetUpBettingRound(globalState, players, &globalRules);
 
             //  --  Single round of betting loop  --
-            while (globalState->turns_left > 0){
+            while (globalState->turns_left > 0)
                 gsAdvancePlayerTurn(globalState, players);
-            }
 
             //If a betting round was suddenly ended by everyone but one player folding, get to pot payout right away
-            if (globalState->all_but_one_folded){
+            if (globalState->all_but_one_folded)
                 break;
-            }
+
             gsConcludeBettingRound(globalState);
         }
 

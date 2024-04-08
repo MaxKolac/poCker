@@ -16,7 +16,7 @@ GameState* gsCreateNew(const GameRuleSet* rules){
     state->b_blind_player = 2;
     state->current_player = 0;
     state->betting_round = 0;
-    state->turns_left = rules->player_count - 1;
+    state->turns_left = rules->player_count;
     state->pot = 0;
     state->bet = 0;
     state->all_but_one_folded = false;
@@ -24,7 +24,7 @@ GameState* gsCreateNew(const GameRuleSet* rules){
 }
 
 /**
- *  \param player_dec_override Meant for unit-testing. A non-null value will override whatever the player's decision was. Keep in mind this value won't be validated!
+ *  \param player_dec_override Meant for unit-testing. A non-null pointer will override whatever the player's decision was. Keep in mind this value won't be validated!
  */
 void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet* ruleSet, const int* player_dec_override){
     //This player has folded, skip his turn
