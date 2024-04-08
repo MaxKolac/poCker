@@ -16,6 +16,8 @@ typedef struct {
     int funds;
     /** \brief Tells if this player has already folded their cards in the current round. */
     bool folded;
+    /** \brief Tells if this player has tapped out in the current round. */
+    bool tappedout;
     /** \brief A score table for individual hand ranks to help break up ties. See handranking.c for more info. */
     int scores[10];
     /** \brief Pointers to player's playing cards in his hand. */

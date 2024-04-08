@@ -41,6 +41,11 @@ int main()
         globalState = gsCreateNew();
         distributeCards(deck, *players, comm_cards);
 
+        //Create a new table of tapout pot status records
+        unsigned int tapout_pot_statuses[globalRules.player_count];
+        for (int i = 0; i < globalRules.player_count; ++i)
+            tapout_pot_statuses[i] = 0;
+
         //Play four betting rounds: pre-flop, flop, turn, river
         while (globalState->betting_round < 4){
             gsSetUpBettingRound(globalState, players, &globalRules);

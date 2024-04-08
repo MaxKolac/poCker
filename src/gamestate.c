@@ -29,6 +29,9 @@ GameState* gsCreateNew(const GameRuleSet* rules){
 void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet* ruleSet, const int* player_dec_override){
     //This player has folded, skip his turn
     if (!(players[state->current_player]->folded)){
+    //This player has not folded, we may perform an action
+    //Wowza, practical use of De Morgan's law
+    if (!(players[state->current_player]->folded || players[state->current_player]->tappedout)){
         //Player chooses an action and check if they even can do that
         //Validity checks should not be done by players themselves (they might cheat lol)
         int player_decision;
@@ -49,18 +52,23 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
 
         //Consequence of player's actions
         // 0 < player_decision signifies a RAISE by player_decision amount
-        // 0 == player_decision signifies a CALL/CHECK
-        // -1 == player_decision signifies a FOLD
-        // -2 == player decision signifies a TAPOUT
-        if (0 <= player_decision){
+        //Performing a RAISE increases the bet and demands that other players match it or fold.
+        if (0 < player_decision){
             players[state->current_player]->funds -= player_decision;
             state->pot += player_decision;
-
-            if (0 < player_decision){
-                state->bet = player_decision;
-                state->turns_left = ruleSet->player_count - 1;
-            }
+            state->bet = player_decision;
+            state->turns_left = ruleSet->player_count;
         }
+        // 0 == player_decision signifies a CALL/CHECK
+        //CALL means that player is matching the current bet to stay in the game.
+        //If the bet is 0, that means noone raised and instead it's called CHECK.
+        else if (0 == player_decision){
+            players[state->current_player]->funds -= state->bet;
+            state->pot += state->bet;
+        }
+        // -1 == player_decision signifies a FOLD
+        //Player folds his hand and no longer participates in the current game.
+        //They do not need to match any raises, but they cannot win the pot.
         else if (-1 == player_decision){
             players[state->current_player]->folded = true;
             //Have everyone but one person folded?
@@ -73,8 +81,14 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
             }
             state->all_but_one_folded = folded_players == ruleSet->player_count - 1;
         }
+        // -2 == player decision signifies a TAPOUT
+        //Special situation when a player wishes to CALL the bet, but can not afford it.
+        //They are allowed to throw their remaining funds into the pot to continue with their current hand.
+        //Once a player performs a TAPOUT, they have no obligation to match any RAISES and remain in the game.
+        //However, if a TAPPEDOUT player wins the hand, they can only get the amount of the pot had at the time they tapped out.
+        //The rest is paid to second best hand.
         else if (-2 == player_decision){
-            //TODO: tapouts
+            players[state->current_player]->tappedout;
         }
 
         //If this condition is true, we need to return ASAP. One player just got an auto-win.
@@ -88,10 +102,12 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
 
 void gsSetUpBettingRound(GameState* state, Player* players[], const GameRuleSet* ruleSet){
     //In each round, small blind (player to the left of dealer) is the first to act
+    //Also, make sure to reset the bet back to 0
     if (state->betting_round != 0){
         state->current_player = state->s_blind_player;
+        state->bet = 0;
     }
-    //Pre-flop always starts out like this.
+    //Unless it's a pre-flop (beggining of a single game)
     //Force blind players to chip into the pot, without affecting the turns variable
     else {
         players[state->s_blind_player]->funds -= ruleSet->small_blind;

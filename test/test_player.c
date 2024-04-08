@@ -3,9 +3,10 @@
 
 void test_player_checkConstructor(CuTest* ct){
     Player* player = playerCreateNew();
-    CuAssert(ct, "Player starts with folded status", !player->folded);
-    CuAssert(ct, "Player starts with nonzero funds", player->funds == 0);
-    CuAssert(ct, "Player starts marked as human", !player->isHuman);
+    CuAssert(ct, "", !player->folded);
+    CuAssert(ct, "", !player->tappedout);
+    CuAssert(ct, "", player->funds == 0);
+    CuAssert(ct, "", !player->isHuman);
     for (int i = 0; i < SCORE_TABLE_SIZE; ++i){
         CuAssert(ct, "", player->scores[i] == 0);
     }
@@ -17,9 +18,10 @@ void test_player_checkConstructor(CuTest* ct){
 void test_player_checkConstructorWithParameters(CuTest* ct){
     const int funds = 1000;
     Player* player = playerCreateNewWithFunds(funds);
-    CuAssert(ct, "Player starts with folded status", !player->folded);
-    CuAssert(ct, "Player starts with wrong funds", player->funds == funds);
-    CuAssert(ct, "Player starts marked as human", !player->isHuman);
+    CuAssert(ct, "", !player->folded);
+    CuAssert(ct, "", !player->tappedout);
+    CuAssert(ct, "", player->funds == funds);
+    CuAssert(ct, "", !player->isHuman);
     for (int i = 0; i < SCORE_TABLE_SIZE; ++i){
         CuAssert(ct, "", player->scores[i] == 0);
     }
