@@ -16,7 +16,7 @@ GameState* gsCreateNew(const GameRuleSet* rules){
     state->b_blind_player = 2;
     state->current_player = 0;
     state->betting_round = 0;
-    state->turns_left = rules->player_count;
+    state->turns_left = rules->player_count - 1;
     state->pot = 0;
     state->bet = 0;
     state->all_but_one_folded = false;
@@ -26,9 +26,7 @@ GameState* gsCreateNew(const GameRuleSet* rules){
 /**
  *  \param player_dec_override Meant for unit-testing. A non-null pointer will override whatever the player's decision was. Keep in mind this value won't be validated!
  */
-void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet* ruleSet, const int* player_dec_override){
-    //This player has folded, skip his turn
-    if (!(players[state->current_player]->folded)){
+void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapout_pot_statuses[], const GameRuleSet* ruleSet, const int* player_dec_override){
     //This player has not folded, we may perform an action
     //Wowza, practical use of De Morgan's law
     if (!(players[state->current_player]->folded || players[state->current_player]->tappedout)){
@@ -89,6 +87,7 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
         //The rest is paid to second best hand.
         else if (-2 == player_decision){
             players[state->current_player]->tappedout;
+            tapout_pot_statuses[state->current_player] = state->pot;
         }
 
         //If this condition is true, we need to return ASAP. One player just got an auto-win.
@@ -140,7 +139,7 @@ void gsConcludeBettingRound(GameState* state){
  *  If the win happened because of everyone else folding, only one player who did not fold is awarded the whole pot.
  *  Otherwise, everyone's hands are compared, winners are pulled and awarded their fair share.
  */
-void gsPerformShowdown(GameState* state, Player* players[], const GameRuleSet* rules, const PlayingCard* comm_cards[]){
+void gsPerformShowdown(GameState* state, Player* players[], unsigned int tapout_pot_statuses[], const GameRuleSet* rules, const PlayingCard* comm_cards[]){
     int winners[rules->player_count];
     int winners_count = 0;
     //If the win occurred through everyone but one player folding:

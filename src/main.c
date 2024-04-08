@@ -29,17 +29,16 @@ int main()
     PlayingCard deck[DECK_LENGTH];
     buildDeck(deck, false);
     PlayingCard* comm_cards[COMM_CARDS_COUNT];
-    Player* players[globalRules->player_count];
-    for (int i = 0; i < globalRules->player_count; i++){
-        players[i] = playerCreateNew();
-    }
+    Player* players[globalRules.player_count];
+    for (int i = 0; i < globalRules.player_count; ++i)
+        players[i] = playerCreateNew(globalRules.funds_per_player);
 
     //  --  Game loop   --
     GameState* globalState;
     bool gameOver = false;
     do {
-        globalState = gsCreateNew();
-        distributeCards(deck, *players, comm_cards);
+        globalState = gsCreateNew(&globalRules);
+        distributeCards(deck, *players, comm_cards, &globalRules);
 
         //Create a new table of tapout pot status records
         unsigned int tapout_pot_statuses[globalRules.player_count];
@@ -52,7 +51,7 @@ int main()
 
             //  --  Single round of betting loop  --
             while (globalState->turns_left > 0)
-                gsAdvancePlayerTurn(globalState, players);
+                gsAdvancePlayerTurn(globalState, players, tapout_pot_statuses, &globalRules, NULL);
 
             //If a betting round was suddenly ended by everyone but one player folding, get to pot payout right away
             if (globalState->all_but_one_folded)
@@ -62,9 +61,9 @@ int main()
         }
 
         //Time for showdown and deciding the winners of the pot
-        gsPerformShowdown(globalState, players, comm_cards);
-        gameOver = gsCheckGameOverCondition(globalState, players);
-        gsPassDealerButton(globalState);
+        gsPerformShowdown(globalState, players, tapout_pot_statuses, &globalRules, comm_cards);
+        gameOver = gsCheckGameOverCondition(globalState, players, &globalRules);
+        gsPassDealerButton(globalState, &globalRules);
     } while (gameOver);
 
     //Post-game results
