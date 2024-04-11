@@ -200,36 +200,92 @@ int decideWinners(Player players[], int players_count, int *winners){
 }
 
 /**
- *  \brief Checks that the player is allowed to do their action.
+ *  \brief Checks that the player is allowed to do their action. Function meant for human players and their custom inputs.
+ *  \param response The char array with min. length of 72 that will be filled with a message, in case the player tried to perform an illegal action.
  *  \return True, if the player is allowed. False, otherwise.
- *  This function checks the following:
- *  - can Player afford their raise
- *  - can Player afford their call, and if not, have they betted all their funds
- *  - is Player trying to raise a bet to an amount smaller than the current bet
- *  - if the game has fixed limits, does Player's raise doesn't exceede the high limit
  */
-bool checkPlayerDecisionValidity(const Player* _player,
-                                 const GameRuleSet* rules,
-                                 int player_decision,
-                                 unsigned int current_bet)
-{
-    //TODO: VERIFY THIS AND ADD PROPER CHECKS FOR FIXED LIMIT TYPE GAME
+bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, const GameRuleSet* rules, int player_decision, char** response){
     //For raises:
     if (player_decision > 0){
-        //They can afford it
-        return _player->funds >= player_decision &&
-               //Player's raise actually raises the bet, and does not reduce or match it
-               player_decision > current_bet; //&&
-               //TODO: differing rules from different sources on what limit-fixed game is
-               //If the game has fixed limits, make sure their bet does not exceede it
-               //(!limits_fixed || (limits_fixed && player_decision <= b_blind_amount * 2))
+        if (rules->limit_fixed){
+            //Has the raise limit been reacher?
+            if (state->raises_performed >= MAX_BETS_PER_ROUND){
+                strcpy(&response, "The limit of raises per one betting round has already been reached.");
+                return 0;
+            }
+            //The game's fixed-limit and we are in the first half of it. Can player afford the raise by small blind amount?
+            if (state->betting_round <= 1 && _player->funds < state->bet + rules->small_blind){
+                strcpy(&response, "You cannot afford to raise the bet by the required small blind amount."); //greatest length here - 71 chars incl. null char
+                return 0;
+            }
+            //The game's fixed-limit and we are in the second half of it. Can player afford the raise by big blind amount?
+            if (state->betting_round > 1 && _player->funds < state->bet + rules->big_blind){
+                strcpy(&response, "You cannot afford to raise the bet by the required big blind amount.");
+                return 0;
+            }
+        }
+        else {
+            //The game's no limit, can player even afford their decision?
+            if (_player->funds < player_decision){
+                strcpy(&response, "You cannot afford to raise the bet by the specified amount.");
+                return 0;
+            }
+            //Is player trying to lower the bet?
+            if (player_decision <= state->bet){
+                strcpy(&response, "You cannot lower the bet, it can only be raised up.");
+                return 0;
+            }
+        }
     }
     //For calls/checks:
     else if (player_decision == 0){
-        //If player wishes to call/check when not able to afford it, they must bet all their last funds
-        //return _player.funds < current_bet ?
-
+        //Can the player afford to call?
+        if (_player->funds < state->bet){
+            strcpy(&response, "You cannot afford to call the bet.");
+            return 0;
+        }
+    }
+    //For tap outs:
+    else if (player_decision == -2){
+        if (_player->funds >= state->bet){
+            strcpy(&response, "You can still afford to call the current bet. You may not tap out just yet.");
+            return 0;
+        }
     }
     //For folds, no checks need to be performed
-    return true;
+    return 1;
+}
+
+//0000 0001 = CALL/CHECK
+//0000 0010 = RAISE
+//0000 0100 = TAPOUT
+//Function assumes folded/tappedout players will not call this function at all, since they cant act
+//Fold is always available so it is not stated explicitly
+//TODO: remind myself to look at this function and create tests for it once I actually start working on AI
+//since this is only meant for it
+unsigned char checkAvailableDecisions(const Player* _player, const GameState* state, const GameRuleSet* rules){
+    unsigned char result = 0;
+    //Can we call/check? Aka, can the player can afford current bet
+    if (_player->funds >= state->bet)
+        result = 1;
+    else
+        //If we can't, we have can only tap-out
+        return 4;
+
+    //If we can call/check, can we also raise?
+    //This means:
+    // - raising still hasn't reached the round limit AND the game is fixed-limit
+    // - player can afford a raise AND the game is fixed-limit
+    // - game is no-limit AND their funds is greater than current bet.
+    //(but do we tell the player how much can he raise it by??? -> lets assume their funds is the upper limit)
+    if (
+        (rules->limit_fixed && state->raises_performed < MAX_BETS_PER_ROUND &&
+          (
+            (_player->funds >= state->bet + rules->small_blind && state->betting_round <= 1) ||
+            (_player->funds >= state->bet + rules->big_blind && state->betting_round > 1)
+          )
+        ) || (!rules->limit_fixed && _player->funds > state->bet)){
+           result += 2;
+    }
+    return result;
 }

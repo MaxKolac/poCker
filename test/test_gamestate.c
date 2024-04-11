@@ -186,10 +186,10 @@ void test_gamestate_advancePlayerTurnsThroughRoundWithOnlyRaises(CuTest* ct){
 }
 
 void test_gamestate_checkTheWhileLoopInMainForPlayerTurnAdvancing(CuTest* ct){
-
+    CuAssert(ct, "TODO", false);
     //The purpose of this UT was to see if this loop from main.c works properly
-    while (state->turns_left > 0)
-        gsAdvancePlayerTurn(globalState, players, tapout_pot_statuses, &globalRules, NULL);
+    //while (state->turns_left > 0)
+    //    gsAdvancePlayerTurn(globalState, players, tapout_pot_statuses, &globalRules, NULL);
 
 }
 

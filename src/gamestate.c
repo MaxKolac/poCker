@@ -39,12 +39,12 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
         if (player_dec_override == NULL){
             bool decisionValid = false;
             do {
-                player_decision = takeAction(players[state->current_player]);
-                player_decision = mathClamp(player_decision, -2, players[state->current_player]->funds);
-                decisionValid = checkPlayerDecisionValidity(players[state->current_player],
-                                                            ruleSet,
-                                                            player_decision,
-                                                            state->bet);
+                //player_decision = takeAction(players[state->current_player]);
+                //player_decision = mathClamp(player_decision, -2, players[state->current_player]->funds);
+                //decisionValid = checkPlayerDecisionValidity(players[state->current_player],
+                //                                            ruleSet,
+                //                                            player_decision,
+                //                                            state->bet);
             } while(!decisionValid);
         }
         else{
