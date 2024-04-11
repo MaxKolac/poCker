@@ -7,6 +7,10 @@
 #include "player.h"
 #include "playingcard.h"
 
+#define MAX_BETS_PER_ROUND 3
+
+extern const int MAX_BETS_PER_ROUND_OBJ;
+
 typedef struct {
     int revealed_comm_cards;
     int dealer_player;

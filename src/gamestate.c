@@ -8,6 +8,8 @@
 #include "player.h"
 #include "utils.h"
 
+const int MAX_BETS_PER_ROUND_OBJ = MAX_BETS_PER_ROUND;
+
 GameState* gsCreateNew(const GameRuleSet* rules){
     GameState* state = ((GameState*)malloc(sizeof(GameState)));
     state->revealed_comm_cards = 0;
