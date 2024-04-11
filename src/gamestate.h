@@ -19,6 +19,7 @@ typedef struct {
     int current_player;
     int betting_round;
     int turns_left;
+    int raises_performed;
     bool all_but_one_folded;
     unsigned int pot;
     unsigned int bet;

@@ -20,6 +20,7 @@ void test_gamestate_checkConstructor(CuTest* ct){
     CuAssert(ct, "", state->turns_left == ruleSet.player_count - 1);
     CuAssert(ct, "", state->pot == 0);
     CuAssert(ct, "", state->bet == 0);
+    CuAssert(ct, "", state->raises_performed == 0);
     CuAssert(ct, "", !(state->all_but_one_folded));
 }
 
@@ -51,6 +52,7 @@ void test_gamestate_raiseRightAfterStartingGame(CuTest* ct){
     CuAssert(ct, "", state->current_player == 4);
     CuAssert(ct, "", state->betting_round == 0);
     CuAssert(ct, "", state->turns_left == 7);
+    CuAssert(ct, "", state->raises_performed == 1);
     CuAssert(ct, "", !(state->all_but_one_folded));
     CuAssert(ct, "", state->pot == 10 + 20 + 25);
     CuAssert(ct, "", state->bet == 25);
@@ -91,6 +93,7 @@ void test_gamestate_advancePlayerTurnsThroughRoundWithNoRaises(CuTest* ct){
     CuAssert(ct, "", state->current_player == 2);
     CuAssert(ct, "", state->betting_round == 0);
     CuAssert(ct, "", state->turns_left == 0);
+    CuAssert(ct, "", state->raises_performed == 0);
     CuAssert(ct, "", !(state->all_but_one_folded));
     CuAssert(ct, "", state->pot == (15 + 30) + 30 + 30 + 30 + 30);
     CuAssert(ct, "", state->bet == 30);
@@ -171,6 +174,7 @@ void test_gamestate_advancePlayerTurnsThroughRoundWithOnlyRaises(CuTest* ct){
 
     CuAssert(ct, "", state->current_player == 3);
     CuAssert(ct, "", state->turns_left == ruleSet.player_count - 1);
+    CuAssert(ct, "", state->raises_performed == ruleSet.player_count);
 
     CuAssert(ct, "", players[state->s_blind_player]->funds == 5000 - 12 - 90);
     CuAssert(ct, "", players[state->b_blind_player]->funds == 5000 - 24 - 100);
@@ -212,6 +216,7 @@ void test_gamestate_settingUpPreFlopRound(CuTest* ct){
     CuAssert(ct, "", state->current_player == 3);
     CuAssert(ct, "", state->betting_round == 0);
     CuAssert(ct, "", state->turns_left == 3);
+    CuAssert(ct, "", state->raises_performed == 0);
     CuAssert(ct, "", !(state->all_but_one_folded));
     CuAssert(ct, "", state->pot == 15);
     CuAssert(ct, "", state->bet == 10);
@@ -245,6 +250,7 @@ void test_gamestate_settingUpFlopRound(CuTest* ct){
     CuAssert(ct, "", state->current_player == 1);
     CuAssert(ct, "", state->betting_round == 1);
     CuAssert(ct, "", state->turns_left == 5);
+    CuAssert(ct, "", state->raises_performed == 0);
     CuAssert(ct, "", !(state->all_but_one_folded));
     CuAssert(ct, "", state->pot == 30);
     CuAssert(ct, "", state->bet == 0);
@@ -280,6 +286,7 @@ void test_gamestate_settingUpTurnRound(CuTest* ct){
     CuAssert(ct, "", state->current_player == 1);
     CuAssert(ct, "", state->betting_round == 2);
     CuAssert(ct, "", state->turns_left == 9);
+    CuAssert(ct, "", state->raises_performed == 0);
     CuAssert(ct, "", !(state->all_but_one_folded));
     CuAssert(ct, "", state->pot == 75);
     CuAssert(ct, "", state->bet == 0);
@@ -317,6 +324,7 @@ void test_gamestate_settingUpRiverRound(CuTest* ct){
     CuAssert(ct, "", state->current_player == 1);
     CuAssert(ct, "", state->betting_round == 3);
     CuAssert(ct, "", state->turns_left == 3);
+    CuAssert(ct, "", state->raises_performed == 0);
     CuAssert(ct, "", !(state->all_but_one_folded));
     CuAssert(ct, "", state->pot == 15);
     CuAssert(ct, "", state->bet == 0);

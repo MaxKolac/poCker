@@ -19,6 +19,7 @@ GameState* gsCreateNew(const GameRuleSet* rules){
     state->current_player = 0;
     state->betting_round = 0;
     state->turns_left = rules->player_count - 1;
+    state->raises_performed = 0;
     state->pot = 0;
     state->bet = 0;
     state->all_but_one_folded = false;
@@ -57,6 +58,7 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
             players[state->current_player]->funds -= player_decision;
             state->pot += player_decision;
             state->bet = player_decision;
+            state->raises_performed++;
             state->turns_left = ruleSet->player_count;
         }
         // 0 == player_decision signifies a CALL/CHECK
@@ -107,6 +109,7 @@ void gsSetUpBettingRound(GameState* state, Player* players[], const GameRuleSet*
     if (state->betting_round != 0){
         state->current_player = state->s_blind_player;
         state->bet = 0;
+        state->raises_performed = 0;
     }
     //Unless it's a pre-flop (beggining of a single game)
     //Force blind players to chip into the pot, without affecting the turns variable
