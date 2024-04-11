@@ -29,7 +29,7 @@ typedef struct {
      */
     int big_blind;
     /**
-     *  Small blind amount is automatically set to be half of it, rounded down.
+     *  Small blind amount is automatically set to be big blind divided by two and rounded down.
      */
     int small_blind;
 } GameRuleSet;
