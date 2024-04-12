@@ -5,14 +5,57 @@
 #include "constants.h"
 #include "utils.h"
 
+const int MIN_PLAYER_COUNT = 3;
+const int MAX_PLAYER_COUNT = 12;
 const int MIN_FUNDS_PER_PLAYER = 100;
 const int MAX_FUNDS_PER_PLAYER = 100000;
+
+/**
+ *  \brief Prompts the user for the total amount of all players.
+ *  \param grs The GameRuleSet struct to modify.
+ */
+void promptPlayerCount(GameRuleSet* grs){
+    int player_count = -1;
+    do {
+        char msg[128];
+        snprintf(msg,
+                 sizeof(msg),
+                 "Enter the amount of players. Min - %d, Max - %d",
+                 MIN_PLAYER_COUNT,
+                 MAX_PLAYER_COUNT);
+        player_count = prompt_i(3, msg);
+    } while (player_count < MIN_PLAYER_COUNT || MAX_PLAYER_COUNT < player_count);
+    //Debug
+    //printf("Player count: %d\n", player_count);
+    grs->player_count = player_count;
+}
+
+/**
+ *  \brief Prompts the user for how many of the players will be AI controlled.
+ *  \param grs The GameRuleSet struct to modify.
+ *  \warning Call the promptPlayerCount function before this!
+ */
+void promptAIPlayersCount(GameRuleSet* grs){
+    int ai_player_count = -1;
+    do {
+        char msg[128];
+        snprintf(msg,
+                 sizeof(msg),
+                 "Enter the amount of AI players. The remaining players will be controlled by human prompts, Min - %d, Max - %d",
+                 0,
+                 grs->player_count);
+        ai_player_count = prompt_i(2, msg);
+    } while (ai_player_count < 0 || grs->player_count < ai_player_count);
+    //Debug
+    //printf("AI Player count: %d\n", ai_player_count);
+    grs->ai_player_count = ai_player_count;
+}
 
 /**
  *  \brief Prompts the user for the initial funds per player.
  *  \param grs The GameRuleSet struct to modify.
  */
-void promptFundsPerPlayer(struct GameRuleSet* grs){
+void promptFundsPerPlayer(GameRuleSet* grs){
     int ini_funds_per_player = -1;
     do {
         char msg[128];
@@ -32,9 +75,7 @@ void promptFundsPerPlayer(struct GameRuleSet* grs){
  *  \brief Prompts the user to make the game fixed-limit or no-limit.
  *  \param grs The GameRuleSet struct to modify.
  */
-void promptLimitFixed(struct GameRuleSet* grs){
-    //TODO: i'm unable to find a site which would finally explain the following:
-    // - fixed limits means that players can only raise by high and small limits, or by any amount inbetween?
+void promptLimitFixed(GameRuleSet* grs){
     bool limit_fixed = prompt_b("Should the betting limits be fixed?");
     //Debug
     //printf("Limits are fixed: %s\n", limit_fixed ? "true" : "false");
@@ -46,7 +87,7 @@ void promptLimitFixed(struct GameRuleSet* grs){
  *  \param grs The GameRuleSet struct to modify.
  *  \warning This needs to be called before setting the funds_per_player!
  */
-void promptBigBlind(struct GameRuleSet* grs){
+void promptBigBlind(GameRuleSet* grs){
     int big_blind = -1;
     do {
         big_blind = prompt_i(6, "Set the big blind amount. Minimum is 2, maximum is 10% of funds per player");

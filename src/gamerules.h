@@ -6,7 +6,15 @@
 extern const int MIN_FUNDS_PER_PLAYER;
 extern const int MAX_FUNDS_PER_PLAYER;
 
-struct GameRuleSet {
+typedef struct {
+    /**
+     *  Amount of all players, AI and humans included.
+     */
+    int player_count;
+    /**
+     *  Amount of players that are controlled by AI. The rest is controlled through human prompts.
+     */
+    int ai_player_count;
     /**
      *  The amount of funds each Player will start out with.
      */
@@ -25,13 +33,14 @@ struct GameRuleSet {
      */
     int big_blind;
     /**
-     *  Small blind amount is automatically set to be half of it, rounded down.
+     *  Small blind amount is automatically set to be big blind divided by two and rounded down.
      */
     int small_blind;
-};
+} GameRuleSet;
 
-void promptFundsPerPlayer(struct GameRuleSet*);
-void promptLimitFixed(struct GameRuleSet*);
-void promptBigBlind(struct GameRuleSet*);
+void promptPlayerCount(GameRuleSet*);
+void promptFundsPerPlayer(GameRuleSet*);
+void promptLimitFixed(GameRuleSet*);
+void promptBigBlind(GameRuleSet*);
 
 #endif // GAMERULES_H

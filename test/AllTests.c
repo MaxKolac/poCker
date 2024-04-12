@@ -1,18 +1,25 @@
 #include <stdio.h>
 #include "CuTest.h"
 
-//CuSuite* StrUtilGetSuite();
-CuSuite* UtilsGetSuite();
+CuSuite* DealerGetSuite();
+CuSuite* GamerulesGetSuite();
+CuSuite* GamestateGetSuite();
 CuSuite* HandrankingGetSuite();
+CuSuite* PlayerGetSuite();
+CuSuite* PlayingcardGetSuite();
+CuSuite* UtilsGetSuite();
 
 void RunAllTests(void) {
     CuString *output = CuStringNew();
     CuSuite* suite = CuSuiteNew();
 
-    //CuSuiteAddSuite(suite, StrUtilGetSuite());
-    CuSuiteAddSuite(suite, UtilsGetSuite());
-    CuSuiteAddSuite(suite, HandrankingGetSuite());
     CuSuiteAddSuite(suite, DealerGetSuite());
+    CuSuiteAddSuite(suite, GamerulesGetSuite());
+    CuSuiteAddSuite(suite, GamestateGetSuite());
+    CuSuiteAddSuite(suite, HandrankingGetSuite());
+    CuSuiteAddSuite(suite, PlayerGetSuite());
+    CuSuiteAddSuite(suite, PlayingcardGetSuite());
+    CuSuiteAddSuite(suite, UtilsGetSuite());
 
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);

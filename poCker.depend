@@ -39,10 +39,10 @@
 1710441325 c:\users\ja\documents\github\pocker\test\test_handranking.h
 	<assert.h>
 
-1712310746 source:c:\users\ja\documents\github\pocker\src\dealer.c
+1712395968 source:c:\users\ja\documents\github\pocker\src\dealer.c
+	"dealer.h"
 	<stdbool.h>
 	<stdio.h>
-	"dealer.h"
 	"constants.h"
 	"gamerules.h"
 	"handranking.h"
@@ -51,22 +51,24 @@
 	"playingcard.h"
 	"utils.h"
 
-1712309009 c:\users\ja\documents\github\pocker\src\constants.h
+1712404787 c:\users\ja\documents\github\pocker\src\constants.h
 
-1710698255 c:\users\ja\documents\github\pocker\src\handranking.h
+1712316537 c:\users\ja\documents\github\pocker\src\handranking.h
 	"player.h"
 
-1711039578 c:\users\ja\documents\github\pocker\src\player.h
+1712575126 c:\users\ja\documents\github\pocker\src\player.h
 	<stdbool.h>
+	"constants.h"
 	"playingcard.h"
 
-1710625016 c:\users\ja\documents\github\pocker\src\playingcard.h
+1712399499 c:\users\ja\documents\github\pocker\src\playingcard.h
 	<string.h>
 	"playingcard_enums.h"
 
-1710625016 c:\users\ja\documents\github\pocker\src\playingcard_enums.h
+1712316371 c:\users\ja\documents\github\pocker\src\playingcard_enums.h
 
-1710701196 source:c:\users\ja\documents\github\pocker\src\handranking.c
+1712316537 source:c:\users\ja\documents\github\pocker\src\handranking.c
+	"handranking.h"
 	<limits.h>
 	<math.h>
 	<stdbool.h>
@@ -75,7 +77,8 @@
 	"playingcard_enums.h"
 	"utils.h"
 
-1710786090 source:c:\users\ja\documents\github\pocker\src\utils.c
+1712397111 source:c:\users\ja\documents\github\pocker\src\utils.c
+	"utils.h"
 	<ctype.h>
 	<stdarg.h>
 	<stdbool.h>
@@ -83,14 +86,15 @@
 	<stdlib.h>
 	<string.h>
 
-1711127795 source:c:\users\ja\documents\github\pocker\notes.c
+1712317764 source:c:\users\ja\documents\github\pocker\notes.c
 
-1710625016 source:c:\users\ja\documents\github\pocker\src\playingcard.c
+1712399495 source:c:\users\ja\documents\github\pocker\src\playingcard.c
+	"playingcard.h"
 	<stdio.h>
 	<string.h>
 	"playingcard_enums.h"
 
-1712309986 source:c:\users\ja\documents\github\pocker\src\main.c
+1712328235 source:c:\users\ja\documents\github\pocker\src\main.c
 	<assert.h>
 	<stdbool.h>
 	<stdio.h>
@@ -102,10 +106,11 @@
 	"player.h"
 	"playingcard.h"
 	"gamerules.h"
+	"gamestate.h"
 	"handranking.h"
 	"utils.h"
 
-1712309980 c:\users\ja\documents\github\pocker\src\dealer.h
+1712395933 c:\users\ja\documents\github\pocker\src\dealer.h
 	<stdbool.h>
 	"gamerules.h"
 	"player.h"
@@ -115,19 +120,136 @@
 1710782277 c:\users\ja\documents\github\pocker\src\utils.h
 	<stdbool.h>
 
-1712310767 source:c:\users\ja\documents\github\pocker\src\constants.c
+1712404787 source:c:\users\ja\documents\github\pocker\src\constants.c
 	"constants.h"
 
-1711044823 source:c:\users\ja\documents\github\pocker\src\player.c
+1712316937 source:c:\users\ja\documents\github\pocker\src\player.c
 	"player.h"
+	<stdlib.h>
 
-1712310714 source:c:\users\ja\documents\github\pocker\src\gamerules.c
+1712323250 source:c:\users\ja\documents\github\pocker\src\gamerules.c
+	"gamerules.h"
 	<math.h>
 	<stdio.h>
-	"gamerules.h"
 	"constants.h"
 	"utils.h"
 
-1712310037 c:\users\ja\documents\github\pocker\src\gamerules.h
+1712404871 c:\users\ja\documents\github\pocker\src\gamerules.h
 	<stdbool.h>
+
+1712328123 source:c:\users\ja\documents\github\pocker\src\gamestate.c
+	"gamestate.h"
+	<stdbool.h>
+	<stdlib.h>
+	<math.h>
+	"dealer.h"
+	"gamerules.h"
+	"player.h"
+	"utils.h"
+
+1712328166 c:\users\ja\documents\github\pocker\src\gamestate.h
+	<stdbool.h>
+	"constants.h"
+	"gamerules.h"
+	"player.h"
+	"playingcard.h"
+
+1712563324 source:d:\github projects\pocker\notes.c
+
+1712563324 source:d:\github projects\pocker\src\constants.c
+	"constants.h"
+
+1712563324 d:\github projects\pocker\src\constants.h
+
+1712563324 source:d:\github projects\pocker\src\dealer.c
+	"dealer.h"
+	<stdbool.h>
+	<stdio.h>
+	"constants.h"
+	"gamerules.h"
+	"handranking.h"
+	"player.h"
+	"playingcard_enums.h"
+	"playingcard.h"
+	"utils.h"
+
+1712563324 d:\github projects\pocker\src\dealer.h
+	<stdbool.h>
+	"gamerules.h"
+	"player.h"
+	"playingcard_enums.h"
+	"playingcard.h"
+
+1712563324 d:\github projects\pocker\src\gamerules.h
+	<stdbool.h>
+
+1712569438 d:\github projects\pocker\src\player.h
+	<stdbool.h>
+	"constants.h"
+	"playingcard.h"
+
+1712563324 d:\github projects\pocker\src\playingcard.h
+	<string.h>
+	"playingcard_enums.h"
+
+1712563324 d:\github projects\pocker\src\playingcard_enums.h
+
+1712563324 d:\github projects\pocker\src\handranking.h
+	"player.h"
+
+1712561686 d:\github projects\pocker\src\utils.h
+	<stdbool.h>
+
+1712563324 source:d:\github projects\pocker\src\gamerules.c
+	"gamerules.h"
+	<math.h>
+	<stdio.h>
+	"constants.h"
+	"utils.h"
+
+1712572966 source:d:\github projects\pocker\src\gamestate.c
+	"gamestate.h"
+	<stdbool.h>
+	<stdlib.h>
+	<math.h>
+	"dealer.h"
+	"gamerules.h"
+	"player.h"
+	"utils.h"
+
+1712572977 d:\github projects\pocker\src\gamestate.h
+	<stdbool.h>
+	"constants.h"
+	"gamerules.h"
+	"player.h"
+	"playingcard.h"
+
+1712563324 source:d:\github projects\pocker\src\handranking.c
+	"handranking.h"
+	<limits.h>
+	<math.h>
+	<stdbool.h>
+	<stdio.h>
+	"playingcard.h"
+	"playingcard_enums.h"
+	"utils.h"
+
+1712569446 source:d:\github projects\pocker\src\player.c
+	"player.h"
+	<stdlib.h>
+
+1712563324 source:d:\github projects\pocker\src\playingcard.c
+	"playingcard.h"
+	<stdio.h>
+	<string.h>
+	"playingcard_enums.h"
+
+1712561686 source:d:\github projects\pocker\src\utils.c
+	"utils.h"
+	<ctype.h>
+	<stdarg.h>
+	<stdbool.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
 

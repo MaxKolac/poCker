@@ -33,6 +33,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/gamerules.h" />
+		<Unit filename="src/gamestate.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/gamestate.h" />
 		<Unit filename="src/handranking.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -61,7 +65,19 @@
 		<Unit filename="test/test_dealer.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="test/test_gamerules.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test/test_gamestate.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="test/test_handranking.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test/test_player.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test/test_playingcard.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="test/test_utils.c">

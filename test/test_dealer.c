@@ -3,12 +3,8 @@
 #include "../src/dealer.h"
 #include "../src/player.h"
 
-void test_scorePlayerHands(CuTest* ct){
-    //CuAssert(ct, "", false);
-}
-
 void test_decideWinners_obviousWinner(CuTest* ct){
-    struct Player players[5];
+    Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
     }
@@ -22,7 +18,7 @@ void test_decideWinners_obviousWinner(CuTest* ct){
 }
 
 void test_decideWinners_onePlayerHasGreaterScoreButInLowerTier(CuTest* ct){
-    struct Player players[5];
+    Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
     }
@@ -37,7 +33,7 @@ void test_decideWinners_onePlayerHasGreaterScoreButInLowerTier(CuTest* ct){
 }
 
 void test_decideWinners_multiplePlayerSameScore(CuTest* ct){
-    struct Player players[5];
+    Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
     }
@@ -54,7 +50,7 @@ void test_decideWinners_multiplePlayerSameScore(CuTest* ct){
 }
 
 void test_decideWinners_correctlySelectWinner(CuTest* ct){
-    struct Player players[5];
+    Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
     }
@@ -72,7 +68,7 @@ void test_decideWinners_correctlySelectWinner(CuTest* ct){
 }
 
 void test_decideWinners_largerScoreInLowerTiersDontWin(CuTest* ct){
-    struct Player players[5];
+    Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
     }
@@ -92,7 +88,7 @@ void test_decideWinners_largerScoreInLowerTiersDontWin(CuTest* ct){
 }
 
 void test_decideWinners_miscTest1(CuTest* ct){
-    struct Player players[5];
+    Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
     }
@@ -109,19 +105,278 @@ void test_decideWinners_miscTest1(CuTest* ct){
     CuAssert(ct, "", winners_count == 1);
 }
 
-void test_checkPlayerDecisionValidity(CuTest* ct){
-    //CuAssert(ct, "", false);
+void test_checkPlayerDecisionValidity_CallsChecks_scenario1(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(1000);
+    const GameRuleSet rules = {
+        .limit_fixed = true,
+        .big_blind = 10,
+        .small_blind = 5
+    };
+    const GameState state = {
+        .betting_round = 1,
+        .raises_performed = 1,
+        .bet = 15
+    };
+    int decision = 0;
+    char response[72];
+    for (int i = 0; i < 72; ++i)
+        response[i] = "";
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, result);
+    CuAssertStrEquals(ct, "", response);
+}
+
+void test_checkPlayerDecisionValidity_CallsChecks_scenario2(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(200);
+    const GameRuleSet rules = {
+        .limit_fixed = true,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 3,
+        .raises_performed = MAX_BETS_PER_ROUND_OBJ,
+        .bet = 300
+    };
+    int decision = 0;
+    char response[72];
+    for (int i = 0; i < 72; ++i)
+        response[i] = "";
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "You cannot afford to call the bet.", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario1(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(1000);
+    const GameRuleSet rules = {
+        .limit_fixed = true,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 0,
+        .raises_performed = 0,
+        .bet = 100
+    };
+    int decision = 1;
+    char response[72];
+    for (int i = 0; i < 72; ++i)
+        response[i] = "";
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, result);
+    CuAssertStrEquals(ct, "", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario2(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(149);
+    const GameRuleSet rules = {
+        .limit_fixed = true,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 0,
+        .raises_performed = 0,
+        .bet = 100
+    };
+    int decision = 1;
+    char response[72];
+    for (int i = 0; i < 72; ++i)
+        response[i] = "";
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "You cannot afford to raise the bet by the required small blind amount.", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario3(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(1000);
+    const GameRuleSet rules = {
+        .limit_fixed = true,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 1,
+        .raises_performed = MAX_BETS_PER_ROUND_OBJ,
+        .bet = 50 * MAX_BETS_PER_ROUND_OBJ
+    };
+    int decision = 1;
+    char response[72];
+    for (int i = 0; i < 72; ++i)
+        response[i] = "";
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "The limit of raises per one betting round has already been reached.", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario4(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(299);
+    const GameRuleSet rules = {
+        .limit_fixed = true,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 3,
+        .raises_performed = 2,
+        .bet = 200
+    };
+    int decision = 1;
+    char response[72];
+    for (int i = 0; i < 72; ++i)
+        response[i] = "";
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "You cannot afford to raise the bet by the required big blind amount.", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario1(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(1000);
+    const GameRuleSet rules = {
+        .limit_fixed = false,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 1,
+        .raises_performed = 2,
+        .bet = 240
+    };
+    int decision = 241;
+    char response[72];
+    for (int i = 0; i < 72; ++i)
+        response[i] = "";
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, result);
+    CuAssertStrEquals(ct, "", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario2(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(1000);
+    const GameRuleSet rules = {
+        .limit_fixed = false,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 2,
+        .raises_performed = 5,
+        .bet = 550
+    };
+    int decision = 540;
+    char response[72];
+    for (int i = 0; i < 72; ++i)
+        response[i] = "";
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "You cannot lower the bet, it can only be raised up.", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario3(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(200);
+    const GameRuleSet rules = {
+        .limit_fixed = false,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 3,
+        .raises_performed = 5,
+        .bet = 200
+    };
+    int decision = 201;
+    char response[72];
+    for (int i = 0; i < 72; ++i)
+        response[i] = "";
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "You cannot afford to raise the bet by the specified amount.", response);
+}
+
+void test_checkPlayerDecisionValidity_TapOuts_scenario1(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(200);
+    const GameRuleSet rules = {
+        .limit_fixed = false,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 2,
+        .raises_performed = 2,
+        .bet = 210
+    };
+    int decision = -2;
+    char response[72];
+    for (int i = 0; i < 72; ++i)
+        response[i] = "";
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, result);
+    CuAssertStrEquals(ct, "", response);
+}
+
+void test_checkPlayerDecisionValidity_TapOuts_scenario2(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(200);
+    const GameRuleSet rules = {
+        .limit_fixed = false,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 2,
+        .raises_performed = 2,
+        .bet = 200
+    };
+    int decision = -2;
+    char response[72];
+    for (int i = 0; i < 72; ++i)
+        response[i] = "";
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "You can still afford to call the current bet. You may not tap out just yet.", response);
 }
 
 CuSuite* DealerGetSuite(){
     CuSuite* suite = CuSuiteNew();
-    //SUITE_ADD_TEST(suite, test_scorePlayerHands);
-    //SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity);
     SUITE_ADD_TEST(suite, test_decideWinners_obviousWinner);
     SUITE_ADD_TEST(suite, test_decideWinners_onePlayerHasGreaterScoreButInLowerTier);
     SUITE_ADD_TEST(suite, test_decideWinners_multiplePlayerSameScore);
     SUITE_ADD_TEST(suite, test_decideWinners_correctlySelectWinner);
     SUITE_ADD_TEST(suite, test_decideWinners_largerScoreInLowerTiersDontWin);
     SUITE_ADD_TEST(suite, test_decideWinners_miscTest1);
+
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_CallsChecks_scenario1);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_CallsChecks_scenario2);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario1);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario2);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario3);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario4);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario1);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario2);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario3);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_TapOuts_scenario1);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_TapOuts_scenario2);
     return suite;
 }

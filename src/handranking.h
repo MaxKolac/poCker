@@ -11,17 +11,17 @@
  *  Higher scores win ties. Each method calculates their tie break score differently.
  */
 
-int detectRoyalFlush(struct PlayingCard*[], int);
-int detectStraightFlush(struct PlayingCard*[], int);
-int detectFOaK(struct PlayingCard*[], int);
-int detectFullHouse(struct PlayingCard*[], int);
-int detectFlush(struct PlayingCard*[], int);
-int detectStraight(struct PlayingCard*[], int);
-int detectTOaK(struct PlayingCard*[], int);
-int detectTwoPair(struct PlayingCard*[], int);
-int detectPair(struct PlayingCard*[], int);
-int detectHighCard(struct PlayingCard*[], int);
-int countPipsInCards(enum Pip[], int[], struct PlayingCard*[], int);
-void sortCardsInDescOrder(struct PlayingCard*[], int);
+int detectRoyalFlush(PlayingCard*[], int);
+int detectStraightFlush(PlayingCard*[], int);
+int detectFOaK(PlayingCard*[], int);
+int detectFullHouse(PlayingCard*[], int);
+int detectFlush(PlayingCard*[], int);
+int detectStraight(PlayingCard*[], int);
+int detectTOaK(PlayingCard*[], int);
+int detectTwoPair(PlayingCard*[], int);
+int detectPair(PlayingCard*[], int);
+int detectHighCard(PlayingCard*[], int);
+int countPipsInCards(enum Pip[], int[], PlayingCard*[], int);
+void sortCardsInDescOrder(PlayingCard*[], int);
 
 #endif // HANDRANKING_H

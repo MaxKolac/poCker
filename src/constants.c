@@ -1,5 +1,5 @@
 #include "constants.h"
 
-const int CARDS_PER_PLAYER = 2;
-const int COMM_CARDS_COUNT = 5;
-const int PLAYER_COUNT = 4;
+const int CARDS_PER_PLAYER_OBJ = CARDS_PER_PLAYER;
+const int COMM_CARDS_COUNT_OBJ = COMM_CARDS_COUNT;
+const int SCORE_TABLE_SIZE_OBJ = SCORE_TABLE_SIZE;
