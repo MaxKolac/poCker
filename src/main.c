@@ -18,6 +18,7 @@ int main()
     //  --  Settings    --
     GameRuleSet globalRules;
     promptPlayerCount(&globalRules);
+    promptAIPlayersCount(&globalRules);
     promptFundsPerPlayer(&globalRules);
     promptLimitFixed(&globalRules);
     promptBigBlind(&globalRules);

@@ -358,8 +358,6 @@ void test_checkPlayerDecisionValidity_TapOuts_scenario2(CuTest* ct){
     CuAssertStrEquals(ct, "You can still afford to call the current bet. You may not tap out just yet.", response);
 }
 
-
-
 CuSuite* DealerGetSuite(){
     CuSuite* suite = CuSuiteNew();
     SUITE_ADD_TEST(suite, test_decideWinners_obviousWinner);

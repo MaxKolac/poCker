@@ -31,6 +31,27 @@ void promptPlayerCount(GameRuleSet* grs){
 }
 
 /**
+ *  \brief Prompts the user for how many of the players will be AI controlled.
+ *  \param grs The GameRuleSet struct to modify.
+ *  \warning Call the promptPlayerCount function before this!
+ */
+void promptAIPlayersCount(GameRuleSet* grs){
+    int ai_player_count = -1;
+    do {
+        char msg[128];
+        snprintf(msg,
+                 sizeof(msg),
+                 "Enter the amount of AI players. The remaining players will be controlled by human prompts, Min - %d, Max - %d",
+                 0,
+                 grs->player_count);
+        ai_player_count = prompt_i(2, msg);
+    } while (ai_player_count < 0 || grs->player_count < ai_player_count);
+    //Debug
+    //printf("AI Player count: %d\n", ai_player_count);
+    grs->ai_player_count = ai_player_count;
+}
+
+/**
  *  \brief Prompts the user for the initial funds per player.
  *  \param grs The GameRuleSet struct to modify.
  */
@@ -55,8 +76,6 @@ void promptFundsPerPlayer(GameRuleSet* grs){
  *  \param grs The GameRuleSet struct to modify.
  */
 void promptLimitFixed(GameRuleSet* grs){
-    //TODO: i'm unable to find a site which would finally explain the following:
-    // - fixed limits means that players can only raise by high and small limits, or by any amount inbetween?
     bool limit_fixed = prompt_b("Should the betting limits be fixed?");
     //Debug
     //printf("Limits are fixed: %s\n", limit_fixed ? "true" : "false");

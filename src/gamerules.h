@@ -12,6 +12,10 @@ typedef struct {
      */
     int player_count;
     /**
+     *  Amount of players that are controlled by AI. The rest is controlled through human prompts.
+     */
+    int ai_player_count;
+    /**
      *  The amount of funds each Player will start out with.
      */
     int funds_per_player;
