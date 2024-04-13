@@ -90,7 +90,7 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
         //However, if a TAPPEDOUT player wins the hand, they can only get the amount of the pot had at the time they tapped out.
         //The rest is paid to second best hand.
         else if (-2 == player_decision){
-            players[state->current_player]->tappedout;
+            players[state->current_player]->tappedout = true;
             tapout_pot_statuses[state->current_player] = state->pot;
         }
 

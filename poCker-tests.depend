@@ -19,15 +19,14 @@
 1710621416 source:c:\users\ja\documents\github\pocker\test\strutil.c
 	"CuTest.h"
 
-1712928203 source:c:\users\ja\documents\github\pocker\test\test_utils.c
-	<limits.h>
+1713012169 source:c:\users\ja\documents\github\pocker\test\test_utils.c
 	"CuTest.h"
 	"../src/utils.h"
 
-1712921131 c:\users\ja\documents\github\pocker\src\utils.h
+1713012169 c:\users\ja\documents\github\pocker\src\utils.h
 	<stdbool.h>
 
-1712927663 source:c:\users\ja\documents\github\pocker\src\utils.c
+1713012463 source:c:\users\ja\documents\github\pocker\src\utils.c
 	"utils.h"
 	<ctype.h>
 	<stdarg.h>
@@ -93,7 +92,7 @@
 	"player.h"
 	<stdlib.h>
 
-1713008778 source:c:\users\ja\documents\github\pocker\test\test_dealer.c
+1713008964 source:c:\users\ja\documents\github\pocker\test\test_dealer.c
 	<stdbool.h>
 	"CuTest.h"
 	"../src/dealer.h"
@@ -301,4 +300,20 @@
 1712572495 source:d:\github projects\pocker\test\test_gamestate.c
 	"CuTest.h"
 	"../src/gamestate.h"
+
+1713012155 source:c:\users\ja\documents\github\pocker\test\test_io.c
+	<limits.h>
+	"CuTest.h"
+	"../src/io.h"
+
+1713012006 c:\users\ja\documents\github\pocker\src\io.h
+	<stdbool.h>
+
+1713012553 source:c:\users\ja\documents\github\pocker\src\io.c
+	"io.h"
+	<ctype.h>
+	<stdbool.h>
+	<stdio.h>
+	<string.h>
+	<limits.h>
 

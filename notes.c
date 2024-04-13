@@ -83,4 +83,13 @@
 *   macros are preprocessed before compilation. If a need ever arises to reference a const's addres, make use
 *   of the const instead of a macro, which has the same name with a _OBJ suffix (as a convention).
 *   https://stackoverflow.com/a/30583588/21342746
+*
+*   Although these two might seem the same:
+*   char* mytext = "Hello World!"
+*   char mytest[] = "Hello World!"
+*   The first one is a string literal. It is a --constant-- string, meaning if you attempt to modify it, you'll ger
+*   a segmentation fault.
+*   The second one will instruct the compiler to first create an actual array, then copy the chars into it,
+*   allowing you to modify them.
+*   https://stackoverflow.com/questions/11554262/converting-char-to-lower-case-throws-segfault-error
 */

@@ -39,6 +39,7 @@ typedef struct {
 } GameRuleSet;
 
 void promptPlayerCount(GameRuleSet*);
+void promptAIPlayersCount(GameRuleSet*);
 void promptFundsPerPlayer(GameRuleSet*);
 void promptLimitFixed(GameRuleSet*);
 void promptBigBlind(GameRuleSet*);

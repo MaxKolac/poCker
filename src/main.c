@@ -11,6 +11,7 @@
 #include "gamerules.h"
 #include "gamestate.h"
 #include "handranking.h"
+#include "io.h"
 #include "utils.h"
 
 int main()
