@@ -5,7 +5,7 @@
 
 /**
  *  \file handranking.h
- *  \brief Code responsible for recognition of poker rankings based on player's hand and currently revealed community cards.
+ *  \brief Contains functions responsible for recognition of poker rankings based on Player hole cards and currently revealed community cards.
  *
  *  All methods return a tie breaker score which helps with resolving tie breaks in case two or more players have the same hand.
  *  Higher scores win ties. Each method calculates their tie break score differently.

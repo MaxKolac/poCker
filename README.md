@@ -28,6 +28,7 @@ Each game has a so called "big blind amount" - this is the amount that a "big bl
 A game can be fixed-limit or no-limit. Fixed limit means that each player can raise the current bet only by a fixed amount.
 The bet can only be raised by the small blind amount in the first two rounds and only by the big blind amount in the two latter rounds.
 No limit means that players are free to raise the bet by any amount, including the ability to bet all of their funds.
+In each betting round, the bet can be raised no more than 3 times.
 
 At the beginning of the game, each player is dealt 2 cards face-down. These are referred to as 'hole cards'.
 One player is given the dealer's button. This button signifies that the next player clockwise is designated as small blind player, and the next after him, big blind player.
@@ -35,7 +36,7 @@ The first betting round, pre-flop, begins with small blind player making a force
 The player after the big blind can now choose one of the following actions:
  - CALL/CHECK - Throw enough of his funds into the pot to match the current bet amount and stay in the game. Check is a variant of calling when no bet was placed.
  - RAISE - Throw more funds into the pot than the current bet, setting a new greater bet which everyone else need to either match or fold.
- - FOLD - Give up his cards and forfeit any winning in the current game. A folded player will not need to match any raises or bets and can't act until after the showdown. 
+ - FOLD - Give up his cards and forfeit any winning in the current game. A folded player will not need to match any raises or bets and can't act until after the showdown.
  - TAPOUT - Special case of a check, where the current bet is greater than player's available funds. They can tapout to stay in the game and not need to match any future bets, however in the case of winning, tapped out player can only win as much as the pot held at the time of them tapping out.
 
 This continues for each subsequent player until everyone match the bet, fold their cards or tapout.
@@ -43,7 +44,7 @@ The forced bet of the small blind doesn't count as an action. Once it's their tu
 If noone raised the bet in the meantime, big blind player does not need to match his own forced bet.
 
 Once the pre-flop round is concluded, the dealer places 3 cards face-up. These are called 'community cards'.
-Flop and each next round starts with the small blind player being able to act first. 
+Flop and each next round starts with the small blind player being able to act first.
 After the pre-flop, there are no enforced bets. If no player raises the bet from 0, no funds will be thrown into the pot.
 Each betting round concludes if the same condition is met as in the first round - everyone matched the bet (if anyone raised) or tapped out.
 If everyone but one player have folded, that player automatically wins the pot without showing their cards.
@@ -87,7 +88,7 @@ If there is more than 1 player with hands of the same rank, there are tie-breake
 
 If the tie couldn't be broken, the pot is split evenly between the tied players. Any remaining funds from an uneven split of the pot are given to the small blind player.
 
-Once one full game has been played, the dealer button travels by 1 player clockwise and a new game begins. 
+Once one full game has been played, the dealer button travels by 1 player clockwise and a new game begins.
 This loop continues until all but one player is left with funds. In real-life, players can quit or join the table between games.
 
 

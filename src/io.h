@@ -8,7 +8,7 @@
 
 /**
  *  \file io.h
- *  \brief Contains functions responsible for two-communication with the human player through console inputs and outputs.
+ *  \brief Contains functions responsible for two-way communication with the human player through console inputs and outputs.
  */
 
 #define IO_DECISION_LENGTH 16
