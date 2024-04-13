@@ -1,17 +1,17 @@
 #include "CuTest.h"
 #include "../src/utils.h"
 
-void test_mathMax(CuTest* ct){
+static void test_mathMax(CuTest* ct){
     int result = mathMax(6, -1, 0, 10, 20, 30, 40);
     CuAssert(ct, "", result == 40);
 }
 
-void test_mathMin(CuTest* ct){
+static void test_mathMin(CuTest* ct){
     int result = mathMin(5, -5, -4, 0, 1, 2);
     CuAssert(ct, "", result == -5);
 }
 
-void test_mathClamp(CuTest* ct){
+static void test_mathClamp(CuTest* ct){
     //val, min, max, expectedResult
     int values[][4] = {
         { -2, 2, 4, 2 },

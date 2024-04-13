@@ -3,7 +3,7 @@
 #include "../src/dealer.h"
 #include "../src/player.h"
 
-void test_decideWinners_obviousWinner(CuTest* ct){
+static void test_decideWinners_obviousWinner(CuTest* ct){
     Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
@@ -17,7 +17,7 @@ void test_decideWinners_obviousWinner(CuTest* ct){
     CuAssert(ct, "", winners_count == 1);
 }
 
-void test_decideWinners_onePlayerHasGreaterScoreButInLowerTier(CuTest* ct){
+static void test_decideWinners_onePlayerHasGreaterScoreButInLowerTier(CuTest* ct){
     Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
@@ -32,7 +32,7 @@ void test_decideWinners_onePlayerHasGreaterScoreButInLowerTier(CuTest* ct){
     CuAssert(ct, "", winners_count == 1);
 }
 
-void test_decideWinners_multiplePlayerSameScore(CuTest* ct){
+static void test_decideWinners_multiplePlayerSameScore(CuTest* ct){
     Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
@@ -49,7 +49,7 @@ void test_decideWinners_multiplePlayerSameScore(CuTest* ct){
     CuAssert(ct, "", winners_count == 2);
 }
 
-void test_decideWinners_correctlySelectWinner(CuTest* ct){
+static void test_decideWinners_correctlySelectWinner(CuTest* ct){
     Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
@@ -67,7 +67,7 @@ void test_decideWinners_correctlySelectWinner(CuTest* ct){
     CuAssert(ct, "", winners_count == 1);
 }
 
-void test_decideWinners_largerScoreInLowerTiersDontWin(CuTest* ct){
+static void test_decideWinners_largerScoreInLowerTiersDontWin(CuTest* ct){
     Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);
@@ -87,7 +87,7 @@ void test_decideWinners_largerScoreInLowerTiersDontWin(CuTest* ct){
     CuAssert(ct, "", winners_count == 2);
 }
 
-void test_decideWinners_miscTest1(CuTest* ct){
+static void test_decideWinners_miscTest1(CuTest* ct){
     Player players[5];
     for (int i = 0; i < 5; i++){
         resetScores(&players[i]);

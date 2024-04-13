@@ -1,7 +1,7 @@
 #include "CuTest.h"
 #include "../src/player.h"
 
-void test_player_checkConstructor(CuTest* ct){
+static void test_player_checkConstructor(CuTest* ct){
     Player* player = playerCreateNew();
     CuAssert(ct, "", !player->folded);
     CuAssert(ct, "", !player->tappedout);
@@ -15,7 +15,7 @@ void test_player_checkConstructor(CuTest* ct){
     }
 }
 
-void test_player_checkConstructorWithParameters(CuTest* ct){
+static void test_player_checkConstructorWithParameters(CuTest* ct){
     const int funds = 1000;
     Player* player = playerCreateNewWithFunds(funds);
     CuAssert(ct, "", !player->folded);
@@ -30,7 +30,7 @@ void test_player_checkConstructorWithParameters(CuTest* ct){
     }
 }
 
-void test_player_checkResettingScoresWorks(CuTest* ct){
+static void test_player_checkResettingScoresWorks(CuTest* ct){
     Player* player = playerCreateNew();
     player->scores[0] = 1;
     player->scores[1] = 100;

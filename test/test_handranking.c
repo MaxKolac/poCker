@@ -3,7 +3,7 @@
 #include "CuTest.h"
 #include "../src/playingcard.h"
 
-void test_royalFlushPresent(CuTest* ct){
+static void test_royalFlushPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     PlayingCard* cards[] = {
@@ -19,7 +19,7 @@ void test_royalFlushPresent(CuTest* ct){
     CuAssert(ct, "", result == 1);
 }
 
-void test_royalFlushNotPresent(CuTest* ct){
+static void test_royalFlushNotPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     PlayingCard* cards[] = {
@@ -35,7 +35,7 @@ void test_royalFlushNotPresent(CuTest* ct){
     CuAssert(ct, "", result == 0);
 }
 
-void test_straightFlushPresent(CuTest* ct){
+static void test_straightFlushPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     PlayingCard* cards1[] = {
@@ -70,7 +70,7 @@ void test_straightFlushPresent(CuTest* ct){
     CuAssert(ct, "", result3 == QUEEN);
 }
 
-void test_straightFlushNotPresent(CuTest* ct){
+static void test_straightFlushNotPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     PlayingCard* cards1[] = {
@@ -105,7 +105,7 @@ void test_straightFlushNotPresent(CuTest* ct){
     CuAssert(ct, "", result3 == 0);
 }
 
-void test_FOaKPresent(CuTest* ct){
+static void test_FOaKPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     PlayingCard* cards1[] = {
@@ -147,7 +147,7 @@ void test_FOaKPresent(CuTest* ct){
     CuAssert(ct, "", result3 == 113);
 }
 
-void test_FOaKNotPresent(CuTest* ct){
+static void test_FOaKNotPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     PlayingCard* cards1[] = {
@@ -189,7 +189,7 @@ void test_FOaKNotPresent(CuTest* ct){
     CuAssert(ct, "", result3 == 0);
 }
 
-void test_fullHousePresent(CuTest* ct){
+static void test_fullHousePresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     PlayingCard* cards1[] = {
@@ -230,7 +230,7 @@ void test_fullHousePresent(CuTest* ct){
     CuAssert(ct, "", result3 == 1211);
 }
 
-void test_fullHouseNotPresent(CuTest* ct){
+static void test_fullHouseNotPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Check that a simple TOaK is not treated as Full House
@@ -243,7 +243,7 @@ void test_fullHouseNotPresent(CuTest* ct){
     CuAssert(ct, "", result1 == 0);
 }
 
-void test_flushPresent(CuTest* ct){
+static void test_flushPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Check for a simple Flush
@@ -298,7 +298,7 @@ void test_flushPresent(CuTest* ct){
     CuAssert(ct, "", result3 == 1674925);
 }
 
-void test_flushNotPresent(CuTest* ct){
+static void test_flushNotPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Duplicate cards do not count towards a Flush
@@ -327,7 +327,7 @@ void test_flushNotPresent(CuTest* ct){
     CuAssert(ct, "", result2 == 0);
 }
 
-void test_straightPresent(CuTest* ct){
+static void test_straightPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Detect a simple Straight from among a mixed hand of cards
@@ -382,7 +382,7 @@ void test_straightPresent(CuTest* ct){
     CuAssert(ct, "", result4 == NINE);
 }
 
-void test_straightNotPresent(CuTest* ct){
+static void test_straightNotPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //5 cards of the same value does not constitute a Straight
@@ -397,7 +397,7 @@ void test_straightNotPresent(CuTest* ct){
     CuAssert(ct, "", result1 == 0);
 }
 
-void test_TOaKPresent(CuTest* ct){
+static void test_TOaKPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Detect a simple TOaK
@@ -421,7 +421,7 @@ void test_TOaKPresent(CuTest* ct){
     CuAssert(ct, "", result2 == FIVE);
 }
 
-void test_TOaKNotPresent(CuTest* ct){
+static void test_TOaKNotPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //For now, just make sure the PC does not explode
@@ -437,7 +437,7 @@ void test_TOaKNotPresent(CuTest* ct){
     CuAssert(ct, "", result1 == 0);
 }
 
-void test_twoPairPresent(CuTest* ct){
+static void test_twoPairPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Detect a simple two pair
@@ -466,7 +466,7 @@ void test_twoPairPresent(CuTest* ct){
     CuAssert(ct, "", result2 == (400 * ACE) + (20 * EIGHT) + QUEEN);
 }
 
-void test_twoPairNotPresent(CuTest* ct){
+static void test_twoPairNotPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Make sure that one pair doesnt count as two pairs
@@ -493,7 +493,7 @@ void test_twoPairNotPresent(CuTest* ct){
     CuAssert(ct, "", result2 == 0);
 }
 
-void test_pairPresent(CuTest* ct){
+static void test_pairPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Simple detection #1
@@ -554,7 +554,7 @@ void test_pairPresent(CuTest* ct){
     CuAssert(ct, "", result5 == (FOUR * pow(20, 3) + THREE * pow(20, 2)));
 }
 
-void test_pairNotPresent(CuTest* ct){
+static void test_pairNotPresent(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //No pair #1
@@ -579,7 +579,7 @@ void test_pairNotPresent(CuTest* ct){
     CuAssert(ct, "", result2 == 0);
 }
 
-void test_highCardCalculations(CuTest* ct){
+static void test_highCardCalculations(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
     //Simple test
@@ -624,7 +624,7 @@ void test_highCardCalculations(CuTest* ct){
     CuAssert(ct, "", result4 == 2164209);
 }
 
-void test_cardSortingInDescendingOrder(CuTest* ct){
+static void test_cardSortingInDescendingOrder(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
 
@@ -651,7 +651,7 @@ void test_cardSortingInDescendingOrder(CuTest* ct){
     }
 }
 
-void test_pipCounting(CuTest* ct){
+static void test_pipCounting(CuTest* ct){
     PlayingCard deck[DECK_LENGTH];
     buildDeck(&deck, false);
 

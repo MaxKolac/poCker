@@ -4,7 +4,7 @@
 #include "../src/playingcard.h"
 #include "../src/playingcard_enums.h"
 
-void test_playingcard_getCorrectCardName(CuTest* ct){
+static void test_playingcard_getCorrectCardName(CuTest* ct){
     const int buffer_size = 32;
     char actual[buffer_size];
     char expected[buffer_size];
@@ -23,7 +23,7 @@ void test_playingcard_getCorrectCardName(CuTest* ct){
     }
 }
 
-void test_playingcard_getCorrectPipName(CuTest* ct){
+static void test_playingcard_getCorrectPipName(CuTest* ct){
     enum Pip all_pips[PIPS_PER_SUIT] = {
         TWO,
         THREE,
@@ -62,7 +62,7 @@ void test_playingcard_getCorrectPipName(CuTest* ct){
     }
 }
 
-void test_playingcard_getCorrectSuitName(CuTest* ct){
+static void test_playingcard_getCorrectSuitName(CuTest* ct){
     enum Suit all_suits[SUITS_COUNT] = {
         HEARTS,
         DIAMONDS,
@@ -83,7 +83,7 @@ void test_playingcard_getCorrectSuitName(CuTest* ct){
     }
 }
 
-void test_playingcard_getErrsOnIncorrectParams(CuTest* ct){
+static void test_playingcard_getErrsOnIncorrectParams(CuTest* ct){
     char buffer[10];
     strcpy(&buffer, getPipName(0));
     CuAssert(ct, &buffer, strcmp(&buffer, "ERR") == 0);

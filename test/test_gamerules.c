@@ -1,7 +1,7 @@
 #include "CuTest.h"
 #include "../src/gamerules.h"
 
-void test_gamerules_template(CuTest* ct){
+static void test_gamerules_template(CuTest* ct){
     CuAssert(ct, "TODO", false);
 }
 

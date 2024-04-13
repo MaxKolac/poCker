@@ -2,7 +2,7 @@
 #include "CuTest.h"
 #include "../src/io.h"
 
-void test_decisionRecognition_callCheck(CuTest* ct){
+static void test_decisionRecognition_callCheck(CuTest* ct){
     char input1[] = "call";
     int result = recognizeDecision(input1);
     CuAssert(ct, "", result == 0);
@@ -28,7 +28,7 @@ void test_decisionRecognition_callCheck(CuTest* ct){
     CuAssert(ct, "", result6 == 0);
 }
 
-void test_decisionRecognition_folding(CuTest* ct){
+static void test_decisionRecognition_folding(CuTest* ct){
     char input1[] = "fold";
     int result = recognizeDecision(input1);
     CuAssert(ct, "", result == -1);
@@ -46,7 +46,7 @@ void test_decisionRecognition_folding(CuTest* ct){
     CuAssert(ct, "", result == -1);
 }
 
-void test_decisionRecognition_tapouts(CuTest* ct){
+static void test_decisionRecognition_tapouts(CuTest* ct){
     char input1[] = "tapout";
     int result = recognizeDecision(input1);
     CuAssert(ct, "", result == -2);
@@ -60,7 +60,7 @@ void test_decisionRecognition_tapouts(CuTest* ct){
     CuAssert(ct, "", result == -2);
 }
 
-void test_decisionRecognition_raises(CuTest* ct){
+static void test_decisionRecognition_raises(CuTest* ct){
     char input1[] = "raise 100";
     int result = recognizeDecision(input1);
     CuAssert(ct, "", result == 100);
@@ -78,7 +78,7 @@ void test_decisionRecognition_raises(CuTest* ct){
     CuAssert(ct, "", result == 125);
 }
 
-void test_decisionRecognition_invalidInputs(CuTest* ct){
+static void test_decisionRecognition_invalidInputs(CuTest* ct){
     char input1[] = "tap out";
     int result1 = recognizeDecision(input1);
     CuAssert(ct, "", result1 == INT_MIN);
@@ -109,7 +109,7 @@ void test_decisionRecognition_invalidInputs(CuTest* ct){
 }
 
 
-void test_checkPlayerDecisionValidity_CallsChecks_scenario1(CuTest* ct){
+static void test_checkPlayerDecisionValidity_CallsChecks_scenario1(CuTest* ct){
     const Player* _player = playerCreateNewWithFunds(1000);
     const GameRuleSet rules = {
         .limit_fixed = true,
@@ -130,7 +130,7 @@ void test_checkPlayerDecisionValidity_CallsChecks_scenario1(CuTest* ct){
     CuAssertStrEquals(ct, "", response);
 }
 
-void test_checkPlayerDecisionValidity_CallsChecks_scenario2(CuTest* ct){
+static void test_checkPlayerDecisionValidity_CallsChecks_scenario2(CuTest* ct){
     const Player* _player = playerCreateNewWithFunds(200);
     const GameRuleSet rules = {
         .limit_fixed = true,
@@ -151,7 +151,7 @@ void test_checkPlayerDecisionValidity_CallsChecks_scenario2(CuTest* ct){
     CuAssertStrEquals(ct, "You cannot afford to call the bet.", response);
 }
 
-void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario1(CuTest* ct){
+static void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario1(CuTest* ct){
     const Player* _player = playerCreateNewWithFunds(1000);
     const GameRuleSet rules = {
         .limit_fixed = true,
@@ -172,7 +172,7 @@ void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario1(CuTest* ct){
     CuAssertStrEquals(ct, "", response);
 }
 
-void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario2(CuTest* ct){
+static void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario2(CuTest* ct){
     const Player* _player = playerCreateNewWithFunds(149);
     const GameRuleSet rules = {
         .limit_fixed = true,
@@ -193,7 +193,7 @@ void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario2(CuTest* ct){
     CuAssertStrEquals(ct, "You cannot afford to raise the bet by the required small blind amount.", response);
 }
 
-void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario3(CuTest* ct){
+static void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario3(CuTest* ct){
     const Player* _player = playerCreateNewWithFunds(1000);
     const GameRuleSet rules = {
         .limit_fixed = true,
@@ -214,7 +214,7 @@ void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario3(CuTest* ct){
     CuAssertStrEquals(ct, "The limit of raises per one betting round has already been reached.", response);
 }
 
-void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario4(CuTest* ct){
+static void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario4(CuTest* ct){
     const Player* _player = playerCreateNewWithFunds(299);
     const GameRuleSet rules = {
         .limit_fixed = true,
@@ -235,7 +235,7 @@ void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario4(CuTest* ct){
     CuAssertStrEquals(ct, "You cannot afford to raise the bet by the required big blind amount.", response);
 }
 
-void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario1(CuTest* ct){
+static void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario1(CuTest* ct){
     const Player* _player = playerCreateNewWithFunds(1000);
     const GameRuleSet rules = {
         .limit_fixed = false,
@@ -256,7 +256,7 @@ void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario1(CuTest* ct){
     CuAssertStrEquals(ct, "", response);
 }
 
-void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario2(CuTest* ct){
+static void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario2(CuTest* ct){
     const Player* _player = playerCreateNewWithFunds(1000);
     const GameRuleSet rules = {
         .limit_fixed = false,
@@ -277,7 +277,7 @@ void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario2(CuTest* ct){
     CuAssertStrEquals(ct, "You cannot lower the bet, it can only be raised up.", response);
 }
 
-void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario3(CuTest* ct){
+static void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario3(CuTest* ct){
     const Player* _player = playerCreateNewWithFunds(200);
     const GameRuleSet rules = {
         .limit_fixed = false,
@@ -298,7 +298,7 @@ void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario3(CuTest* ct){
     CuAssertStrEquals(ct, "You cannot afford to raise the bet by the specified amount.", response);
 }
 
-void test_checkPlayerDecisionValidity_TapOuts_scenario1(CuTest* ct){
+static void test_checkPlayerDecisionValidity_TapOuts_scenario1(CuTest* ct){
     const Player* _player = playerCreateNewWithFunds(200);
     const GameRuleSet rules = {
         .limit_fixed = false,
@@ -319,7 +319,7 @@ void test_checkPlayerDecisionValidity_TapOuts_scenario1(CuTest* ct){
     CuAssertStrEquals(ct, "", response);
 }
 
-void test_checkPlayerDecisionValidity_TapOuts_scenario2(CuTest* ct){
+static void test_checkPlayerDecisionValidity_TapOuts_scenario2(CuTest* ct){
     const Player* _player = playerCreateNewWithFunds(200);
     const GameRuleSet rules = {
         .limit_fixed = false,
