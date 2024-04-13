@@ -118,9 +118,7 @@ void test_checkPlayerDecisionValidity_CallsChecks_scenario1(CuTest* ct){
         .bet = 15
     };
     int decision = 0;
-    char response[72];
-    for (int i = 0; i < 72; ++i)
-        response[i] = "";
+    char response[PDVC_RESPONSE_LENGTH];
 
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
@@ -141,9 +139,7 @@ void test_checkPlayerDecisionValidity_CallsChecks_scenario2(CuTest* ct){
         .bet = 300
     };
     int decision = 0;
-    char response[72];
-    for (int i = 0; i < 72; ++i)
-        response[i] = "";
+    char response[PDVC_RESPONSE_LENGTH];
 
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
@@ -164,9 +160,7 @@ void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario1(CuTest* ct){
         .bet = 100
     };
     int decision = 1;
-    char response[72];
-    for (int i = 0; i < 72; ++i)
-        response[i] = "";
+    char response[PDVC_RESPONSE_LENGTH];
 
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
@@ -187,9 +181,7 @@ void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario2(CuTest* ct){
         .bet = 100
     };
     int decision = 1;
-    char response[72];
-    for (int i = 0; i < 72; ++i)
-        response[i] = "";
+    char response[PDVC_RESPONSE_LENGTH];
 
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
@@ -210,9 +202,7 @@ void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario3(CuTest* ct){
         .bet = 50 * MAX_BETS_PER_ROUND_OBJ
     };
     int decision = 1;
-    char response[72];
-    for (int i = 0; i < 72; ++i)
-        response[i] = "";
+    char response[PDVC_RESPONSE_LENGTH];
 
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
@@ -233,9 +223,7 @@ void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario4(CuTest* ct){
         .bet = 200
     };
     int decision = 1;
-    char response[72];
-    for (int i = 0; i < 72; ++i)
-        response[i] = "";
+    char response[PDVC_RESPONSE_LENGTH];
 
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
@@ -256,9 +244,7 @@ void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario1(CuTest* ct){
         .bet = 240
     };
     int decision = 241;
-    char response[72];
-    for (int i = 0; i < 72; ++i)
-        response[i] = "";
+    char response[PDVC_RESPONSE_LENGTH];
 
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
@@ -279,9 +265,7 @@ void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario2(CuTest* ct){
         .bet = 550
     };
     int decision = 540;
-    char response[72];
-    for (int i = 0; i < 72; ++i)
-        response[i] = "";
+    char response[PDVC_RESPONSE_LENGTH];
 
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
@@ -302,9 +286,7 @@ void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario3(CuTest* ct){
         .bet = 200
     };
     int decision = 201;
-    char response[72];
-    for (int i = 0; i < 72; ++i)
-        response[i] = "";
+    char response[PDVC_RESPONSE_LENGTH];
 
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
@@ -325,9 +307,7 @@ void test_checkPlayerDecisionValidity_TapOuts_scenario1(CuTest* ct){
         .bet = 210
     };
     int decision = -2;
-    char response[72];
-    for (int i = 0; i < 72; ++i)
-        response[i] = "";
+    char response[PDVC_RESPONSE_LENGTH];
 
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
@@ -348,9 +328,7 @@ void test_checkPlayerDecisionValidity_TapOuts_scenario2(CuTest* ct){
         .bet = 200
     };
     int decision = -2;
-    char response[72];
-    for (int i = 0; i < 72; ++i)
-        response[i] = "";
+    char response[PDVC_RESPONSE_LENGTH];
 
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 

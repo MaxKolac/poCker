@@ -201,10 +201,14 @@ int decideWinners(Player players[], int players_count, int *winners){
 
 /**
  *  \brief Checks that the player is allowed to do their action. Function meant for human players and their custom inputs.
- *  \param response The char array with min. length of 72 that will be filled with a message, in case the player tried to perform an illegal action.
+ *  \param response The char array that will be filled with a message, in case the player tried to perform an illegal action.
  *  \return True, if the player is allowed. False, otherwise.
+ *  \warning Make sure that the response array is always the length of PDVC_MSG_LENGTH!
  */
 bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, const GameRuleSet* rules, int player_decision, char response[]){
+    for (int i = 0; i < PDVC_RESPONSE_LENGTH; ++i)
+        response[i] = '\0';
+
     //For raises:
     if (player_decision > 0){
         if (rules->limit_fixed){
