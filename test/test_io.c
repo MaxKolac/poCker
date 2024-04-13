@@ -108,6 +108,239 @@ void test_decisionRecognition_invalidInputs(CuTest* ct){
     CuAssert(ct, "", result7 == INT_MIN);
 }
 
+
+void test_checkPlayerDecisionValidity_CallsChecks_scenario1(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(1000);
+    const GameRuleSet rules = {
+        .limit_fixed = true,
+        .big_blind = 10,
+        .small_blind = 5
+    };
+    const GameState state = {
+        .betting_round = 1,
+        .raises_performed = 1,
+        .bet = 15
+    };
+    int decision = 0;
+    char response[IO_RESPONSE_LENGTH];
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, result);
+    CuAssertStrEquals(ct, "", response);
+}
+
+void test_checkPlayerDecisionValidity_CallsChecks_scenario2(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(200);
+    const GameRuleSet rules = {
+        .limit_fixed = true,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 3,
+        .raises_performed = MAX_BETS_PER_ROUND_OBJ,
+        .bet = 300
+    };
+    int decision = 0;
+    char response[IO_RESPONSE_LENGTH];
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "You cannot afford to call the bet.", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario1(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(1000);
+    const GameRuleSet rules = {
+        .limit_fixed = true,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 0,
+        .raises_performed = 0,
+        .bet = 100
+    };
+    int decision = 1;
+    char response[IO_RESPONSE_LENGTH];
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, result);
+    CuAssertStrEquals(ct, "", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario2(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(149);
+    const GameRuleSet rules = {
+        .limit_fixed = true,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 0,
+        .raises_performed = 0,
+        .bet = 100
+    };
+    int decision = 1;
+    char response[IO_RESPONSE_LENGTH];
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "You cannot afford to raise the bet by the required small blind amount.", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario3(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(1000);
+    const GameRuleSet rules = {
+        .limit_fixed = true,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 1,
+        .raises_performed = MAX_BETS_PER_ROUND_OBJ,
+        .bet = 50 * MAX_BETS_PER_ROUND_OBJ
+    };
+    int decision = 1;
+    char response[IO_RESPONSE_LENGTH];
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "The limit of raises per one betting round has already been reached.", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario4(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(299);
+    const GameRuleSet rules = {
+        .limit_fixed = true,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 3,
+        .raises_performed = 2,
+        .bet = 200
+    };
+    int decision = 1;
+    char response[IO_RESPONSE_LENGTH];
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "You cannot afford to raise the bet by the required big blind amount.", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario1(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(1000);
+    const GameRuleSet rules = {
+        .limit_fixed = false,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 1,
+        .raises_performed = 2,
+        .bet = 240
+    };
+    int decision = 241;
+    char response[IO_RESPONSE_LENGTH];
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, result);
+    CuAssertStrEquals(ct, "", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario2(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(1000);
+    const GameRuleSet rules = {
+        .limit_fixed = false,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 2,
+        .raises_performed = 5,
+        .bet = 550
+    };
+    int decision = 540;
+    char response[IO_RESPONSE_LENGTH];
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "You cannot lower the bet, it can only be raised up.", response);
+}
+
+void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario3(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(200);
+    const GameRuleSet rules = {
+        .limit_fixed = false,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 3,
+        .raises_performed = 5,
+        .bet = 200
+    };
+    int decision = 201;
+    char response[IO_RESPONSE_LENGTH];
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "You cannot afford to raise the bet by the specified amount.", response);
+}
+
+void test_checkPlayerDecisionValidity_TapOuts_scenario1(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(200);
+    const GameRuleSet rules = {
+        .limit_fixed = false,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 2,
+        .raises_performed = 2,
+        .bet = 210
+    };
+    int decision = -2;
+    char response[IO_RESPONSE_LENGTH];
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, result);
+    CuAssertStrEquals(ct, "", response);
+}
+
+void test_checkPlayerDecisionValidity_TapOuts_scenario2(CuTest* ct){
+    const Player* _player = playerCreateNewWithFunds(200);
+    const GameRuleSet rules = {
+        .limit_fixed = false,
+        .big_blind = 100,
+        .small_blind = 50
+    };
+    const GameState state = {
+        .betting_round = 2,
+        .raises_performed = 2,
+        .bet = 200
+    };
+    int decision = -2;
+    char response[IO_RESPONSE_LENGTH];
+
+    bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
+
+    CuAssert(ct, response, !result);
+    CuAssertStrEquals(ct, "You can still afford to call the current bet. You may not tap out just yet.", response);
+}
+
+
 CuSuite* IoGetSuite() {
     CuSuite* suite = CuSuiteNew();
     SUITE_ADD_TEST(suite, test_decisionRecognition_callCheck);
@@ -115,6 +348,18 @@ CuSuite* IoGetSuite() {
     SUITE_ADD_TEST(suite, test_decisionRecognition_tapouts);
     SUITE_ADD_TEST(suite, test_decisionRecognition_raises);
     SUITE_ADD_TEST(suite, test_decisionRecognition_invalidInputs);
+
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_CallsChecks_scenario1);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_CallsChecks_scenario2);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario1);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario2);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario3);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario4);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario1);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario2);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario3);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_TapOuts_scenario1);
+    SUITE_ADD_TEST(suite, test_checkPlayerDecisionValidity_TapOuts_scenario2);
     return suite;
 }
 

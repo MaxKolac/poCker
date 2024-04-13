@@ -107,3 +107,63 @@ int recognizeDecision(char* input){
     return INT_MIN;
 }
 
+/**
+ *  \brief Checks that the player is allowed to do their action. Function meant for human players and their custom inputs.
+ *  \param response The char array that will be filled with a message, in case the player tried to perform an illegal action.
+ *  \return True, if the player is allowed. False, otherwise.
+ *  \warning Make sure that the response array is always the length of PDVC_MSG_LENGTH!
+ */
+bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, const GameRuleSet* rules, int player_decision, char response[]){
+    for (int i = 0; i < IO_RESPONSE_LENGTH; ++i)
+        response[i] = '\0';
+
+    //For raises:
+    if (player_decision > 0){
+        if (rules->limit_fixed){
+            //Has the raise limit been reacher?
+            if (state->raises_performed >= MAX_BETS_PER_ROUND){
+                strcpy(response, "The limit of raises per one betting round has already been reached.");
+                return 0;
+            }
+            //The game's fixed-limit and we are in the first half of it. Can player afford the raise by small blind amount?
+            if (state->betting_round <= 1 && _player->funds < state->bet + rules->small_blind){
+                strcpy(response, "You cannot afford to raise the bet by the required small blind amount."); //greatest length here - 71 chars incl. null char
+                return 0;
+            }
+            //The game's fixed-limit and we are in the second half of it. Can player afford the raise by big blind amount?
+            if (state->betting_round > 1 && _player->funds < state->bet + rules->big_blind){
+                strcpy(response, "You cannot afford to raise the bet by the required big blind amount.");
+                return 0;
+            }
+        }
+        else {
+            //The game's no limit, can player even afford their decision?
+            if (_player->funds < player_decision){
+                strcpy(response, "You cannot afford to raise the bet by the specified amount.");
+                return 0;
+            }
+            //Is player trying to lower the bet?
+            if (player_decision <= state->bet){
+                strcpy(response, "You cannot lower the bet, it can only be raised up.");
+                return 0;
+            }
+        }
+    }
+    //For calls/checks:
+    else if (player_decision == 0){
+        //Can the player afford to call?
+        if (_player->funds < state->bet){
+            strcpy(response, "You cannot afford to call the bet.");
+            return 0;
+        }
+    }
+    //For tap outs:
+    else if (player_decision == -2){
+        if (_player->funds >= state->bet){
+            strcpy(response, "You can still afford to call the current bet. You may not tap out just yet.");
+            return 0;
+        }
+    }
+    //For folds, no checks need to be performed
+    return 1;
+}

@@ -13,13 +13,10 @@
 * \brief    Contains function-equivalents of what a real-life table dealer would do in a real poker game.
 */
 
-#define PDVC_RESPONSE_LENGTH 72
-
 void distributeCards(PlayingCard[], Player[], PlayingCard*[], const GameRuleSet*);
 void buildDeck(PlayingCard[], bool);
 void scorePlayersHand(Player*, const PlayingCard*[], int);
 int decideWinners(Player[], int, int*);
-bool checkPlayerDecisionValidity(const Player*, const GameState*, const GameRuleSet*, int, char[]);
 unsigned char checkAvailableDecisions(const Player*, const GameState*, const GameRuleSet*);
 
 #endif // DEALER_H

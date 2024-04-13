@@ -55,7 +55,7 @@
 	"CuTest.h"
 	"../src/playingcard.h"
 
-1713008849 source:c:\users\ja\documents\github\pocker\src\dealer.c
+1713020576 source:c:\users\ja\documents\github\pocker\src\dealer.c
 	"dealer.h"
 	<stdbool.h>
 	<stdio.h>
@@ -92,13 +92,13 @@
 	"player.h"
 	<stdlib.h>
 
-1713008964 source:c:\users\ja\documents\github\pocker\test\test_dealer.c
+1713020783 source:c:\users\ja\documents\github\pocker\test\test_dealer.c
 	<stdbool.h>
 	"CuTest.h"
 	"../src/dealer.h"
 	"../src/player.h"
 
-1713008849 c:\users\ja\documents\github\pocker\src\dealer.h
+1713020576 c:\users\ja\documents\github\pocker\src\dealer.h
 	<stdbool.h>
 	"gamerules.h"
 	"gamestate.h"
@@ -106,27 +106,29 @@
 	"playingcard_enums.h"
 	"playingcard.h"
 
-1712917163 c:\users\ja\documents\github\pocker\src\gamerules.h
+1713012751 c:\users\ja\documents\github\pocker\src\gamerules.h
 	<stdbool.h>
 
-1712917163 source:c:\users\ja\documents\github\pocker\src\gamerules.c
+1713012629 source:c:\users\ja\documents\github\pocker\src\gamerules.c
 	"gamerules.h"
 	<math.h>
 	<stdio.h>
 	"constants.h"
-	"utils.h"
+	"io.h"
 
-1712917163 source:c:\users\ja\documents\github\pocker\src\gamestate.c
+1713021031 source:c:\users\ja\documents\github\pocker\src\gamestate.c
 	"gamestate.h"
 	<stdbool.h>
 	<stdlib.h>
+	<stdio.h>
 	<math.h>
 	"dealer.h"
 	"gamerules.h"
+	"io.h"
 	"player.h"
 	"utils.h"
 
-1712917163 c:\users\ja\documents\github\pocker\src\gamestate.h
+1713013783 c:\users\ja\documents\github\pocker\src\gamestate.h
 	<stdbool.h>
 	"constants.h"
 	"gamerules.h"
@@ -137,7 +139,7 @@
 	"CuTest.h"
 	"../src/gamerules.h"
 
-1712917163 source:c:\users\ja\documents\github\pocker\test\test_gamestate.c
+1713020818 source:c:\users\ja\documents\github\pocker\test\test_gamestate.c
 	"CuTest.h"
 	"../src/gamestate.h"
 
@@ -301,19 +303,23 @@
 	"CuTest.h"
 	"../src/gamestate.h"
 
-1713012155 source:c:\users\ja\documents\github\pocker\test\test_io.c
+1713020996 source:c:\users\ja\documents\github\pocker\test\test_io.c
 	<limits.h>
 	"CuTest.h"
 	"../src/io.h"
 
-1713012006 c:\users\ja\documents\github\pocker\src\io.h
+1713020996 c:\users\ja\documents\github\pocker\src\io.h
 	<stdbool.h>
+	"gamerules.h"
+	"gamestate.h"
+	"player.h"
 
-1713012553 source:c:\users\ja\documents\github\pocker\src\io.c
+1713022919 source:c:\users\ja\documents\github\pocker\src\io.c
 	"io.h"
 	<ctype.h>
 	<stdbool.h>
 	<stdio.h>
+	<stdlib.h>
 	<string.h>
 	<limits.h>
 
