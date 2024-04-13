@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <limits.h>
 
@@ -20,7 +21,7 @@ int promptInt(int max_length, char* msg){
     do {
         printf("%s: ", msg);
         gets_s(&input, max_length);
-        result = atoll(&input);
+        result = strtol(input, NULL, 10);
     } while (result <= 0);
     return result;
 }
@@ -40,7 +41,7 @@ bool promptBool(char* msg){
     bool result;
     do {
         printf("%s (Y/N): ", msg);
-        gets_s(&input, 5);
+        gets_s(input, 5);
         if (input[0] == 'y' || input[0] == 'Y'){
             result = true;
             input_valid = true;
@@ -88,7 +89,7 @@ int recognizeDecision(char* input){
     char* second_token = strtok(NULL, delimiter);
     if (second_token != NULL)
         strcpy(arg, second_token);
-    int arg_int = atoi(arg);
+    int arg_int = strtol(arg, NULL, 10);
 
     //Recognition
     if (strcmp(command, "raise") == 0){
