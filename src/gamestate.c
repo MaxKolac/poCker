@@ -2,9 +2,11 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 #include "dealer.h"
 #include "gamerules.h"
+#include "io.h"
 #include "player.h"
 #include "utils.h"
 
@@ -37,15 +39,32 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
         //Validity checks should not be done by players themselves (they might cheat lol)
         int player_decision;
         if (player_dec_override == NULL){
-            bool decisionValid = false;
-            do {
+            if (players[state->current_player]->isHuman){
+                //For human players
+                bool decisionValid = false;
+                do {
+                    char input[IO_DECISION_LENGTH];
+                    gets_s(input, IO_DECISION_LENGTH);
+                    player_decision = recognizeDecision(input);
+                    char response[IO_RESPONSE_LENGTH];
+                    decisionValid = checkPlayerDecisionValidity(players[state->current_player],
+                                                                state,
+                                                                ruleSet,
+                                                                player_decision,
+                                                                response);
+                    printf(response);
+                } while(!decisionValid);
+            }            else {
+                //for AI players
                 //player_decision = takeAction(players[state->current_player]);
                 //player_decision = mathClamp(player_decision, -2, players[state->current_player]->funds);
                 //decisionValid = checkPlayerDecisionValidity(players[state->current_player],
                 //                                            ruleSet,
                 //                                            player_decision,
                 //                                            state->bet);
-            } while(!decisionValid);
+                //placeholder
+                player_decision = 0;
+            }
         }
         else{
             player_decision = *player_dec_override;
