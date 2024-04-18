@@ -15,8 +15,22 @@ static void test_royalFlushPresent(CuTest* ct){
         &deck[PIPS_PER_SUIT * CLUBS + QUEEN - 1], //Queen of Clubs
         &deck[PIPS_PER_SUIT * CLUBS + JACK - 1], //Jack of Clubs
     };
+    //Case found when doing tests for gamestate.h
+    PlayingCard* cards2[] = {
+        &deck[PIPS_PER_SUIT * DIAMONDS + KING - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + JACK - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + TWO - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + THREE - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + TEN - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + ACE - 1]
+    };
+
     int result = detectRoyalFlush(cards, 7);
+    int result2 = detectRoyalFlush(cards2, 7);
+
     CuAssert(ct, "", result == 1);
+    CuAssert(ct, "", result2 == 1);
 }
 
 static void test_royalFlushNotPresent(CuTest* ct){

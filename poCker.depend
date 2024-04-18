@@ -259,3 +259,12 @@
 	"gamestate.h"
 	"player.h"
 
+1713023419 source:c:\users\ja\documents\github\pocker\src\io.c
+	"io.h"
+	<ctype.h>
+	<stdbool.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+
