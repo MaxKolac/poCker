@@ -33,7 +33,7 @@ Player* playerCreateNewWithFunds(int initial_funds){
  *  Remember that C does not have zero-initialization. The scores array WILL be filled with gibberish data.
  */
 void resetScores(Player *self){
-    for (int i = 0; i < 10; i++){
+    for (int i = 0; i < SCORE_TABLE_SIZE; i++){
         self->scores[i] = 0;
     }
 }
