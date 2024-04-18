@@ -29,6 +29,7 @@ GameState* gsCreateNew(const GameRuleSet* rules){
 }
 
 /**
+ *  \brief Advances the player's turn by allowing them to take action and applying any changes causes by the chosen action.
  *  \param player_dec_override Meant for unit-testing. A non-null pointer will override whatever the player's decision was. Keep in mind this value won't be validated!
  */
 void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapout_pot_statuses[], const GameRuleSet* ruleSet, const int* player_dec_override){
@@ -126,6 +127,9 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
     state->turns_left--;
 }
 
+/**
+ *  \brief Sets the members of a GameState struct according to its current betting_round value.
+ */
 void gsSetUpBettingRound(GameState* state, Player* players[], const GameRuleSet* ruleSet){
     //In each round, small blind (player to the left of dealer) is the first to act
     //Also, make sure to reset the bet back to 0
@@ -146,6 +150,9 @@ void gsSetUpBettingRound(GameState* state, Player* players[], const GameRuleSet*
     }
 }
 
+/**
+ *  \brief Reveals the needed amount of revealed community cards and increments the betting_round value of the passed GameState struct.
+ */
 void gsConcludeBettingRound(GameState* state){
     //Pre-flop has no cards.
     //Flop has 3 cards revealed.
@@ -164,10 +171,12 @@ void gsConcludeBettingRound(GameState* state){
 
 /**
  *  \brief Determines the winner(s) and pays them their winnings from the pot.
+ *
  *  If the win happened because of everyone else folding, only one player who did not fold is awarded the whole pot.
  *  Otherwise, everyone's hands are compared, winners are pulled and awarded their fair share.
+ *  Tapped out winners receive their rewards first, the rest is then divide evenly between other winners.
+ *  If the pot happened to be indivisible by amount of winners, small blind player receives the remainder.
  */
- //TODO: tapouts
 void gsPerformShowdown(GameState* state, Player* players[], unsigned int tapout_pot_statuses[], const GameRuleSet* rules, const PlayingCard* comm_cards[]){
     int winners[rules->player_count];
     int winners_count = 0;
@@ -192,15 +201,42 @@ void gsPerformShowdown(GameState* state, Player* players[], unsigned int tapout_
 
     //If we have a single winner, they take the whole pot;
     if (winners_count == 1){
-        players[winners[0]]->funds += state->pot;
+        //Unless they tapped out, which means they only get a portion of it and the rest goes to small blind player.
+        int adjusted_pot_amount = tapout_pot_statuses[winners[0]];
+        if (adjusted_pot_amount > 0){
+            players[winners[0]]->funds += adjusted_pot_amount;
+            players[state->s_blind_player]->funds += (state->pot - adjusted_pot_amount);
+        }
+        else {
+            players[winners[0]]->funds += state->pot;
+        }
+
     }
     //Otherwise, pay it to individual winners evenly.
     //In the event of a pot being indivisible by winner's count, the remainder is paid to the player to the left of dealer.
     else {
-        int amount = floorf(state->pot / winners_count);
+        //If one of the winners tapped out, they will not receive the full pot/winners_count.
+        //Instead they are awarded the amount of funds the pot held at the time of their tapping out.
+        int tappedout_players_count = 0;
         for (int i = 0; i < winners_count; i++){
-            players[winners[i]]->funds += amount;
-            state->pot -= amount;
+            int adjusted_pot_amount = tapout_pot_statuses[winners[i]];
+            if (adjusted_pot_amount > 0){
+                tappedout_players_count++;
+                players[winners[i]]->funds += adjusted_pot_amount;
+                state->pot -= adjusted_pot_amount;
+            }
+        }
+        //Once tappedout winners are awarded their smaller share, other winners can enjoy the full award_per_player amount
+        int award_per_player = floorf(state->pot / mathMax(2, 1, winners_count - tappedout_players_count));
+        //If all the winners were tapped out, each iteration of this for loop is completely skipped
+        //What the tapped out winners couldn't receieve, goes to the small blind player.
+        for (int i = 0; i < winners_count; i++){
+            //Make sure not to accidentally give the winnings to the tappedout player again
+            if (tapout_pot_statuses[winners[i]] > 0){
+                continue;
+            }
+            players[winners[i]]->funds += award_per_player;
+            state->pot -= award_per_player;
         }
         if (state->pot > 0){
             players[state->s_blind_player]->funds += state->pot;
@@ -211,6 +247,7 @@ void gsPerformShowdown(GameState* state, Player* players[], unsigned int tapout_
 
 /**
  *  \brief Checks if everyone but one player has any funds left.
+ *
  *  If the condition is true, this would indicate end of the game.
  *  This function also unmarks all Players with funds left. Broke players are marked as folded right away.
  */
@@ -231,7 +268,7 @@ bool gsCheckGameOverCondition(GameState* state, Player* players[], const GameRul
 
 /**
  *  \brief Pass the dealer button to the next player. Done once after each full round.
- *  This also causes the blind player status to move.
+ *  This also causes the blind player statuses to move.
  */
 void gsPassDealerButton(GameState* state, const GameRuleSet* rules){
     state->dealer_player = (state->dealer_player + 1) % rules->player_count;

@@ -791,7 +791,7 @@ static void test_standardShowdownWithSingleWinner(CuTest* ct){
 
     PlayingCard* deck[DECK_LENGTH];
     buildDeck(&deck, false);
-    PlayingCard* comm_cards[] = {
+    const PlayingCard* comm_cards[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + KING - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + QUEEN - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + JACK - 1],
@@ -849,7 +849,7 @@ static void test_standardShowdownWithMultipleWinnersWithIndivisiblePot(CuTest* c
 
     PlayingCard* deck[DECK_LENGTH];
     buildDeck(&deck, false);
-    PlayingCard* comm_cards[] = {
+    const PlayingCard* comm_cards[] = {
         &deck[PIPS_PER_SUIT * DIAMONDS + ACE - 1],
         &deck[PIPS_PER_SUIT * HEARTS + QUEEN - 1],
         &deck[PIPS_PER_SUIT * DIAMONDS + TEN - 1],
@@ -911,16 +911,173 @@ static void test_allButOneFoldedShowdown(CuTest* ct){
     CuAssert(ct, "", state->pot == 0);
 }
 
-static void test_winningSingleTapoutShowdown(CuTest* ct){
-    CuAssert(ct, "TODO", false);
+static void test_onlyOneTappedoutWinnerShowdown(CuTest* ct){
+    GameRuleSet ruleset = {
+        .player_count = 5,
+        .funds_per_player = 1200,
+        .limit_fixed = false,
+        .big_blind = 20,
+        .small_blind = 10
+    };
+    Player* players[ruleset.player_count];
+    for (int i = 0; i < ruleset.player_count; ++i)
+        players[i] = playerCreateNewWithFunds(ruleset.funds_per_player);
+    GameState* state = gsCreateNew(&ruleset);
+    state->s_blind_player = 3;
+    state->revealed_comm_cards = 5;
+    state->betting_round = 4;
+    state->all_but_one_folded = false;
+    state->pot = 550;
+    unsigned int tapouts[] = { 200, 0, 0, 0, 0 };
+
+    PlayingCard* deck[DECK_LENGTH];
+    buildDeck(&deck, false);
+    PlayingCard* comm_cards[] = {
+        &deck[PIPS_PER_SUIT * DIAMONDS + KING - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + JACK - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + TWO - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + THREE - 1]
+    };
+    //Winner, also tappedout
+    players[0]->current_hand[0] = &deck[PIPS_PER_SUIT * DIAMONDS + TEN - 1];
+    players[0]->current_hand[1] = &deck[PIPS_PER_SUIT * DIAMONDS + ACE - 1];
+    players[0]->funds = 0;
+    players[0]->tappedout = true;
+
+    players[1]->current_hand[0] = &deck[PIPS_PER_SUIT * CLUBS + TEN - 1];
+    players[1]->current_hand[1] = &deck[PIPS_PER_SUIT * HEARTS + THREE - 1];
+
+    players[2]->current_hand[0] = &deck[PIPS_PER_SUIT * SPADES + KING - 1];
+    players[2]->current_hand[1] = &deck[PIPS_PER_SUIT * CLUBS + KING - 1];
+
+    players[3]->current_hand[0] = &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1];
+    players[3]->current_hand[1] = &deck[PIPS_PER_SUIT * DIAMONDS + EIGHT - 1];
+
+    players[4]->current_hand[0] = &deck[PIPS_PER_SUIT * SPADES + THREE - 1];
+    players[4]->current_hand[1] = &deck[PIPS_PER_SUIT * SPADES + TWO - 1];
+
+    gsPerformShowdown(state, players, tapouts, &ruleset, comm_cards);
+
+    CuAssert(ct, "", players[0]->funds == 200);
+    CuAssert(ct, "", players[state->s_blind_player]->funds == ruleset.funds_per_player + (550 - 200));
 }
 
-static void test_winningMultipleTapoutsShowdown(CuTest* ct){
-    CuAssert(ct, "TODO", false);
+static void test_multipleWinnersWhereOnlySomeAreTappedOut(CuTest* ct){
+    GameRuleSet ruleset = {
+        .player_count = 5,
+        .funds_per_player = 1200,
+        .limit_fixed = false,
+        .big_blind = 20,
+        .small_blind = 10
+    };
+    Player* players[ruleset.player_count];
+    for (int i = 0; i < ruleset.player_count; ++i)
+        players[i] = playerCreateNewWithFunds(ruleset.funds_per_player);
+    GameState* state = gsCreateNew(&ruleset);
+    state->s_blind_player = 3;
+    state->revealed_comm_cards = 5;
+    state->betting_round = 4;
+    state->all_but_one_folded = false;
+    state->pot = 550;
+    unsigned int tapouts[] = { 120, 0, 0, 0, 65 };
+
+    PlayingCard* deck[DECK_LENGTH];
+    buildDeck(&deck, false);
+    const PlayingCard* comm_cards[] = {
+        &deck[PIPS_PER_SUIT * DIAMONDS + ACE - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + TEN - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + TWO - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + THREE - 1]
+    };
+    //Winner #1 - Ace & Queen pairs + tappedout
+    players[0]->current_hand[0] = &deck[PIPS_PER_SUIT * CLUBS + QUEEN - 1];
+    players[0]->current_hand[1] = &deck[PIPS_PER_SUIT * CLUBS + ACE - 1];
+    players[0]->funds = 0;
+    players[0]->tappedout = true;
+    //Pair of tens
+    players[1]->current_hand[0] = &deck[PIPS_PER_SUIT * CLUBS + TEN - 1];
+    players[1]->current_hand[1] = &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1];
+    //Winner #2 - Ace & Queen pairs
+    players[2]->current_hand[0] = &deck[PIPS_PER_SUIT * HEARTS + QUEEN - 1];
+    players[2]->current_hand[1] = &deck[PIPS_PER_SUIT * HEARTS + ACE - 1];
+    //No ranks
+    players[3]->current_hand[0] = &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1];
+    players[3]->current_hand[1] = &deck[PIPS_PER_SUIT * DIAMONDS + EIGHT - 1];
+    //Winner #3 - Ace & Queen pairs + tappedout
+    players[4]->current_hand[0] = &deck[PIPS_PER_SUIT * SPADES + QUEEN - 1];
+    players[4]->current_hand[1] = &deck[PIPS_PER_SUIT * SPADES + ACE - 1];
+    players[4]->funds = 0;
+    players[4]->tappedout = true;
+
+    gsPerformShowdown(state, players, tapouts, &ruleset, comm_cards);
+
+    CuAssert(ct, "", players[0]->funds == 120);
+    CuAssert(ct, "", players[2]->funds == ruleset.funds_per_player + (550 - 120 - 65));
+    CuAssert(ct, "", players[state->s_blind_player]->funds == ruleset.funds_per_player);
+    CuAssert(ct, "", players[4]->funds == 65);
 }
 
 static void test_showdownWhereEveryoneTappedOut(CuTest* ct){
-    CuAssert(ct, "TODO", false);
+    GameRuleSet ruleset = {
+        .player_count = 6,
+        .funds_per_player = 2400,
+        .limit_fixed = true,
+        .big_blind = 10,
+        .small_blind = 5
+    };
+    Player* players[ruleset.player_count];
+    for (int i = 0; i < ruleset.player_count; ++i)
+        players[i] = playerCreateNewWithFunds(ruleset.funds_per_player);
+    GameState* state = gsCreateNew(&ruleset);
+    state->s_blind_player = 1;
+    state->revealed_comm_cards = 5;
+    state->betting_round = 4;
+    state->all_but_one_folded = false;
+    state->pot = 650;
+    unsigned int tapouts[] = { 115, 0, 100, 0, 80 };
+
+    PlayingCard* deck[DECK_LENGTH];
+    buildDeck(&deck, false);
+    const PlayingCard* comm_cards[] = {
+        &deck[PIPS_PER_SUIT * DIAMONDS + ACE - 1],
+        &deck[PIPS_PER_SUIT * DIAMONDS + QUEEN - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + TEN - 1],
+        &deck[PIPS_PER_SUIT * CLUBS + TWO - 1],
+        &deck[PIPS_PER_SUIT * HEARTS + THREE - 1]
+    };
+    //Winner #1 - Ace & Queen pairs + tappedout
+    players[0]->current_hand[0] = &deck[PIPS_PER_SUIT * CLUBS + QUEEN - 1];
+    players[0]->current_hand[1] = &deck[PIPS_PER_SUIT * CLUBS + ACE - 1];
+    players[0]->funds = 0;
+    players[0]->tappedout = true;
+    //Pair of tens
+    players[1]->current_hand[0] = &deck[PIPS_PER_SUIT * CLUBS + TEN - 1];
+    players[1]->current_hand[1] = &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1];
+    //Winner #2 - Ace & Queen pairs + tappedout
+    players[2]->current_hand[0] = &deck[PIPS_PER_SUIT * HEARTS + QUEEN - 1];
+    players[2]->current_hand[1] = &deck[PIPS_PER_SUIT * HEARTS + ACE - 1];
+    players[2]->funds = 0;
+    players[2]->tappedout = true;
+    //No ranks
+    players[3]->current_hand[0] = &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1];
+    players[3]->current_hand[1] = &deck[PIPS_PER_SUIT * DIAMONDS + EIGHT - 1];
+    //Winner #3 - Ace & Queen pairs + tappedout
+    players[4]->current_hand[0] = &deck[PIPS_PER_SUIT * SPADES + QUEEN - 1];
+    players[4]->current_hand[1] = &deck[PIPS_PER_SUIT * SPADES + ACE - 1];
+    players[4]->funds = 0;
+    players[4]->tappedout = true;
+    //No ranks
+    players[5]->current_hand[0] = &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1];
+    players[5]->current_hand[1] = &deck[PIPS_PER_SUIT * DIAMONDS + SEVEN - 1];
+
+    gsPerformShowdown(state, players, tapouts, &ruleset, comm_cards);
+
+    CuAssert(ct, "", players[0]->funds == 115);
+    CuAssert(ct, "", players[state->s_blind_player]->funds == ruleset.funds_per_player + (650 - 115 - 100 - 80));
+    CuAssert(ct, "", players[2]->funds == 100);
+    CuAssert(ct, "", players[4]->funds == 80);
 }
 
 //  --  Checking for game overs --
@@ -1035,8 +1192,8 @@ CuSuite* GamestateGetSuite(CuTest* ct){
     SUITE_ADD_TEST(suite, test_standardShowdownWithSingleWinner);
     SUITE_ADD_TEST(suite, test_standardShowdownWithMultipleWinnersWithIndivisiblePot);
     SUITE_ADD_TEST(suite, test_allButOneFoldedShowdown);
-    SUITE_ADD_TEST(suite, test_winningSingleTapoutShowdown);
-    SUITE_ADD_TEST(suite, test_winningMultipleTapoutsShowdown);
+    SUITE_ADD_TEST(suite, test_onlyOneTappedoutWinnerShowdown);
+    SUITE_ADD_TEST(suite, test_multipleWinnersWhereOnlySomeAreTappedOut);
     SUITE_ADD_TEST(suite, test_showdownWhereEveryoneTappedOut);
 
     SUITE_ADD_TEST(suite, test_markingBrokePlayers);
