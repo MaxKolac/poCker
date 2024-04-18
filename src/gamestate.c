@@ -55,30 +55,32 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
                     printf(response);
                 } while(!decisionValid);
             }            else {
-                //for AI players
-                //player_decision = takeAction(players[state->current_player]);
+                //for AI players - for now this function always returns 0 - CHECK
+                player_decision = takeAction(players[state->current_player]);
                 //player_decision = mathClamp(player_decision, -2, players[state->current_player]->funds);
                 //decisionValid = checkPlayerDecisionValidity(players[state->current_player],
                 //                                            ruleSet,
                 //                                            player_decision,
                 //                                            state->bet);
-                //placeholder
-                player_decision = 0;
             }
         }
-        else{
+        else {
             player_decision = *player_dec_override;
         }
 
+        //WARNING! This part assumes the player's decision was allowed and valid!
         //Consequence of player's actions
         // 0 < player_decision signifies a RAISE by player_decision amount
         //Performing a RAISE increases the bet and demands that other players match it or fold.
         if (0 < player_decision){
+            if (ruleSet->limit_fixed){
+                player_decision = (state->betting_round <= 1) ? state->bet + ruleSet->small_blind : state-> bet + ruleSet->big_blind;
+            }
             players[state->current_player]->funds -= player_decision;
             state->pot += player_decision;
             state->bet = player_decision;
             state->raises_performed++;
-            state->turns_left = ruleSet->player_count;
+            state->turns_left = ruleSet->player_count; //This gets decremented at the end of function
         }
         // 0 == player_decision signifies a CALL/CHECK
         //CALL means that player is matching the current bet to stay in the game.
@@ -109,6 +111,8 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
         //However, if a TAPPEDOUT player wins the hand, they can only get the amount of the pot had at the time they tapped out.
         //The rest is paid to second best hand.
         else if (-2 == player_decision){
+            state->pot += players[state->current_player]->funds;
+            players[state->current_player]->funds = 0;
             players[state->current_player]->tappedout = true;
             tapout_pot_statuses[state->current_player] = state->pot;
         }
@@ -163,6 +167,7 @@ void gsConcludeBettingRound(GameState* state){
  *  If the win happened because of everyone else folding, only one player who did not fold is awarded the whole pot.
  *  Otherwise, everyone's hands are compared, winners are pulled and awarded their fair share.
  */
+ //TODO: tapouts
 void gsPerformShowdown(GameState* state, Player* players[], unsigned int tapout_pot_statuses[], const GameRuleSet* rules, const PlayingCard* comm_cards[]){
     int winners[rules->player_count];
     int winners_count = 0;
@@ -182,7 +187,7 @@ void gsPerformShowdown(GameState* state, Player* players[], unsigned int tapout_
         for (int i = 0; i < rules->player_count; i++){
             scorePlayersHand(players[i], comm_cards, state->revealed_comm_cards);
         }
-        winners_count = decideWinners(*players, rules->player_count, winners);
+        winners_count = decideWinners(players, rules->player_count, winners);
     }
 
     //If we have a single winner, they take the whole pot;
@@ -192,8 +197,8 @@ void gsPerformShowdown(GameState* state, Player* players[], unsigned int tapout_
     //Otherwise, pay it to individual winners evenly.
     //In the event of a pot being indivisible by winner's count, the remainder is paid to the player to the left of dealer.
     else {
+        int amount = floorf(state->pot / winners_count);
         for (int i = 0; i < winners_count; i++){
-            int amount = floorf(state->pot / winners_count);
             players[winners[i]]->funds += amount;
             state->pot -= amount;
         }
@@ -201,6 +206,7 @@ void gsPerformShowdown(GameState* state, Player* players[], unsigned int tapout_
             players[state->s_blind_player]->funds += state->pot;
         }
     }
+    state->pot = 0;
 }
 
 /**
@@ -211,6 +217,7 @@ void gsPerformShowdown(GameState* state, Player* players[], unsigned int tapout_
 bool gsCheckGameOverCondition(GameState* state, Player* players[], const GameRuleSet* rules){
     int broke_players = 0;
     for (int i = 0; i < rules->player_count; i++){
+            players[i]->tappedout = false;
         if (players[i]->funds > 0){
             players[i]->folded = false;
         }
