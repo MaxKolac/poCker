@@ -110,12 +110,11 @@
 	"io.h"
 	"utils.h"
 
-1713020576 c:\users\ja\documents\github\pocker\src\dealer.h
+1713444969 c:\users\ja\documents\github\pocker\src\dealer.h
 	<stdbool.h>
 	"gamerules.h"
 	"gamestate.h"
 	"player.h"
-	"playingcard_enums.h"
 	"playingcard.h"
 
 1713012169 c:\users\ja\documents\github\pocker\src\utils.h

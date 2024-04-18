@@ -6,7 +6,6 @@
 #include "gamerules.h"
 #include "handranking.h"
 #include "player.h"
-#include "playingcard_enums.h"
 #include "playingcard.h"
 #include "utils.h"
 
@@ -155,7 +154,7 @@ void scorePlayersHand(Player* _player, const PlayingCard* comm_cards[], int rev_
  *  \param winners An array which the function will populate with player indexes who are to be awarded the pot or part of it.
  *  \returns The size of the resulting winners array, or how many players are winners.
  */
-int decideWinners(Player players[], int players_count, int *winners){
+int decideWinners(Player* players[], int players_count, int *winners){
     int possible_winners[players_count];
     int possible_winners_count = 0;
     int score_tier = -1;
@@ -163,7 +162,7 @@ int decideWinners(Player players[], int players_count, int *winners){
     //Get all players who have a non-zero score on the same tier
     for (int i = 0; i < SCORE_TABLE_SIZE; i++){
         for (int j = 0; j < players_count; j++){
-            if (players[j].scores[i] > 0){
+            if (players[j]->scores[i] > 0){
                 possible_winners[possible_winners_count] = j;
                 possible_winners_count++;
                 score_tier = i;
@@ -185,13 +184,13 @@ int decideWinners(Player players[], int players_count, int *winners){
     int highest_score = 0;
     for (int i = 0; i < possible_winners_count; i++){
         //Player with a higher score overrides the previous contender for a winner
-        if (players[possible_winners[i]].scores[score_tier] > highest_score){
-            highest_score = players[possible_winners[i]].scores[score_tier];
+        if (players[possible_winners[i]]->scores[score_tier] > highest_score){
+            highest_score = players[possible_winners[i]]->scores[score_tier];
             winners_count = 1;
             winners[0] = possible_winners[i];
         }
         //If they have both the exact same score, we have a tie
-        else if (players[possible_winners[i]].scores[score_tier] == highest_score){
+        else if (players[possible_winners[i]]->scores[score_tier] == highest_score){
             winners[winners_count] = possible_winners[i];
             winners_count++;
         }

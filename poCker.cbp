@@ -69,7 +69,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/playingcard.h" />
-		<Unit filename="src/playingcard_enums.h" />
 		<Unit filename="src/utils.c">
 			<Option compilerVar="CC" />
 		</Unit>
