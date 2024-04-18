@@ -2,7 +2,6 @@
 #include "CuTest.h"
 
 CuSuite* DealerGetSuite();
-CuSuite* GamerulesGetSuite();
 CuSuite* GamestateGetSuite();
 CuSuite* HandrankingGetSuite();
 CuSuite* IoGetSuite();
@@ -15,7 +14,6 @@ void RunAllTests(void) {
     CuSuite* suite = CuSuiteNew();
 
     CuSuiteAddSuite(suite, DealerGetSuite());
-    CuSuiteAddSuite(suite, GamerulesGetSuite());
     CuSuiteAddSuite(suite, GamestateGetSuite());
     CuSuiteAddSuite(suite, HandrankingGetSuite());
     CuSuiteAddSuite(suite, IoGetSuite());

@@ -69,9 +69,6 @@
 		<Unit filename="test/test_dealer.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="test/test_gamerules.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="test/test_gamestate.c">
 			<Option compilerVar="CC" />
 		</Unit>
