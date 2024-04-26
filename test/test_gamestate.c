@@ -687,6 +687,26 @@ static void test_settingUpRiverRound(CuTest* ct){
     CuAssert(ct, "", players[state->b_blind_player]->funds == 1200 - 10);
 }
 
+static void test_advancingToNextBettingRoundResetsTurnsLeftProperly(CuTest* ct){
+    const GameRuleSet rules = {
+        .player_count = 4,
+        .funds_per_player = 10000
+    };
+    const GameState* state = gsCreateNew(&rules);
+    Player* players[rules.player_count];
+    for (int i = 0; i < rules.player_count; ++i)
+        players[i] = playerCreateNewWithFunds(rules.funds_per_player);
+
+    int decision = 0;
+    for (int i = 0; i < 4; ++i){
+        gsSetUpBettingRound(state, players, &rules);
+        CuAssert(ct, "", state->turns_left == rules.player_count - 1);
+        gsAdvancePlayerTurn(state, players, NULL, &rules, &decision);
+        gsConcludeBettingRound(state);
+        CuAssert(ct, "", state->turns_left == rules.player_count - 2);
+    }
+}
+
 //  --  Tap-outs   --
 
 static void test_singleTapOut(CuTest* ct){
@@ -1221,6 +1241,7 @@ CuSuite* GamestateGetSuite(CuTest* ct){
     SUITE_ADD_TEST(suite, test_advancePlayerTurnsThroughRoundWithOnlyRaises);
     SUITE_ADD_TEST(suite, test_checkTheWhileLoopInMainForPlayerTurnAdvancing);
     SUITE_ADD_TEST(suite, test_allButOneFoldedConditionCheckForAdvancePlayerTurn);
+    SUITE_ADD_TEST(suite, test_advancingToNextBettingRoundResetsTurnsLeftProperly);
 
     SUITE_ADD_TEST(suite, test_settingUpPreFlopRound);
     SUITE_ADD_TEST(suite, test_settingUpFlopRound);
