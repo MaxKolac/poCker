@@ -40,7 +40,7 @@ int main()
     bool gameOver = false;
     do {
         globalState = gsCreateNew(&globalRules);
-        distributeCards(deck, *players, comm_cards, &globalRules);
+        distributeCards(deck, &players, comm_cards, &globalRules);
 
         //Create a new table of tapout pot status records
         unsigned int tapout_pot_statuses[globalRules.player_count];
