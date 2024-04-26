@@ -72,7 +72,9 @@ int main()
         }
 
         //Time for showdown and deciding the winners of the pot
-        gsPerformShowdown(globalState, players, tapout_pot_statuses, &globalRules, comm_cards);
+        int winners[globalRules.player_count];
+        int winners_count = gsDetermineWinners(winners, &globalRules, globalState, players, comm_cards);
+        gsAwardPot(globalState, players, tapout_pot_statuses, winners, winners_count);
         gameOver = gsCheckGameOverCondition(globalState, players, &globalRules);
         gsPassDealerButton(globalState, &globalRules);
     } while (!gameOver);
