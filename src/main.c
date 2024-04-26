@@ -6,12 +6,13 @@
 #include <time.h>
 #include "constants.h"
 #include "dealer.h"
-#include "player.h"
-#include "playingcard.h"
 #include "gamerules.h"
 #include "gamestate.h"
 #include "handranking.h"
-#include "io.h"
+#include "messages.h"
+#include "player.h"
+#include "playerio.h"
+#include "playingcard.h"
 #include "utils.h"
 
 int main()

@@ -1,5 +1,5 @@
-#ifndef IO_H
-#define IO_H
+#ifndef PLAYERIO_H
+#define PLAYERIO_H
 
 #include <stdbool.h>
 #include "gamerules.h"
@@ -7,12 +7,11 @@
 #include "player.h"
 
 /**
- *  \file io.h
+ *  \file playerio.h
  *  \brief Contains functions responsible for two-way communication with the human player through console inputs and outputs.
  */
 
-#define IO_DECISION_LENGTH 16
-#define IO_RESPONSE_LENGTH 72
+#define PLAYER_DECISION_LENGTH 16
 
 int promptInt(int, char*);
 bool promptBool(char*);
@@ -24,4 +23,4 @@ void printCommunityCards(const PlayingCard*[], const int);
 void printHoleCards(const Player*);
 void printShowdownResults(const int[], const int, const Player*[]);
 
-#endif // IO_H
+#endif // PLAYERIO_H

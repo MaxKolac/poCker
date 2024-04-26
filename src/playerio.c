@@ -1,4 +1,4 @@
-#include "io.h"
+#include "playerio.h"
 
 #include <ctype.h>
 #include <stdbool.h>
@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include "messages.h"
 
 /**
  *  \brief Prompts the user with a message for a positive integer or zero value.
@@ -115,7 +116,7 @@ int recognizeDecision(char* input){
  *  \warning Make sure that the response array is always the length of IO_RESPONSE_LENGTH!
  */
 bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, const GameRuleSet* rules, int player_decision, char response[]){
-    for (int i = 0; i < IO_RESPONSE_LENGTH; ++i)
+    for (int i = 0; i < MESSAGES_MAX_MSG_LENGTH; ++i)
         response[i] = '\0';
 
     //For raises:
@@ -184,7 +185,7 @@ void printGameState(const GameState* state){
     printf("The current bet is %d and the pot holds %d.\n",
            state->bet,
            state->pot);
-    printf("There have been %d raises in the current round \(%d\) so far.\n",
+    printf("There have been %d raises in the current round (%d) so far.\n",
            state->raises_performed,
            state->betting_round);
     printf("There are %d turns left to perform.\n",
@@ -198,8 +199,8 @@ void printCommunityCards(const PlayingCard* cards[], const int rev_comm_cards){
     }
     printf("Currently visible community cards (%d in total) are:\n", rev_comm_cards);
     for (int i = 0; i < rev_comm_cards; ++i){
-        char* pipName = getPipName(cards[i]->pips);
-        char* suitName = getSuitName(cards[i]->suit);
+        const char* pipName = getPipName(cards[i]->pips);
+        const char* suitName = getSuitName(cards[i]->suit);
         printf(" - %s of %s\n", pipName, suitName);
     }
 }
@@ -215,8 +216,8 @@ void printHoleCards(const Player* player){
 
 void printShowdownResults(const int winners[], const int winners_count, const Player* players[]){
     for (int i = 0; i < winners_count; ++i){
-        Player* currentWinner = players[winners[i]];
-        printf("Winner #%d: Player %d \(%s\) - ", i, winners[i], currentWinner->isHuman ? "Human" : "AI");
+        const Player* currentWinner = players[winners[i]];
+        printf("Winner #%d: Player %d (%s) - ", i, winners[i], currentWinner->isHuman ? "Human" : "AI");
         char firstCard[CARDNAME_MAX_LENGTH];
         char secondCard[CARDNAME_MAX_LENGTH];
         getCardName(currentWinner->current_hand[0], firstCard, CARDNAME_MAX_LENGTH);

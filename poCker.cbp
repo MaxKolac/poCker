@@ -54,17 +54,19 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/handranking.h" />
-		<Unit filename="src/io.c">
+		<Unit filename="src/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/io.h" />
-		<Unit filename="src/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/player.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/player.h" />
+		<Unit filename="src/playerio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/playerio.h" />
 		<Unit filename="src/playingcard.c">
 			<Option compilerVar="CC" />
 		</Unit>
