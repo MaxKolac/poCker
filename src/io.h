@@ -22,5 +22,6 @@ bool checkPlayerDecisionValidity(const Player*, const GameState*, const GameRule
 void printGameState(const GameState*);
 void printCommunityCards(const PlayingCard*[], const int);
 void printHoleCards(const Player*);
+void printShowdownResults(const int[], const int, const Player*[]);
 
 #endif // IO_H

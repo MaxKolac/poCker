@@ -60,7 +60,7 @@
 	"constants.h"
 	"playingcard.h"
 
-1713035349 c:\users\ja\documents\github\pocker\src\playingcard.h
+1714137859 c:\users\ja\documents\github\pocker\src\playingcard.h
 	<string.h>
 
 1713035338 c:\users\ja\documents\github\pocker\src\playingcard_enums.h
@@ -90,7 +90,7 @@
 	<stdio.h>
 	<string.h>
 
-1714129959 source:c:\users\ja\documents\github\pocker\src\main.c
+1714137581 source:c:\users\ja\documents\github\pocker\src\main.c
 	<assert.h>
 	<stdbool.h>
 	<stdio.h>
@@ -252,13 +252,13 @@
 	<stdlib.h>
 	<string.h>
 
-1714128475 c:\users\ja\documents\github\pocker\src\io.h
+1714137944 c:\users\ja\documents\github\pocker\src\io.h
 	<stdbool.h>
 	"gamerules.h"
 	"gamestate.h"
 	"player.h"
 
-1714132718 source:c:\users\ja\documents\github\pocker\src\io.c
+1714138010 source:c:\users\ja\documents\github\pocker\src\io.c
 	"io.h"
 	<ctype.h>
 	<stdbool.h>

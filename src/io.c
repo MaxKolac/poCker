@@ -213,3 +213,15 @@ void printHoleCards(const Player* player){
     }
 }
 
+void printShowdownResults(const int winners[], const int winners_count, const Player* players[]){
+    for (int i = 0; i < winners_count; ++i){
+        Player* currentWinner = players[winners[i]];
+        printf("Winner #%d: Player %d \(%s\) - ", i, winners[i], currentWinner->isHuman ? "Human" : "AI");
+        char firstCard[CARDNAME_MAX_LENGTH];
+        char secondCard[CARDNAME_MAX_LENGTH];
+        getCardName(currentWinner->current_hand[0], firstCard, CARDNAME_MAX_LENGTH);
+        getCardName(currentWinner->current_hand[1], secondCard, CARDNAME_MAX_LENGTH);
+        printf("%s and %s\n", firstCard, secondCard);
+    }
+}
+

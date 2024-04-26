@@ -11,6 +11,7 @@
 #define PIPS_PER_SUIT 13
 #define SUITS_COUNT 4
 #define DECK_LENGTH (4 * 13)
+#define CARDNAME_MAX_LENGTH (5 + 4 + 8)
 
 extern const int PIPS_PER_SUIT_OBJ;
 extern const int SUITS_COUNT_OBJ;
