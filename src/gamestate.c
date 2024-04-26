@@ -174,15 +174,17 @@ void gsConcludeBettingRound(GameState* state){
 }
 
 /**
- *  \brief Determines the winner(s) and pays them their winnings from the pot.
+ *  \brief Determines the winner(s) and populates the winners array with their indexes.
+ *  \returns The size of the populated winners array. In other words, how many winners there are.
  *
  *  If the win happened because of everyone else folding, only one player who did not fold is awarded the whole pot.
  *  Otherwise, everyone's hands are compared, winners are pulled and awarded their fair share.
- *  Tapped out winners receive their rewards first, the rest is then divide evenly between other winners.
- *  If the pot happened to be indivisible by amount of winners, small blind player receives the remainder.
  */
-void gsPerformShowdown(GameState* state, Player* players[], unsigned int tapout_pot_statuses[], const GameRuleSet* rules, const PlayingCard* comm_cards[]){
-    int winners[rules->player_count];
+int gsDetermineWinners(int winners[],
+                       const GameRuleSet* rules,
+                       const GameState* state,
+                       const Player* players[],
+                       const PlayingCard* comm_cards[]){
     int winners_count = 0;
     //If the win occurred through everyone but one player folding:
     if (state->all_but_one_folded){
@@ -202,7 +204,16 @@ void gsPerformShowdown(GameState* state, Player* players[], unsigned int tapout_
         }
         winners_count = decideWinners(players, rules->player_count, winners);
     }
+    return winners_count;
+}
 
+/**
+ *  \brief Determines the winner(s) and pays them their winnings from the pot.
+ *
+ *  Tapped out winners receive their rewards first, the rest is then divide evenly between other winners.
+ *  If the pot happened to be indivisible by amount of winners, small blind player receives the remainder.
+ */
+void gsAwardPot(GameState* state, Player* players[], unsigned int tapout_pot_statuses[], const int winners[], const int winners_count){
     //If we have a single winner, they take the whole pot;
     if (winners_count == 1){
         //Unless they tapped out, which means they only get a portion of it and the rest goes to small blind player.

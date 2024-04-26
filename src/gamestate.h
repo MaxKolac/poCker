@@ -48,7 +48,8 @@ GameState* gsCreateNew(const GameRuleSet*);
 void gsAdvancePlayerTurn(GameState*, Player*[], unsigned int[], const GameRuleSet*, const int*);
 void gsSetUpBettingRound(GameState*, Player*[], const GameRuleSet*);
 void gsConcludeBettingRound(GameState*);
-void gsPerformShowdown(GameState*, Player*[], unsigned int[], const GameRuleSet*, const PlayingCard*[]);
+int gsDetermineWinners(int[], const GameRuleSet*, const GameState*, const Player*[], const PlayingCard*[]);
+void gsAwardPot(GameState*, Player*[], unsigned int[], const int[], const int);
 bool gsCheckGameOverCondition(GameState*, Player*[], const GameRuleSet*);
 void gsPassDealerButton(GameState*, const GameRuleSet*);
 

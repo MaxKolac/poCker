@@ -35,14 +35,13 @@
 	<stdlib.h>
 	<string.h>
 
-1712917163 source:c:\users\ja\documents\github\pocker\src\handranking.c
+1714134768 source:c:\users\ja\documents\github\pocker\src\handranking.c
 	"handranking.h"
 	<limits.h>
 	<math.h>
 	<stdbool.h>
 	<stdio.h>
 	"playingcard.h"
-	"playingcard_enums.h"
 	"utils.h"
 
 1713035349 c:\users\ja\documents\github\pocker\src\playingcard.h
@@ -77,11 +76,10 @@
 
 1713035338 c:\users\ja\documents\github\pocker\src\playingcard_enums.h
 
-1712917163 source:c:\users\ja\documents\github\pocker\src\playingcard.c
+1714134773 source:c:\users\ja\documents\github\pocker\src\playingcard.c
 	"playingcard.h"
 	<stdio.h>
 	<string.h>
-	"playingcard_enums.h"
 
 1712917163 source:c:\users\ja\documents\github\pocker\src\constants.c
 	"constants.h"
@@ -113,7 +111,7 @@
 	"constants.h"
 	"io.h"
 
-1714129984 source:c:\users\ja\documents\github\pocker\src\gamestate.c
+1714134718 source:c:\users\ja\documents\github\pocker\src\gamestate.c
 	"gamestate.h"
 	<stdbool.h>
 	<stdlib.h>
@@ -125,7 +123,7 @@
 	"player.h"
 	"utils.h"
 
-1713013783 c:\users\ja\documents\github\pocker\src\gamestate.h
+1714134742 c:\users\ja\documents\github\pocker\src\gamestate.h
 	<stdbool.h>
 	"constants.h"
 	"gamerules.h"
@@ -136,7 +134,7 @@
 	"CuTest.h"
 	"../src/gamerules.h"
 
-1713451120 source:c:\users\ja\documents\github\pocker\test\test_gamestate.c
+1714135930 source:c:\users\ja\documents\github\pocker\test\test_gamestate.c
 	"CuTest.h"
 	"../src/gamestate.h"
 	"../src/playingcard.h"
@@ -145,12 +143,11 @@
 	"CuTest.h"
 	"../src/player.h"
 
-1713034231 source:c:\users\ja\documents\github\pocker\test\test_playingcard.c
+1714134779 source:c:\users\ja\documents\github\pocker\test\test_playingcard.c
 	<stdbool.h>
 	<stdio.h>
 	"CuTest.h"
 	"../src/playingcard.h"
-	"../src/playingcard_enums.h"
 
 1712563324 source:d:\github projects\pocker\src\constants.c
 	"constants.h"
@@ -312,7 +309,7 @@
 	"gamestate.h"
 	"player.h"
 
-1714131344 source:c:\users\ja\documents\github\pocker\src\io.c
+1714132718 source:c:\users\ja\documents\github\pocker\src\io.c
 	"io.h"
 	<ctype.h>
 	<stdbool.h>
