@@ -68,6 +68,9 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
         else {
             player_decision = *player_dec_override;
         }
+        //Debug
+        char* debug_isHuman = players[state->current_player]->isHuman ? "Human" : "AI";
+        printf("Player's \(%s\) decision was %d.\n", debug_isHuman, player_decision);
 
         //WARNING! This part assumes the player's decision was allowed and valid!
         //Consequence of player's actions
@@ -148,10 +151,11 @@ void gsSetUpBettingRound(GameState* state, Player* players[], const GameRuleSet*
         state->bet = ruleSet->big_blind;
         state->current_player = (state->b_blind_player + 1) % ruleSet->player_count;
     }
+    state->turns_left = ruleSet->player_count - 1;
 }
 
 /**
- *  \brief Reveals the needed amount of revealed community cards and increments the betting_round value of the passed GameState struct.
+ *  \brief Sets the amount of revealed community cards and increments the betting_round value of the passed GameState struct.
  */
 void gsConcludeBettingRound(GameState* state){
     //Pre-flop has no cards.

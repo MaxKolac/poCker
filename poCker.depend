@@ -39,7 +39,7 @@
 1710441325 c:\users\ja\documents\github\pocker\test\test_handranking.h
 	<assert.h>
 
-1713008849 source:c:\users\ja\documents\github\pocker\src\dealer.c
+1714127785 source:c:\users\ja\documents\github\pocker\src\dealer.c
 	"dealer.h"
 	<stdbool.h>
 	<stdio.h>
@@ -47,7 +47,6 @@
 	"gamerules.h"
 	"handranking.h"
 	"player.h"
-	"playingcard_enums.h"
 	"playingcard.h"
 	"utils.h"
 
@@ -93,7 +92,7 @@
 	<string.h>
 	"playingcard_enums.h"
 
-1713012677 source:c:\users\ja\documents\github\pocker\src\main.c
+1714129959 source:c:\users\ja\documents\github\pocker\src\main.c
 	<assert.h>
 	<stdbool.h>
 	<stdio.h>
@@ -110,7 +109,7 @@
 	"io.h"
 	"utils.h"
 
-1713444969 c:\users\ja\documents\github\pocker\src\dealer.h
+1714127931 c:\users\ja\documents\github\pocker\src\dealer.h
 	<stdbool.h>
 	"gamerules.h"
 	"gamestate.h"
@@ -123,11 +122,11 @@
 1712917163 source:c:\users\ja\documents\github\pocker\src\constants.c
 	"constants.h"
 
-1712917163 source:c:\users\ja\documents\github\pocker\src\player.c
+1713447019 source:c:\users\ja\documents\github\pocker\src\player.c
 	"player.h"
 	<stdlib.h>
 
-1713012629 source:c:\users\ja\documents\github\pocker\src\gamerules.c
+1714126757 source:c:\users\ja\documents\github\pocker\src\gamerules.c
 	"gamerules.h"
 	<math.h>
 	<stdio.h>
@@ -137,13 +136,15 @@
 1713035139 c:\users\ja\documents\github\pocker\src\gamerules.h
 	<stdbool.h>
 
-1713012910 source:c:\users\ja\documents\github\pocker\src\gamestate.c
+1714129984 source:c:\users\ja\documents\github\pocker\src\gamestate.c
 	"gamestate.h"
 	<stdbool.h>
 	<stdlib.h>
+	<stdio.h>
 	<math.h>
 	"dealer.h"
 	"gamerules.h"
+	"io.h"
 	"player.h"
 	"utils.h"
 
@@ -253,13 +254,13 @@
 	<stdlib.h>
 	<string.h>
 
-1713035053 c:\users\ja\documents\github\pocker\src\io.h
+1714128475 c:\users\ja\documents\github\pocker\src\io.h
 	<stdbool.h>
 	"gamerules.h"
 	"gamestate.h"
 	"player.h"
 
-1713023419 source:c:\users\ja\documents\github\pocker\src\io.c
+1714131344 source:c:\users\ja\documents\github\pocker\src\io.c
 	"io.h"
 	<ctype.h>
 	<stdbool.h>

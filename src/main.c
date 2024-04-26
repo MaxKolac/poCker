@@ -33,7 +33,9 @@ int main()
     PlayingCard* comm_cards[COMM_CARDS_COUNT];
     Player* players[globalRules.player_count];
     for (int i = 0; i < globalRules.player_count; ++i)
-        players[i] = playerCreateNew(globalRules.funds_per_player);
+        players[i] = playerCreateNewWithFunds(globalRules.funds_per_player);
+    for (int i = globalRules.ai_player_count; i < globalRules.player_count; ++i)
+        players[i]->isHuman = true;
 
     //  --  Game loop   --
     GameState* globalState;
@@ -52,13 +54,20 @@ int main()
             gsSetUpBettingRound(globalState, players, &globalRules);
 
             //  --  Single round of betting loop  --
-            while (globalState->turns_left > 0)
+            while (globalState->turns_left > 0){
+                printf("---\n");
+                printGameState(globalState);
+                printCommunityCards(comm_cards, globalState->revealed_comm_cards);
+                printHoleCards(players[globalState->current_player]);
                 gsAdvancePlayerTurn(globalState, players, tapout_pot_statuses, &globalRules, NULL);
+            }
 
             //If a betting round was suddenly ended by everyone but one player folding, get to pot payout right away
             if (globalState->all_but_one_folded)
                 break;
 
+            //Debug
+            printf("\t--- END OF BETTING ROUND %d ---\n", globalState->betting_round);
             gsConcludeBettingRound(globalState);
         }
 
@@ -66,7 +75,7 @@ int main()
         gsPerformShowdown(globalState, players, tapout_pot_statuses, &globalRules, comm_cards);
         gameOver = gsCheckGameOverCondition(globalState, players, &globalRules);
         gsPassDealerButton(globalState, &globalRules);
-    } while (gameOver);
+    } while (!gameOver);
 
     //Post-game results
     //TODO

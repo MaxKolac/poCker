@@ -44,7 +44,7 @@ void promptAIPlayersCount(GameRuleSet* grs){
                  "Enter the amount of AI players. The remaining players will be controlled by human prompts, Min - %d, Max - %d",
                  0,
                  grs->player_count);
-        ai_player_count = promptInt(2, msg);
+        ai_player_count = promptInt(3, msg);
     } while (ai_player_count < 0 || grs->player_count < ai_player_count);
     //Debug
     //printf("AI Player count: %d\n", ai_player_count);

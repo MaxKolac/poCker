@@ -514,7 +514,7 @@ static void test_checkTheWhileLoopInMainForPlayerTurnAdvancing(CuTest* ct){
         gsAdvancePlayerTurn(state, players, tapouts, &rules, 0);
     }
 
-    CuAssert(ct, "", state->current_player == state->s_blind_player);
+    CuAssert(ct, "", state->current_player == 0);
     CuAssert(ct, "", state->turns_left == 0);
     CuAssert(ct, "", state->bet == 0);
     CuAssert(ct, "", state->pot == 10 + (20 * 7));
