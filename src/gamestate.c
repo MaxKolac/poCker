@@ -6,6 +6,7 @@
 #include <math.h>
 #include "dealer.h"
 #include "gamerules.h"
+#include "messages.h"
 #include "playerio.h"
 #include "player.h"
 #include "utils.h"
@@ -44,7 +45,10 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
                 //For human players
                 bool decisionValid = false;
                 do {
+                    char input[MESSAGES_MAX_MSG_LENGTH];
+                    gets_s(input, MESSAGES_MAX_MSG_LENGTH);
                     player_decision = recognizeDecision(input);
+                    char response[MESSAGES_MAX_MSG_LENGTH];
                     decisionValid = checkPlayerDecisionValidity(players[state->current_player],
                                                                 state,
                                                                 ruleSet,

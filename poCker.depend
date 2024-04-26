@@ -143,6 +143,7 @@
 	<math.h>
 	"dealer.h"
 	"gamerules.h"
+	"messages.h"
 	"playerio.h"
 	"player.h"
 	"utils.h"
@@ -268,6 +269,13 @@
 	<string.h>
 	<limits.h>
 
+1714152326 c:\users\ja\documents\github\pocker\src\messages.h
+
+1714152326 source:c:\users\ja\documents\github\pocker\src\messages.c
+	"messages.h"
+	<stdio.h>
+	<string.h>
+
 1714152285 c:\users\ja\documents\github\pocker\src\playerio.h
 	<stdbool.h>
 	"gamerules.h"
@@ -282,4 +290,5 @@
 	<stdlib.h>
 	<string.h>
 	<limits.h>
+	"messages.h"
 

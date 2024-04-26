@@ -1,0 +1,3 @@
+TEST Hello world!
+TESTPARAM This is a digit %d
+
