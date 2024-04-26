@@ -124,7 +124,7 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
         if (rules->limit_fixed){
             //Has the raise limit been reacher?
             if (state->raises_performed >= MAX_BETS_PER_ROUND){
-                strcpy(response, "The limit of raises per one betting round has already been reached.");
+                strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDK_RAISE_LIMIT"));
                 return 0;
             }
             //The game's fixed-limit and we are in the first half of it. Can player afford the raise by small blind amount?

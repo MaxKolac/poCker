@@ -1,3 +1,4 @@
 TEST Hello world!
 TESTPARAM This is a digit %d
+PIO_CPDK_RAISE_LIMIT The limit of raises per one betting round has already been reached.
 

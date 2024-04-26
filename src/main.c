@@ -18,8 +18,7 @@
 int main()
 {
     //  -- Loading messages --
-    Message msgs[MESSAGES_COUNT];
-    msgLoadFromFile("loc.txt", msgs);
+    msgInitFromFile("loc.txt");
 
     //  --  Settings    --
     GameRuleSet globalRules;
