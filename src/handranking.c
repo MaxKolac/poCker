@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "playingcard.h"
-#include "playingcard_enums.h"
 #include "utils.h"
 
 /**
