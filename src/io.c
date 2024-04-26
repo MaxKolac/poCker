@@ -112,7 +112,7 @@ int recognizeDecision(char* input){
  *  \brief Checks that the player is allowed to do their action. Function meant for human players and their custom inputs.
  *  \param response The char array that will be filled with a message, in case the player tried to perform an illegal action.
  *  \return True, if the player is allowed. False, otherwise.
- *  \warning Make sure that the response array is always the length of PDVC_MSG_LENGTH!
+ *  \warning Make sure that the response array is always the length of IO_RESPONSE_LENGTH!
  */
 bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, const GameRuleSet* rules, int player_decision, char response[]){
     for (int i = 0; i < IO_RESPONSE_LENGTH; ++i)
@@ -158,6 +158,7 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
             return 0;
         }
     }
+    //For folds, no checks need to be performed
     //For tap outs:
     else if (player_decision == -2){
         if (_player->funds >= state->bet){
@@ -165,6 +166,50 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
             return 0;
         }
     }
-    //For folds, no checks need to be performed
+    //For unrecognized player decision, it's an automatic false
+    else if (player_decision == INT_MIN){
+        strcpy(response, "Unrecognized decision.");
+        return 0;
+    }
+
     return 1;
 }
+
+void printGameState(const GameState* state){
+    printf("Current player: %d, Dealer: %d, Small Blind: %d, Big Blind: %d\n",
+           state->current_player,
+           state->dealer_player,
+           state->s_blind_player,
+           state->b_blind_player);
+    printf("The current bet is %d and the pot holds %d.\n",
+           state->bet,
+           state->pot);
+    printf("There have been %d raises in the current round \(%d\) so far.\n",
+           state->raises_performed,
+           state->betting_round);
+    printf("There are %d turns left to perform.\n",
+           state->turns_left);
+}
+
+void printCommunityCards(const PlayingCard* cards[], const int rev_comm_cards){
+    if (rev_comm_cards == 0){
+        printf("There are no community cards revealed.\n");
+        return;
+    }
+    printf("Currently visible community cards (%d in total) are:\n", rev_comm_cards);
+    for (int i = 0; i < rev_comm_cards; ++i){
+        char* pipName = getPipName(cards[i]->pips);
+        char* suitName = getSuitName(cards[i]->suit);
+        printf(" - %s of %s\n", pipName, suitName);
+    }
+}
+
+void printHoleCards(const Player* player){
+    printf("Your current cards are: \n");
+    for (int i = 0; i < CARDS_PER_PLAYER; ++i){
+        char* pipName = getPipName(player->current_hand[i]->pips);
+        char* suitName = getSuitName(player->current_hand[i]->suit);
+        printf(" - %s of %s\n", pipName, suitName);
+    }
+}
+
