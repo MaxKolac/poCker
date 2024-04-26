@@ -8,10 +8,10 @@
 #include <limits.h>
 
 /**
- *  \brief Prompts the user with a message for a positive non-zero integer value.
+ *  \brief Prompts the user with a message for a positive integer or zero value.
  *  \param max_length The maximum amount of input characters to consider
  *  \param msg The message to show to the user. The function appends a colon with a space at the end automatically.
- *  \returns The first input from user that can be considered a positive non-zero integer.
+ *  \returns The first input from user that can be considered a positive non-zero integer. Rules of strtol() function apply.
  *
  *  The function will not end until the user provides a valid string which can be considered an valid returnable integer.
  */
@@ -22,7 +22,7 @@ int promptInt(int max_length, char* msg){
         printf("%s: ", msg);
         gets_s(&input, max_length);
         result = strtol(input, NULL, 10);
-    } while (result <= 0);
+    } while (result < 0);
     return result;
 }
 
@@ -207,9 +207,9 @@ void printCommunityCards(const PlayingCard* cards[], const int rev_comm_cards){
 void printHoleCards(const Player* player){
     printf("Your current cards are: \n");
     for (int i = 0; i < CARDS_PER_PLAYER; ++i){
-        char* pipName = getPipName(player->current_hand[i]->pips);
-        char* suitName = getSuitName(player->current_hand[i]->suit);
-        printf(" - %s of %s\n", pipName, suitName);
+        char cardName[CARDNAME_MAX_LENGTH];
+        getCardName(player->current_hand[i], cardName, CARDNAME_MAX_LENGTH);
+        printf(" - %s\n", cardName);
     }
 }
 

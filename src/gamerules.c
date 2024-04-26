@@ -64,7 +64,7 @@ void promptFundsPerPlayer(GameRuleSet* grs){
                  "Set the initial amount of funds for each player. Min - %d, Max - %d",
                  MIN_FUNDS_PER_PLAYER,
                  MAX_FUNDS_PER_PLAYER);
-        ini_funds_per_player = promptInt(6, msg);
+        ini_funds_per_player = promptInt(7, msg);
     } while (ini_funds_per_player < MIN_FUNDS_PER_PLAYER || MAX_FUNDS_PER_PLAYER < ini_funds_per_player);
     //Debug
     //printf("Initial funds per player: %d\n", ini_funds_per_player);
