@@ -12,7 +12,7 @@
  *  \brief Prompts the user with a message for a positive integer or zero value.
  *  \param max_length The maximum amount of input characters to consider
  *  \param msg The message to show to the user. The function appends a colon with a space at the end automatically.
- *  \returns The first input from user that can be considered a positive non-zero integer. Rules of strtol() function apply.
+ *  \returns The first input from user that can be considered a positive integer or zero. Rules of strtol() function apply.
  *
  *  The function will not end until the user provides a valid string which can be considered an valid returnable integer.
  */
