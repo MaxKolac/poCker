@@ -4,7 +4,8 @@
 CuSuite* DealerGetSuite();
 CuSuite* GamestateGetSuite();
 CuSuite* HandrankingGetSuite();
-CuSuite* IoGetSuite();
+CuSuite* MessagesGetSuite();
+CuSuite* PlayerIoGetSuite();
 CuSuite* PlayerGetSuite();
 CuSuite* PlayingcardGetSuite();
 CuSuite* UtilsGetSuite();
@@ -16,7 +17,8 @@ void RunAllTests(void) {
     CuSuiteAddSuite(suite, DealerGetSuite());
     CuSuiteAddSuite(suite, GamestateGetSuite());
     CuSuiteAddSuite(suite, HandrankingGetSuite());
-    CuSuiteAddSuite(suite, IoGetSuite());
+    CuSuiteAddSuite(suite, MessagesGetSuite());
+    CuSuiteAddSuite(suite, PlayerIoGetSuite());
     CuSuiteAddSuite(suite, PlayerGetSuite());
     CuSuiteAddSuite(suite, PlayingcardGetSuite());
     CuSuiteAddSuite(suite, UtilsGetSuite());

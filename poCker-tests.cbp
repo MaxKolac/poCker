@@ -25,6 +25,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="loc.txt" />
 		<Unit filename="src/constants.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -45,8 +46,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/handranking.h" />
+		<Unit filename="src/messages.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/messages.h" />
 		<Unit filename="src/player.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -81,6 +84,7 @@
 		<Unit filename="test/test_handranking.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="test/test_messages.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="test/test_player.c">

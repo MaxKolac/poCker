@@ -18,7 +18,7 @@
 int main()
 {
     //  -- Loading messages --
-    msgInitFromFile("loc.txt");
+    msgInitFromFile(MESSAGES_FILENAME);
 
     //  --  Settings    --
     GameRuleSet globalRules;
