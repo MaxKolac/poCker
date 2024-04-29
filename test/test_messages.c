@@ -35,11 +35,30 @@ static void test_retrieveParametrizedTestString(CuTest* ct){
     CuAssertStrEquals(ct, expectedWithParam, actualWithParam);
 }
 
+static void test_retrieveTestStringWithNewline(CuTest* ct){
+    char* expected = "Hello world!\n";
+    char* actual = msgGetn(GLOBAL_MSGS, "TEST");
+    CuAssertStrEquals(ct, expected, actual);
+}
+
+static void test_retrieveParametrizedTestStringWithNewline(CuTest* ct){
+    char* expected = "This is a digit %d\n";
+    char* actual = msgGetn(GLOBAL_MSGS, "TESTPARAM");
+    CuAssertStrEquals(ct, expected, actual);
+
+    char* expectedWithParam = "This is a digit 12345\n";
+    char actualWithParam[MESSAGES_MAX_MSG_LENGTH];
+    snprintf(actualWithParam, MESSAGES_MAX_MSG_LENGTH, expected, 12345);
+    CuAssertStrEquals(ct, expectedWithParam, actualWithParam);
+}
+
 CuSuite* MessagesGetSuite(){
     CuSuite* suite = CuSuiteNew();
     SUITE_ADD_TEST(suite, setup_globalMsgsInitialization);
     SUITE_ADD_TEST(suite, test_invalidKeyReturnsErrorMsg);
     SUITE_ADD_TEST(suite, test_retrieveTestString);
     SUITE_ADD_TEST(suite, test_retrieveParametrizedTestString);
+    SUITE_ADD_TEST(suite, test_retrieveTestStringWithNewline);
+    SUITE_ADD_TEST(suite, test_retrieveParametrizedTestStringWithNewline);
     return suite;
 }

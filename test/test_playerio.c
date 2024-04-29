@@ -156,8 +156,8 @@ static void test_checkPlayerDecisionValidity_CallsChecks_scenario2(CuTest* ct){
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
     CuAssert(ct, response, !result);
-    CuAssertStrEquals(ct, "You cannot afford to call the bet.", response);
-    CuAssertStrEquals(ct, msgGet(GLOBAL_MSGS, "PIO_CPDV_CALL"), response);
+    CuAssertStrEquals(ct, "You cannot afford to call the bet.\n", response);
+    CuAssertStrEquals(ct, msgGetn(GLOBAL_MSGS, "PIO_CPDV_CALL"), response);
 }
 
 static void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario1(CuTest* ct){
@@ -199,8 +199,8 @@ static void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario2(CuTest*
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
     CuAssert(ct, response, !result);
-    CuAssertStrEquals(ct, "You cannot afford to raise the bet by the required small blind amount.", response);
-    CuAssertStrEquals(ct, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_SB_AMOUNT"), response);
+    CuAssertStrEquals(ct, "You cannot afford to raise the bet by the required small blind amount.\n", response);
+    CuAssertStrEquals(ct, msgGetn(GLOBAL_MSGS, "PIO_CPDV_RAISE_SB_AMOUNT"), response);
 }
 
 static void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario3(CuTest* ct){
@@ -221,8 +221,8 @@ static void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario3(CuTest*
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
     CuAssert(ct, response, !result);
-    CuAssertStrEquals(ct, "The limit of raises per one betting round has already been reached.", response);
-    CuAssertStrEquals(ct, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_LIMIT"), response);
+    CuAssertStrEquals(ct, "The limit of raises per one betting round has already been reached.\n", response);
+    CuAssertStrEquals(ct, msgGetn(GLOBAL_MSGS, "PIO_CPDV_RAISE_LIMIT"), response);
 }
 
 static void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario4(CuTest* ct){
@@ -243,8 +243,8 @@ static void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario4(CuTest*
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
     CuAssert(ct, response, !result);
-    CuAssertStrEquals(ct, "You cannot afford to raise the bet by the required big blind amount.", response);
-    CuAssertStrEquals(ct, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_BB_AMOUNT"), response);
+    CuAssertStrEquals(ct, "You cannot afford to raise the bet by the required big blind amount.\n", response);
+    CuAssertStrEquals(ct, msgGetn(GLOBAL_MSGS, "PIO_CPDV_RAISE_BB_AMOUNT"), response);
 }
 
 static void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario1(CuTest* ct){
@@ -286,8 +286,8 @@ static void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario2(CuTes
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
     CuAssert(ct, response, !result);
-    CuAssertStrEquals(ct, "You cannot lower the bet, it can only be raised up.", response);
-    CuAssertStrEquals(ct, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_TOLOWER"), response);
+    CuAssertStrEquals(ct, "You cannot lower the bet, it can only be raised up.\n", response);
+    CuAssertStrEquals(ct, msgGetn(GLOBAL_MSGS, "PIO_CPDV_RAISE_TOLOWER"), response);
 }
 
 static void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario3(CuTest* ct){
@@ -308,8 +308,8 @@ static void test_checkPlayerDecisionValidity_RaisesInNoLimitGame_scenario3(CuTes
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
     CuAssert(ct, response, !result);
-    CuAssertStrEquals(ct, "You cannot afford to raise the bet by the specified amount.", response);
-    CuAssertStrEquals(ct, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_GENERIC"), response);
+    CuAssertStrEquals(ct, "You cannot afford to raise the bet by the specified amount.\n", response);
+    CuAssertStrEquals(ct, msgGetn(GLOBAL_MSGS, "PIO_CPDV_RAISE_GENERIC"), response);
 }
 
 static void test_checkPlayerDecisionValidity_TapOuts_scenario1(CuTest* ct){
@@ -351,8 +351,17 @@ static void test_checkPlayerDecisionValidity_TapOuts_scenario2(CuTest* ct){
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision, response);
 
     CuAssert(ct, response, !result);
-    CuAssertStrEquals(ct, "You can still afford to call the current bet. You may not tap out just yet.", response);
-    CuAssertStrEquals(ct, msgGet(GLOBAL_MSGS, "PIO_CPDV_TAPOUT"), response);
+    char* expectedResponse = "You can still afford to call the current bet. You may not tap out just yet.\n";
+    char* actualResponse = msgGetn(GLOBAL_MSGS, "PIO_CPDV_TAPOUT");
+    //This CuAssert function seems to corrupt the actualResponse variable.
+    //Investigeting it thoroughly with debugger had shown no anomalies before entering this function.
+    //CuAssertStrEquals(ct, actualResponse, response);
+
+    //If CuAssertStrEquals is called BEFORE the one with strcmp, the actualResponse char array will become corrupted at its end
+    //Not sure why or how, since actualResponse is not passed into any CuTest function before
+    //And yes, it does get corrupted once control returns from CuAssertStrEquals
+    CuAssert(ct, "", strcmp(actualResponse, response) == 0);
+    CuAssertStrEquals(ct, expectedResponse, response);
 }
 
 

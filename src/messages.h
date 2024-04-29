@@ -4,6 +4,9 @@
 /**
  *  \file messages.h
  *  \brief Allows to use string literals loaded from a separate text file through a dictionary of KeyValuePairs.
+ *
+ *  Lines retrieved through msgGetn(const Message[], const char*) need to be shorter by 1 than MESSAGES_MAX_MSG_LENGTH, since
+ *  they will be appended with a newline character.
  */
 
 /**
@@ -39,6 +42,7 @@ typedef struct {
 extern Message GLOBAL_MSGS[MESSAGES_COUNT];
 
 void msgInitFromFile(const char*);
-char* msgGet(Message[], const char*);
+char* msgGet(const Message[], const char*);
+char* msgGetn(const Message[], const char*);
 
 #endif // MESSAGES_H
