@@ -46,6 +46,7 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
                 bool decisionValid = false;
                 do {
                     char input[MESSAGES_MAX_MSG_LENGTH];
+                    printf(msgGet(GLOBAL_MSGS, "GAMESTATE_HUMANPROMPT"), state->current_player);
                     gets_s(input, MESSAGES_MAX_MSG_LENGTH);
                     player_decision = recognizeDecision(input);
                     char response[MESSAGES_MAX_MSG_LENGTH];

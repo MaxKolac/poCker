@@ -14,10 +14,13 @@
 /**
  *  \brief Maximum length of a single message text
  *  \warning If you change this value, make sure that the regular expression inside msgInitFromFile matches the new value!
+ *
+ *  Keep in mind this value only cares about the raw line inside the localization file.
+ *  If the line includes a string format, like '%d', the value replacing this format might be longer than the format itself.
  */
 #define MESSAGES_MAX_MSG_LENGTH 120
 /** \brief Current amount of lines contained within the loc.txt file */
-#define MESSAGES_COUNT 15
+#define MESSAGES_COUNT 16
 /** \brief Defines the localization's filename */
 #define MESSAGES_FILENAME "loc.txt"
 /** \brief String literal format used when no matching key was found in the global singleton. */
