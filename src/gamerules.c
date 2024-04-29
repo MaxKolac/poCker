@@ -3,7 +3,6 @@
 #include <math.h>
 #include <stdio.h>
 #include "constants.h"
-#include "io.h"
 
 const int MIN_PLAYER_COUNT = 3;
 const int MAX_PLAYER_COUNT = 12;
