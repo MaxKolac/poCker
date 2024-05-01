@@ -54,15 +54,13 @@ int main()
             tapout_pot_statuses[i] = 0;
 
         //Play four betting rounds: pre-flop, flop, turn, river
-        while (globalState->betting_round < 4){
+        while (globalState->betting_round < MAX_ROUNDS_PER_GAME){
             gsSetUpBettingRound(globalState, players, &globalRules);
 
             //  --  Single round of betting loop  --
             while (globalState->turns_left > 0){
                 printf("---\n");
-                printGameState(globalState);
-                printCommunityCards(comm_cards, globalState->revealed_comm_cards);
-                printHoleCards(players[globalState->current_player]);
+                printPlayerInfobox(globalState, players[globalState->current_player], comm_cards);
                 gsAdvancePlayerTurn(globalState, players, tapout_pot_statuses, &globalRules, NULL);
             }
 
@@ -71,7 +69,7 @@ int main()
                 break;
 
             //Debug
-            printf("\t--- END OF BETTING ROUND %d ---\n", globalState->betting_round);
+            //printf("\t--- END OF BETTING ROUND %d ---\n", globalState->betting_round);
             gsConcludeBettingRound(globalState);
         }
 

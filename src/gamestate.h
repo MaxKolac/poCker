@@ -8,6 +8,7 @@
 #include "playingcard.h"
 
 #define MAX_BETS_PER_ROUND 3
+#define MAX_ROUNDS_PER_GAME 4
 
 /**
  *  \file gamestate.h
