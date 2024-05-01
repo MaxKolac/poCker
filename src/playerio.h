@@ -18,7 +18,9 @@ bool promptBool(char*);
 int recognizeDecision(char*);
 bool checkPlayerDecisionValidity(const Player*, const GameState*, const GameRuleSet*, int, char[]);
 
-void printGameState(const GameState*);
+void printPlayerInfobox(const GameState*, const Player*, const PlayingCard*[]);
+void printGameStateFull(const GameState*);
+void printGameStateBrief(const GameState*);
 void printCommunityCards(const PlayingCard*[], const int);
 void printHoleCards(const Player*);
 void printShowdownResults(const int[], const int, const Player*[]);

@@ -176,28 +176,50 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
     return 1;
 }
 
-void printGameState(const GameState* state){
-    printf("Current player: %d, Dealer: %d, Small Blind: %d, Big Blind: %d\n",
+/**
+ *  \brief Prints the infobox that appears before Player has a chance to choose an action.
+ */
+void printPlayerInfobox(const GameState* state, const Player* player, const PlayingCard* comm_cards[]){
+    printGameStateBrief(state);
+    printCommunityCards(comm_cards, state->revealed_comm_cards);
+    printHoleCards(player);
+}
+
+/**
+ *  \brief Prints a concise message about current GameState, meant to be seen by Player.
+ */
+void printGameStateBrief(const GameState* state){
+    printf(msgGetn(GLOBAL_MSGS, "PIO_GAMESTATE"),
+           state->betting_round,
+           MAX_ROUNDS_PER_GAME,
+           state->bet,
+           MAX_BETS_PER_ROUND - state->raises_performed,
+           state->pot);
+}
+
+/**
+ *  \brief Prints the full debug message about the given GameState struct.
+ */
+void printGameStateFull(const GameState* state){
+    printf(msgGetn(GLOBAL_MSGS, "PIO_GAMESTATE_PLAYERS"),
            state->current_player,
            state->dealer_player,
            state->s_blind_player,
            state->b_blind_player);
-    printf("The current bet is %d and the pot holds %d.\n",
-           state->bet,
-           state->pot);
-    printf("There have been %d raises in the current round (%d) so far.\n",
-           state->raises_performed,
-           state->betting_round);
-    printf("There are %d turns left to perform.\n",
+    printf(msgGetn(GLOBAL_MSGS, "PIO_GAMESTATE_TURNS"),
            state->turns_left);
+    printGameStateBrief(state);
 }
 
+/**
+ *  \brief Prints the currently revealed community cards along with their count.
+ */
 void printCommunityCards(const PlayingCard* cards[], const int rev_comm_cards){
     if (rev_comm_cards == 0){
-        printf("There are no community cards revealed.\n");
+        printf(msgGetn(GLOBAL_MSGS, "PIO_COMMCARDS_NONE"));
         return;
     }
-    printf("Currently visible community cards (%d in total) are:\n", rev_comm_cards);
+    printf(msgGetn(GLOBAL_MSGS, "PIO_COMMCARDS"), rev_comm_cards, COMM_CARDS_COUNT);
     for (int i = 0; i < rev_comm_cards; ++i){
         const char* pipName = getPipName(cards[i]->pips);
         const char* suitName = getSuitName(cards[i]->suit);
@@ -205,8 +227,11 @@ void printCommunityCards(const PlayingCard* cards[], const int rev_comm_cards){
     }
 }
 
+/**
+ *  \brief Prints Player's current cards.
+ */
 void printHoleCards(const Player* player){
-    printf("Your current cards are: \n");
+    printf(msgGetn(GLOBAL_MSGS, "PIO_HOLECARDS"));
     for (int i = 0; i < CARDS_PER_PLAYER; ++i){
         char cardName[CARDNAME_MAX_LENGTH];
         getCardName(player->current_hand[i], cardName, CARDNAME_MAX_LENGTH);
@@ -214,10 +239,13 @@ void printHoleCards(const Player* player){
     }
 }
 
+/**
+ *  \brief Prints the results of a showdown.
+ */
 void printShowdownResults(const int winners[], const int winners_count, const Player* players[]){
     for (int i = 0; i < winners_count; ++i){
         const Player* currentWinner = players[winners[i]];
-        printf("Winner #%d: Player %d (%s) - ", i, winners[i], currentWinner->isHuman ? "Human" : "AI");
+        printf(msgGet(GLOBAL_MSGS, "PIO_SHOWDOWN"), i, winners[i], currentWinner->isHuman ? "Human" : "AI");
         char firstCard[CARDNAME_MAX_LENGTH];
         char secondCard[CARDNAME_MAX_LENGTH];
         getCardName(currentWinner->current_hand[0], firstCard, CARDNAME_MAX_LENGTH);
