@@ -40,13 +40,5 @@ char* msgGet(const Message messages[], const char* key){
             return messages[i].message;
         }
     }
-    return "NO MESSAGE FOR THIS KEY FOUND";
-
-    //Excuse the mess
-    //Based on this source: NOTES sections of https://devdocs.io/c/io/fprintf
-    //int requiredSize = snprintf(NULL, 0, MESSAGES_NOKEYFOUND_FORMAT, key);
-    //char buffer[requiredSize + 1]; //remember about null terminating byte
-    //snprintf(buffer, sizeof(buffer), MESSAGES_NOKEYFOUND_FORMAT, key);
-    //char* finalLiteral = buffer;
-    //return finalLiteral;
+    return MESSAGES_NOKEYFOUND;
 }

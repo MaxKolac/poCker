@@ -111,42 +111,38 @@ int recognizeDecision(char* input){
 
 /**
  *  \brief Checks that the player is allowed to do their action. Function meant for human players and their custom inputs.
- *  \param response The char array that will be filled with a message, in case the player tried to perform an illegal action.
  *  \return True, if the player is allowed. False, otherwise.
  *  \warning Make sure that the response array is always the length of MESSAGES_MAX_MSG_LENGTH!
  */
-bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, const GameRuleSet* rules, int player_decision, char response[]){
-    for (int i = 0; i < MESSAGES_MAX_MSG_LENGTH; ++i)
-        response[i] = '\0';
-
+bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, const GameRuleSet* rules, int player_decision){
     //For raises:
     if (player_decision > 0){
         if (rules->limit_fixed){
             //Has the raise limit been reacher?
             if (state->raises_performed >= MAX_BETS_PER_ROUND){
-                strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_LIMIT"));
+                MSG_SHOWN(GLOBAL_MSGS, "PIO_CPDV_RAISE_LIMIT");
                 return 0;
             }
             //The game's fixed-limit and we are in the first half of it. Can player afford the raise by small blind amount?
             if (state->betting_round <= 1 && _player->funds < state->bet + rules->small_blind){
-                strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_SB_AMOUNT"));
+                MSG_SHOWN(GLOBAL_MSGS, "PIO_CPDV_RAISE_SB_AMOUNT");
                 return 0;
             }
             //The game's fixed-limit and we are in the second half of it. Can player afford the raise by big blind amount?
             if (state->betting_round > 1 && _player->funds < state->bet + rules->big_blind){
-                strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_BB_AMOUNT"));
+                MSG_SHOWN(GLOBAL_MSGS, "PIO_CPDV_RAISE_BB_AMOUNT");
                 return 0;
             }
         }
         else {
             //The game's no limit, can player even afford their decision?
             if (_player->funds < player_decision){
-                strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_GENERIC"));
+                MSG_SHOWN(GLOBAL_MSGS, "PIO_CPDV_RAISE_GENERIC");
                 return 0;
             }
             //Is player trying to lower the bet?
             if (player_decision <= state->bet){
-                strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_TOLOWER"));
+                MSG_SHOWN(GLOBAL_MSGS, "PIO_CPDV_RAISE_TOLOWER");
                 return 0;
             }
         }
@@ -155,7 +151,7 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
     else if (player_decision == 0){
         //Can the player afford to call?
         if (_player->funds < state->bet){
-            strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_CALL"));
+            MSG_SHOWN(GLOBAL_MSGS, "PIO_CPDV_CALL");
             return 0;
         }
     }
@@ -163,13 +159,13 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
     //For tap outs:
     else if (player_decision == -2){
         if (_player->funds >= state->bet){
-            strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_TAPOUT"));
+            MSG_SHOWN(GLOBAL_MSGS, "PIO_CPDV_TAPOUT");
             return 0;
         }
     }
     //For unrecognized player decision, it's an automatic false
     else if (player_decision == INT_MIN){
-        strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_UNKNOWN"));
+        MSG_SHOWN(GLOBAL_MSGS, "PIO_CPDV_UNKNOWN");
         return 0;
     }
 

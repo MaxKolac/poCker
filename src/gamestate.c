@@ -46,16 +46,10 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
                 bool decisionValid = false;
                 do {
                     char input[MESSAGES_MAX_MSG_LENGTH];
-                    printf(msgGet(GLOBAL_MSGS, "GAMESTATE_HUMANPROMPT"), state->current_player);
+                    MSG_SHOWV(GLOBAL_MSGS, "GAMESTATE_HUMANPROMPT", state->current_player);
                     gets_s(input, MESSAGES_MAX_MSG_LENGTH);
                     player_decision = recognizeDecision(input);
-                    char response[MESSAGES_MAX_MSG_LENGTH];
-                    decisionValid = checkPlayerDecisionValidity(players[state->current_player],
-                                                                state,
-                                                                ruleSet,
-                                                                player_decision,
-                                                                response);
-                    printf(response);
+                    decisionValid = checkPlayerDecisionValidity(players[state->current_player], state, ruleSet, player_decision);
                 } while(!decisionValid);
             }            else {
                 //for AI players - for now this function always returns 0 - CHECK
