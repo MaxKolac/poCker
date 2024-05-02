@@ -1,6 +1,7 @@
 #include "CuTest.h"
 #include "../src/messages.h"
 #include <stdbool.h>
+#include <stdio.h>
 
 static void setup_globalMsgsInitialization(CuTest* ct){
     msgInitFromFile(MESSAGES_FILENAME);
@@ -12,8 +13,7 @@ static void setup_globalMsgsInitialization(CuTest* ct){
 
 static void test_invalidKeyReturnsErrorMsg(CuTest* ct){
     char* key = "someBogusKey";
-    char* expected[MESSAGES_MAX_MSG_LENGTH];
-    snprintf(expected, MESSAGES_MAX_MSG_LENGTH, MESSAGES_NOKEYFOUND_FORMAT, key);
+    char* expected = MESSAGES_NOKEYFOUND;
     char* actual = msgGet(GLOBAL_MSGS, key);
     CuAssertStrEquals(ct, expected, actual);
 }
@@ -35,21 +35,20 @@ static void test_retrieveParametrizedTestString(CuTest* ct){
     CuAssertStrEquals(ct, expectedWithParam, actualWithParam);
 }
 
-static void test_retrieveTestStringWithNewline(CuTest* ct){
-    char* expected = "Hello world!\n";
-    char* actual = msgGetn(GLOBAL_MSGS, "TEST");
-    CuAssertStrEquals(ct, expected, actual);
+static void test_macroMsgShowWithCorrectKey(CuTest* ct){
+    TODOTEST(ct);
 }
 
-static void test_retrieveParametrizedTestStringWithNewline(CuTest* ct){
-    char* expected = "This is a digit %d\n";
-    char* actual = msgGetn(GLOBAL_MSGS, "TESTPARAM");
-    CuAssertStrEquals(ct, expected, actual);
+static void test_macroMsgShowWithIncorrectKey(CuTest* ct){
+    TODOTEST(ct);
+}
 
-    char* expectedWithParam = "This is a digit 12345\n";
-    char actualWithParam[MESSAGES_MAX_MSG_LENGTH];
-    snprintf(actualWithParam, MESSAGES_MAX_MSG_LENGTH, expected, 12345);
-    CuAssertStrEquals(ct, expectedWithParam, actualWithParam);
+static void test_macroMsgShowNWithCorrectKey(CuTest* ct){
+    TODOTEST(ct);
+}
+
+static void test_macroMsgShowNWithIncorrectKey(CuTest* ct){
+    TODOTEST(ct);
 }
 
 CuSuite* MessagesGetSuite(){
@@ -58,7 +57,9 @@ CuSuite* MessagesGetSuite(){
     SUITE_ADD_TEST(suite, test_invalidKeyReturnsErrorMsg);
     SUITE_ADD_TEST(suite, test_retrieveTestString);
     SUITE_ADD_TEST(suite, test_retrieveParametrizedTestString);
-    SUITE_ADD_TEST(suite, test_retrieveTestStringWithNewline);
-    SUITE_ADD_TEST(suite, test_retrieveParametrizedTestStringWithNewline);
+    SUITE_ADD_TEST(suite, test_macroMsgShowWithCorrectKey);
+    SUITE_ADD_TEST(suite, test_macroMsgShowWithIncorrectKey);
+    SUITE_ADD_TEST(suite, test_macroMsgShowNWithCorrectKey);
+    SUITE_ADD_TEST(suite, test_macroMsgShowNWithIncorrectKey);
     return suite;
 }

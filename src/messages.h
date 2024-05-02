@@ -26,6 +26,20 @@
 /** \brief String literal returned when no message with a matching key was found. */
 #define MESSAGES_NOKEYFOUND "NO MESSAGE FOUND FOR THIS KEY"
 
+/** \brief Quick macro for showing a message. */
+#define MSG_SHOW(dict,key)       printf(msgGet(dict,key))
+/** \brief Quick macro for showing a message. Prints a newline character at the end. */
+#define MSG_SHOWN(dict,key)      printf(msgGet(dict,key)); printf("\n")
+/** \brief Quick macro for showing a message. Prints a space character at the end. */
+#define MSG_SHOWS(dict,key)      printf(msgGet(dict,key)); printf(" ")
+
+/** \brief Quick macro for showing a message. Accepts variadic arguments. */
+#define MSG_SHOWV(dict,key,...)  printf(msgGet(dict,key),__VA_ARGS__)
+/** \brief Quick macro for showing a message. Accepts variadic arguments and prints a newline character at the end. */
+#define MSG_SHOWVN(dict,key,...) printf(msgGet(dict,key),__VA_ARGS__); printf("\n")
+/** \brief Quick macro for showing a message. Accepts variadic arguments and prints a space character at the end. */
+#define MSG_SHOWVS(dict,key,...) printf(msgGet(dict,key),__VA_ARGS__); printf(" ")
+
 /** \brief A message string with a unique Key. */
 typedef struct {
     char key[MESSAGES_MAX_KEY_LENGTH];

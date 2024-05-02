@@ -181,6 +181,7 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
  */
 void printPlayerInfobox(const GameState* state, const Player* player, const PlayingCard* comm_cards[]){
     printGameStateBrief(state);
+    MSG_SHOWVN(GLOBAL_MSGS, )
     printCommunityCards(comm_cards, state->revealed_comm_cards);
     printHoleCards(player);
 }
@@ -189,6 +190,7 @@ void printPlayerInfobox(const GameState* state, const Player* player, const Play
  *  \brief Prints a concise message about current GameState, meant to be seen by Player.
  */
 void printGameStateBrief(const GameState* state){
+    MSG_SHOWVN(GLOBAL_MSGS, "PIO_GAMESTATE",
            state->betting_round,
            MAX_ROUNDS_PER_GAME,
            state->bet,
@@ -200,6 +202,12 @@ void printGameStateBrief(const GameState* state){
  *  \brief Prints the full debug message about the given GameState struct.
  */
 void printGameStateFull(const GameState* state){
+    MSG_SHOWVN(GLOBAL_MSGS, "PIO_GAMESTATE_PLAYERS",
+              state->current_player,
+              state->dealer_player,
+              state->s_blind_player,
+              state->b_blind_player);
+    MSG_SHOWVN(GLOBAL_MSGS, "PIO_GAMESTATE_TURNS", state->turns_left);
     printGameStateBrief(state);
 }
 
@@ -208,8 +216,10 @@ void printGameStateFull(const GameState* state){
  */
 void printCommunityCards(const PlayingCard* cards[], const int rev_comm_cards){
     if (rev_comm_cards == 0){
+        MSG_SHOWN(GLOBAL_MSGS, "PIO_COMMCARDS_NONE");
         return;
     }
+    MSG_SHOWVN(GLOBAL_MSGS, "PIO_COMMCARDS", rev_comm_cards, COMM_CARDS_COUNT);
     for (int i = 0; i < rev_comm_cards; ++i){
         const char* pipName = getPipName(cards[i]->pips);
         const char* suitName = getSuitName(cards[i]->suit);
@@ -221,6 +231,7 @@ void printCommunityCards(const PlayingCard* cards[], const int rev_comm_cards){
  *  \brief Prints Player's current cards.
  */
 void printHoleCards(const Player* player){
+    MSG_SHOWN(GLOBAL_MSGS, "PIO_HOLECARDS");
     for (int i = 0; i < CARDS_PER_PLAYER; ++i){
         char cardName[CARDNAME_MAX_LENGTH];
         getCardName(player->current_hand[i], cardName, CARDNAME_MAX_LENGTH);
@@ -234,6 +245,7 @@ void printHoleCards(const Player* player){
 void printShowdownResults(const int winners[], const int winners_count, const Player* players[]){
     for (int i = 0; i < winners_count; ++i){
         const Player* currentWinner = players[winners[i]];
+        MSG_SHOWV(GLOBAL_MSGS, "PIO_SHOWDOWN", i, winners[i], currentWinner->isHuman ? "Human" : "AI");
         char firstCard[CARDNAME_MAX_LENGTH];
         char secondCard[CARDNAME_MAX_LENGTH];
         getCardName(currentWinner->current_hand[0], firstCard, CARDNAME_MAX_LENGTH);
