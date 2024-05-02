@@ -191,7 +191,7 @@ void printPlayerInfobox(const GameState* state, const Player* player, const Play
  */
 void printGameStateBrief(const GameState* state){
     MSG_SHOWVN(GLOBAL_MSGS, "PIO_GAMESTATE",
-           state->betting_round,
+           state->betting_round + 1,
            MAX_ROUNDS_PER_GAME,
            state->bet,
            MAX_BETS_PER_ROUND - state->raises_performed,

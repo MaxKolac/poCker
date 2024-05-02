@@ -83,7 +83,7 @@
 	<stdlib.h>
 	<string.h>
 
-1713010289 source:c:\users\ja\documents\github\pocker\notes.c
+1714650953 source:c:\users\ja\documents\github\pocker\notes.c
 
 1714136192 source:c:\users\ja\documents\github\pocker\src\playingcard.c
 	"playingcard.h"
@@ -282,7 +282,7 @@
 	"gamestate.h"
 	"player.h"
 
-1714649956 source:c:\users\ja\documents\github\pocker\src\playerio.c
+1714651738 source:c:\users\ja\documents\github\pocker\src\playerio.c
 	"playerio.h"
 	<ctype.h>
 	<stdbool.h>
