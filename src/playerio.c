@@ -181,7 +181,7 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
  */
 void printPlayerInfobox(const GameState* state, const Player* player, const PlayingCard* comm_cards[]){
     printGameStateBrief(state);
-    MSG_SHOWVN(GLOBAL_MSGS, )
+    MSG_SHOWVN(GLOBAL_MSGS, "PIO_PLAYERFUNDS", player->funds);
     printCommunityCards(comm_cards, state->revealed_comm_cards);
     printHoleCards(player);
 }

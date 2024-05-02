@@ -10,6 +10,7 @@ PIO_CPDV_TAPOUT You can still afford to call the current bet. You may not tap ou
 PIO_CPDV_UNKNOWN Unrecognized decision.
 PIO_GAMESTATE Round: %d of %d | Bet: %d$ (%d possible raises left) | Pot: %d$
 PIO_GAMESTATE_PLAYERS Current player: %d | Dealer: %d | S.Blind: %d | B.Blind: %d
+PIO_PLAYERFUNDS Your available funds are %d$.
 PIO_GAMESTATE_TURNS There are %d turns left, including this one.
 PIO_COMMCARDS The revealed community cards (%d of %d) are:
 PIO_COMMCARDS_NONE There are no community cards revealed.
