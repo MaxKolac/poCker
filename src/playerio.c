@@ -124,29 +124,29 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
         if (rules->limit_fixed){
             //Has the raise limit been reacher?
             if (state->raises_performed >= MAX_BETS_PER_ROUND){
-                strcpy(response, msgGetn(GLOBAL_MSGS, "PIO_CPDV_RAISE_LIMIT"));
+                strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_LIMIT"));
                 return 0;
             }
             //The game's fixed-limit and we are in the first half of it. Can player afford the raise by small blind amount?
             if (state->betting_round <= 1 && _player->funds < state->bet + rules->small_blind){
-                strcpy(response, msgGetn(GLOBAL_MSGS, "PIO_CPDV_RAISE_SB_AMOUNT")); //greatest length here - 71 chars incl. null char
+                strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_SB_AMOUNT"));
                 return 0;
             }
             //The game's fixed-limit and we are in the second half of it. Can player afford the raise by big blind amount?
             if (state->betting_round > 1 && _player->funds < state->bet + rules->big_blind){
-                strcpy(response, msgGetn(GLOBAL_MSGS, "PIO_CPDV_RAISE_BB_AMOUNT"));
+                strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_BB_AMOUNT"));
                 return 0;
             }
         }
         else {
             //The game's no limit, can player even afford their decision?
             if (_player->funds < player_decision){
-                strcpy(response, msgGetn(GLOBAL_MSGS, "PIO_CPDV_RAISE_GENERIC"));
+                strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_GENERIC"));
                 return 0;
             }
             //Is player trying to lower the bet?
             if (player_decision <= state->bet){
-                strcpy(response, msgGetn(GLOBAL_MSGS, "PIO_CPDV_RAISE_TOLOWER"));
+                strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_RAISE_TOLOWER"));
                 return 0;
             }
         }
@@ -155,7 +155,7 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
     else if (player_decision == 0){
         //Can the player afford to call?
         if (_player->funds < state->bet){
-            strcpy(response, msgGetn(GLOBAL_MSGS, "PIO_CPDV_CALL"));
+            strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_CALL"));
             return 0;
         }
     }
@@ -163,13 +163,13 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
     //For tap outs:
     else if (player_decision == -2){
         if (_player->funds >= state->bet){
-            strcpy(response, msgGetn(GLOBAL_MSGS, "PIO_CPDV_TAPOUT"));
+            strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_TAPOUT"));
             return 0;
         }
     }
     //For unrecognized player decision, it's an automatic false
     else if (player_decision == INT_MIN){
-        strcpy(response, msgGetn(GLOBAL_MSGS, "PIO_CPDV_UNKNOWN"));
+        strcpy(response, msgGet(GLOBAL_MSGS, "PIO_CPDV_UNKNOWN"));
         return 0;
     }
 
@@ -189,7 +189,6 @@ void printPlayerInfobox(const GameState* state, const Player* player, const Play
  *  \brief Prints a concise message about current GameState, meant to be seen by Player.
  */
 void printGameStateBrief(const GameState* state){
-    printf(msgGetn(GLOBAL_MSGS, "PIO_GAMESTATE"),
            state->betting_round,
            MAX_ROUNDS_PER_GAME,
            state->bet,
@@ -201,13 +200,6 @@ void printGameStateBrief(const GameState* state){
  *  \brief Prints the full debug message about the given GameState struct.
  */
 void printGameStateFull(const GameState* state){
-    printf(msgGetn(GLOBAL_MSGS, "PIO_GAMESTATE_PLAYERS"),
-           state->current_player,
-           state->dealer_player,
-           state->s_blind_player,
-           state->b_blind_player);
-    printf(msgGetn(GLOBAL_MSGS, "PIO_GAMESTATE_TURNS"),
-           state->turns_left);
     printGameStateBrief(state);
 }
 
@@ -216,10 +208,8 @@ void printGameStateFull(const GameState* state){
  */
 void printCommunityCards(const PlayingCard* cards[], const int rev_comm_cards){
     if (rev_comm_cards == 0){
-        printf(msgGetn(GLOBAL_MSGS, "PIO_COMMCARDS_NONE"));
         return;
     }
-    printf(msgGetn(GLOBAL_MSGS, "PIO_COMMCARDS"), rev_comm_cards, COMM_CARDS_COUNT);
     for (int i = 0; i < rev_comm_cards; ++i){
         const char* pipName = getPipName(cards[i]->pips);
         const char* suitName = getSuitName(cards[i]->suit);
@@ -231,7 +221,6 @@ void printCommunityCards(const PlayingCard* cards[], const int rev_comm_cards){
  *  \brief Prints Player's current cards.
  */
 void printHoleCards(const Player* player){
-    printf(msgGetn(GLOBAL_MSGS, "PIO_HOLECARDS"));
     for (int i = 0; i < CARDS_PER_PLAYER; ++i){
         char cardName[CARDNAME_MAX_LENGTH];
         getCardName(player->current_hand[i], cardName, CARDNAME_MAX_LENGTH);
@@ -245,7 +234,6 @@ void printHoleCards(const Player* player){
 void printShowdownResults(const int winners[], const int winners_count, const Player* players[]){
     for (int i = 0; i < winners_count; ++i){
         const Player* currentWinner = players[winners[i]];
-        printf(msgGet(GLOBAL_MSGS, "PIO_SHOWDOWN"), i, winners[i], currentWinner->isHuman ? "Human" : "AI");
         char firstCard[CARDNAME_MAX_LENGTH];
         char secondCard[CARDNAME_MAX_LENGTH];
         getCardName(currentWinner->current_hand[0], firstCard, CARDNAME_MAX_LENGTH);

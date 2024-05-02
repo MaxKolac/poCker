@@ -40,30 +40,13 @@ char* msgGet(const Message messages[], const char* key){
             return messages[i].message;
         }
     }
+    return "NO MESSAGE FOR THIS KEY FOUND";
 
     //Excuse the mess
     //Based on this source: NOTES sections of https://devdocs.io/c/io/fprintf
-    int requiredSize = snprintf(NULL, 0, MESSAGES_NOKEYFOUND_FORMAT, key);
-    char buffer[requiredSize + 1]; //remember about null terminating byte
-    snprintf(buffer, sizeof(buffer), MESSAGES_NOKEYFOUND_FORMAT, key);
-    char* finalLiteral = buffer;
-    return finalLiteral;
-}
-
-/**
- *  \brief Retrieves a message with the matching key value and newline character at the end.
- *  \param messages An array of Message structs to search through.
- *  \param key The key to look for.
- *  \returns Text of the message with the matching key and a newline character appended to it.
- *  If no key was found, the message will be MESSAGE_NOKEYFOUND_FORMAT macro formatted to contain the invalid key.
- *
- *  Lines retrieved through this function need to be shorter by 1 than MESSAGES_MAX_MSG_LENGTH, since
- *  they will be appended with a newline character.
- */
-char* msgGetn(const Message messages[], const char* key){
-    char message[MESSAGES_MAX_MSG_LENGTH];
-    strcpy(message, msgGet(messages, key));
-    strncat(message, "\n", 1);
-    char* msgAsLiteral = message;
-    return msgAsLiteral;
+    //int requiredSize = snprintf(NULL, 0, MESSAGES_NOKEYFOUND_FORMAT, key);
+    //char buffer[requiredSize + 1]; //remember about null terminating byte
+    //snprintf(buffer, sizeof(buffer), MESSAGES_NOKEYFOUND_FORMAT, key);
+    //char* finalLiteral = buffer;
+    //return finalLiteral;
 }
