@@ -514,7 +514,7 @@ static void test_checkTheWhileLoopInMainForPlayerTurnAdvancing(CuTest* ct){
         gsAdvancePlayerTurn(state, players, tapouts, &rules, 0);
     }
 
-    CuAssert(ct, "", state->current_player == state->s_blind_player);
+    CuAssert(ct, "", state->current_player == 0);
     CuAssert(ct, "", state->turns_left == 0);
     CuAssert(ct, "", state->bet == 0);
     CuAssert(ct, "", state->pot == 10 + (20 * 7));
@@ -687,6 +687,26 @@ static void test_settingUpRiverRound(CuTest* ct){
     CuAssert(ct, "", players[state->b_blind_player]->funds == 1200 - 10);
 }
 
+static void test_advancingToNextBettingRoundResetsTurnsLeftProperly(CuTest* ct){
+    const GameRuleSet rules = {
+        .player_count = 4,
+        .funds_per_player = 10000
+    };
+    const GameState* state = gsCreateNew(&rules);
+    Player* players[rules.player_count];
+    for (int i = 0; i < rules.player_count; ++i)
+        players[i] = playerCreateNewWithFunds(rules.funds_per_player);
+
+    int decision = 0;
+    for (int i = 0; i < 4; ++i){
+        gsSetUpBettingRound(state, players, &rules);
+        CuAssert(ct, "", state->turns_left == rules.player_count - 1);
+        gsAdvancePlayerTurn(state, players, NULL, &rules, &decision);
+        gsConcludeBettingRound(state);
+        CuAssert(ct, "", state->turns_left == rules.player_count - 2);
+    }
+}
+
 //  --  Tap-outs   --
 
 static void test_singleTapOut(CuTest* ct){
@@ -820,7 +840,13 @@ static void test_standardShowdownWithSingleWinner(CuTest* ct){
     players[6]->current_hand[0] = &deck[PIPS_PER_SUIT * SPADES + QUEEN - 1];
     players[6]->current_hand[1] = &deck[PIPS_PER_SUIT * DIAMONDS + SEVEN - 1];
 
-    gsPerformShowdown(state, players, tapouts, &ruleset, comm_cards);
+    int winners[] = { -1, -1, -1, -1, -1, -1, -1 };
+    int winners_count = gsDetermineWinners(winners, &ruleset, state, players, comm_cards);
+
+    CuAssert(ct, "", winners_count == 1);
+    CuAssert(ct, "", winners[0] == 0);
+
+    gsAwardPot(state, players, tapouts, winners, winners_count);
 
     CuAssert(ct, "", players[0]->funds == ruleset.funds_per_player + 200);
     for (int i = 1; i < ruleset.player_count; ++i)
@@ -872,7 +898,14 @@ static void test_standardShowdownWithMultipleWinnersWithIndivisiblePot(CuTest* c
     players[4]->current_hand[0] = &deck[PIPS_PER_SUIT * SPADES + QUEEN - 1];
     players[4]->current_hand[1] = &deck[PIPS_PER_SUIT * SPADES + ACE - 1];
 
-    gsPerformShowdown(state, players, tapouts, &ruleset, comm_cards);
+    int winners[] = { -1, -1, -1, -1, -1 };
+    int winners_count = gsDetermineWinners(winners, &ruleset, state, players, comm_cards);
+
+    CuAssert(ct, "", winners_count == 2);
+    CuAssert(ct, "", winners[0] == 0);
+    CuAssert(ct, "", winners[1] == 4);
+
+    gsAwardPot(state, players, tapouts, winners, winners_count);
 
     CuAssert(ct, "", players[0]->funds == ruleset.funds_per_player + 250);
     CuAssert(ct, "", players[1]->funds == ruleset.funds_per_player + 1);
@@ -905,7 +938,13 @@ static void test_allButOneFoldedShowdown(CuTest* ct){
             players[i]->folded = true;
     }
 
-    gsPerformShowdown(state, players, tapouts, &ruleset, NULL);
+    int winners[] = { -1, -1, -1, -1, -1, -1 };
+    int winners_count = gsDetermineWinners(winners, &ruleset, state, players, NULL);
+
+    CuAssert(ct, "", winners_count == 1);
+    CuAssert(ct, "", winners[0] == 3);
+
+    gsAwardPot(state, players, tapouts, winners, winners_count);
 
     CuAssert(ct, "", players[3]->funds == ruleset.funds_per_player + 125);
     CuAssert(ct, "", state->pot == 0);
@@ -957,7 +996,13 @@ static void test_onlyOneTappedoutWinnerShowdown(CuTest* ct){
     players[4]->current_hand[0] = &deck[PIPS_PER_SUIT * SPADES + THREE - 1];
     players[4]->current_hand[1] = &deck[PIPS_PER_SUIT * SPADES + TWO - 1];
 
-    gsPerformShowdown(state, players, tapouts, &ruleset, comm_cards);
+    int winners[] = { -1, -1, -1, -1, -1 };
+    int winners_count = gsDetermineWinners(winners, &ruleset, state, players, comm_cards);
+
+    CuAssert(ct, "", winners_count == 1);
+    CuAssert(ct, "", winners[0] == 0);
+
+    gsAwardPot(state, players, tapouts, winners, winners_count);
 
     CuAssert(ct, "", players[0]->funds == 200);
     CuAssert(ct, "", players[state->s_blind_player]->funds == ruleset.funds_per_player + (550 - 200));
@@ -1011,7 +1056,15 @@ static void test_multipleWinnersWhereOnlySomeAreTappedOut(CuTest* ct){
     players[4]->funds = 0;
     players[4]->tappedout = true;
 
-    gsPerformShowdown(state, players, tapouts, &ruleset, comm_cards);
+    int winners[] = { -1, -1, -1, -1, -1 };
+    int winners_count = gsDetermineWinners(winners, &ruleset, state, players, comm_cards);
+
+    CuAssert(ct, "", winners_count == 3);
+    CuAssert(ct, "", winners[0] == 0);
+    CuAssert(ct, "", winners[1] == 2);
+    CuAssert(ct, "", winners[2] == 4);
+
+    gsAwardPot(state, players, tapouts, winners, winners_count);
 
     CuAssert(ct, "", players[0]->funds == 120);
     CuAssert(ct, "", players[2]->funds == ruleset.funds_per_player + (550 - 120 - 65));
@@ -1072,7 +1125,15 @@ static void test_showdownWhereEveryoneTappedOut(CuTest* ct){
     players[5]->current_hand[0] = &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1];
     players[5]->current_hand[1] = &deck[PIPS_PER_SUIT * DIAMONDS + SEVEN - 1];
 
-    gsPerformShowdown(state, players, tapouts, &ruleset, comm_cards);
+    int winners[] = { -1, -1, -1, -1, -1, -1 };
+    int winners_count = gsDetermineWinners(winners, &ruleset, state, players, comm_cards);
+
+    CuAssert(ct, "", winners_count == 3);
+    CuAssert(ct, "", winners[0] == 0);
+    CuAssert(ct, "", winners[1] == 2);
+    CuAssert(ct, "", winners[2] == 4);
+
+    gsAwardPot(state, players, tapouts, winners, winners_count);
 
     CuAssert(ct, "", players[0]->funds == 115);
     CuAssert(ct, "", players[state->s_blind_player]->funds == ruleset.funds_per_player + (650 - 115 - 100 - 80));
@@ -1180,6 +1241,7 @@ CuSuite* GamestateGetSuite(CuTest* ct){
     SUITE_ADD_TEST(suite, test_advancePlayerTurnsThroughRoundWithOnlyRaises);
     SUITE_ADD_TEST(suite, test_checkTheWhileLoopInMainForPlayerTurnAdvancing);
     SUITE_ADD_TEST(suite, test_allButOneFoldedConditionCheckForAdvancePlayerTurn);
+    SUITE_ADD_TEST(suite, test_advancingToNextBettingRoundResetsTurnsLeftProperly);
 
     SUITE_ADD_TEST(suite, test_settingUpPreFlopRound);
     SUITE_ADD_TEST(suite, test_settingUpFlopRound);

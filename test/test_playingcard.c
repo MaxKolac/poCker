@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "CuTest.h"
 #include "../src/playingcard.h"
-#include "../src/playingcard_enums.h"
 
 static void test_playingcard_getCorrectCardName(CuTest* ct){
     const int buffer_size = 32;

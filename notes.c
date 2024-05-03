@@ -7,6 +7,7 @@
 * - header1.h does NOT include header2.h BUT-
 * - main.c includes first the header2.h then header1.h
 * Or just use guard macros - #ifndef header_name, #define header_name and then #endif at the EOF. They might work too.
+* Me from future: just use guard macros bro
 *
 * Elements order: https://www.cs.umd.edu/~nelson/classes/resources/cstyleguide/
 *   #include <>
@@ -92,4 +93,22 @@
 *   The second one will instruct the compiler to first create an actual array, then copy the chars into it,
 *   allowing you to modify them.
 *   https://stackoverflow.com/questions/11554262/converting-char-to-lower-case-throws-segfault-error
+*
+*   Macros can be used not only for creating constants, they can also be used for creating functions.
+*   The type of the parameter is implied during preprocessing.
+*   A function macro is for example:
+*   #define SUM(a,b) (a+b)
+*   Macros can also be chained together, the innermost macro is expanded first
+*   #define SUMUP(a,b,c,d) (SUM(a,b) + SUM(c,d))
+*   Macros can be made multiline with the \ character
+*   #define ELEMENTS 1, \
+                     2, \
+                     3
+    int arr[] = { ELEMENTS };
+    will result in:
+    int arr[] = { 1, 2, 3 };
+*   Macros can also accept variadic arguments with the ... and __VA_ARGS__, although it's possible its a GNU GCC exclusive feature
+*   #define MSG_SHOWVS(dict,key,...) printf(msgGet(dict,key),__VA_ARGS__); printf(" ")
+*   https://www.geeksforgeeks.org/macros-and-its-types-in-c-cpp/
+*   https://stackoverflow.com/a/679993/21342746
 */

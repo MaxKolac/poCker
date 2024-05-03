@@ -6,7 +6,8 @@
 #include <math.h>
 #include "dealer.h"
 #include "gamerules.h"
-#include "io.h"
+#include "messages.h"
+#include "playerio.h"
 #include "player.h"
 #include "utils.h"
 
@@ -44,16 +45,11 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
                 //For human players
                 bool decisionValid = false;
                 do {
-                    char input[IO_DECISION_LENGTH];
-                    gets_s(input, IO_DECISION_LENGTH);
+                    char input[MESSAGES_MAX_MSG_LENGTH];
+                    MSG_SHOWV(GLOBAL_MSGS, "GAMESTATE_HUMANPROMPT", state->current_player);
+                    gets_s(input, MESSAGES_MAX_MSG_LENGTH);
                     player_decision = recognizeDecision(input);
-                    char response[IO_RESPONSE_LENGTH];
-                    decisionValid = checkPlayerDecisionValidity(players[state->current_player],
-                                                                state,
-                                                                ruleSet,
-                                                                player_decision,
-                                                                response);
-                    printf(response);
+                    decisionValid = checkPlayerDecisionValidity(players[state->current_player], state, ruleSet, player_decision);
                 } while(!decisionValid);
             }            else {
                 //for AI players - for now this function always returns 0 - CHECK
@@ -68,6 +64,9 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
         else {
             player_decision = *player_dec_override;
         }
+        //Debug
+        char* debug_isHuman = players[state->current_player]->isHuman ? "Human" : "AI";
+        printf("Player's \(%s\) decision was %d.\n", debug_isHuman, player_decision);
 
         //WARNING! This part assumes the player's decision was allowed and valid!
         //Consequence of player's actions
@@ -148,10 +147,11 @@ void gsSetUpBettingRound(GameState* state, Player* players[], const GameRuleSet*
         state->bet = ruleSet->big_blind;
         state->current_player = (state->b_blind_player + 1) % ruleSet->player_count;
     }
+    state->turns_left = ruleSet->player_count - 1;
 }
 
 /**
- *  \brief Reveals the needed amount of revealed community cards and increments the betting_round value of the passed GameState struct.
+ *  \brief Sets the amount of revealed community cards and increments the betting_round value of the passed GameState struct.
  */
 void gsConcludeBettingRound(GameState* state){
     //Pre-flop has no cards.
@@ -170,15 +170,17 @@ void gsConcludeBettingRound(GameState* state){
 }
 
 /**
- *  \brief Determines the winner(s) and pays them their winnings from the pot.
+ *  \brief Determines the winner(s) and populates the winners array with their indexes.
+ *  \returns The size of the populated winners array. In other words, how many winners there are.
  *
  *  If the win happened because of everyone else folding, only one player who did not fold is awarded the whole pot.
  *  Otherwise, everyone's hands are compared, winners are pulled and awarded their fair share.
- *  Tapped out winners receive their rewards first, the rest is then divide evenly between other winners.
- *  If the pot happened to be indivisible by amount of winners, small blind player receives the remainder.
  */
-void gsPerformShowdown(GameState* state, Player* players[], unsigned int tapout_pot_statuses[], const GameRuleSet* rules, const PlayingCard* comm_cards[]){
-    int winners[rules->player_count];
+int gsDetermineWinners(int winners[],
+                       const GameRuleSet* rules,
+                       const GameState* state,
+                       const Player* players[],
+                       const PlayingCard* comm_cards[]){
     int winners_count = 0;
     //If the win occurred through everyone but one player folding:
     if (state->all_but_one_folded){
@@ -198,7 +200,16 @@ void gsPerformShowdown(GameState* state, Player* players[], unsigned int tapout_
         }
         winners_count = decideWinners(players, rules->player_count, winners);
     }
+    return winners_count;
+}
 
+/**
+ *  \brief Determines the winner(s) and pays them their winnings from the pot.
+ *
+ *  Tapped out winners receive their rewards first, the rest is then divide evenly between other winners.
+ *  If the pot happened to be indivisible by amount of winners, small blind player receives the remainder.
+ */
+void gsAwardPot(GameState* state, Player* players[], unsigned int tapout_pot_statuses[], const int winners[], const int winners_count){
     //If we have a single winner, they take the whole pot;
     if (winners_count == 1){
         //Unless they tapped out, which means they only get a portion of it and the rest goes to small blind player.

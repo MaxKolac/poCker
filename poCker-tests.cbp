@@ -16,11 +16,16 @@
 					<Add option="-std=c99" />
 					<Add option="-g" />
 				</Compiler>
+				<ExtraCommands>
+					<Add after='cmd /c copy &quot;loc.txt&quot; &quot;$(TARGET_OUTPUT_DIR)loc.txt&quot;' />
+					<Mode after="always" />
+				</ExtraCommands>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="loc.txt" />
 		<Unit filename="src/constants.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -41,14 +46,18 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/handranking.h" />
-		<Unit filename="src/io.c">
+		<Unit filename="src/messages.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/io.h" />
+		<Unit filename="src/messages.h" />
 		<Unit filename="src/player.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/player.h" />
+		<Unit filename="src/playerio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/playerio.h" />
 		<Unit filename="src/playingcard.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -75,10 +84,13 @@
 		<Unit filename="test/test_handranking.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="test/test_io.c">
+		<Unit filename="test/test_messages.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="test/test_player.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test/test_playerio.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="test/test_playingcard.c">

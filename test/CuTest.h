@@ -94,6 +94,7 @@ void CuAssertPtrEquals_LineMsg(CuTest* tc,
 #define MAX_TEST_CASES	1024
 
 #define SUITE_ADD_TEST(SUITE,TEST)	CuSuiteAdd(SUITE, CuTestNew(#TEST, TEST))
+#define TODOTEST(tc) CuAssert(tc,"TODO",false);
 
 typedef struct
 {

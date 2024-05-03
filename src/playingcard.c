@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "playingcard_enums.h"
 
 const int PIPS_PER_SUIT_OBJ = PIPS_PER_SUIT;
 const int SUITS_COUNT_OBJ = SUITS_COUNT;

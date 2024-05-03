@@ -1,0 +1,24 @@
+TEST Hello world!
+TESTPARAM This is a digit %d
+PIO_CPDV_RAISE_LIMIT The limit of raises per one betting round has already been reached.
+PIO_CPDV_RAISE_SB_AMOUNT You cannot afford to raise the bet by the required small blind amount.
+PIO_CPDV_RAISE_BB_AMOUNT You cannot afford to raise the bet by the required big blind amount.
+PIO_CPDV_RAISE_GENERIC You cannot afford to raise the bet by the specified amount.
+PIO_CPDV_RAISE_TOLOWER You cannot lower the bet, it can only be raised up.
+PIO_CPDV_CALL You cannot afford to call the bet.
+PIO_CPDV_TAPOUT You can still afford to call the current bet. You may not tap out just yet.
+PIO_CPDV_UNKNOWN Unrecognized decision.
+PIO_GAMESTATE Round: %d of %d | Bet: %d$ (%d possible raises left) | Pot: %d$
+PIO_GAMESTATE_PLAYERS Current player: %d | Dealer: %d | S.Blind: %d | B.Blind: %d
+PIO_PLAYERFUNDS Your available funds are %d$.
+PIO_GAMESTATE_TURNS There are %d turns left, including this one.
+PIO_COMMCARDS The revealed community cards (%d of %d) are:
+PIO_COMMCARDS_NONE There are no community cards revealed.
+PIO_HOLECARDS Your current cards are:
+PIO_SHOWDOWN Winner #%d: Player %d (%s) -
+GAMESTATE_HUMANPROMPT Player %d, it's your turn to act. You can either 'call', 'raise', 'raise amount', 'fold' or 'tapout':
+GAMERULES_PROMPT_PLAYERCOUNT Enter the amount of players. Min - %d, Max - %d
+GAMERULES_PROMPT_AICOUNT Enter the amount of AI players. The remaining players will be controlled by human prompts, Min - %d, Max - %d
+GAMERULES_PROMPT_FUNDS Set the initial amount of funds for each player. Min - %d$, Max - %d$
+GAMERULES_PROMPT_LIMITS Should the betting limits be fixed?
+GAMERULES_PROMPT_BIGBLIND Set the big blind amount. Minimum is 2, maximum is 10% of funds per player
