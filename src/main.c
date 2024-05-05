@@ -58,17 +58,22 @@ int main()
 
             //  --  Single round of betting loop  --
             while (globalState->turns_left > 0){
-                printf("---\n");
-                printPlayerInfobox(globalState, players[globalState->current_player], comm_cards);
+                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
+                printHeader(globalState);
+                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_2COL");
+                printPlayers(&globalRules, globalState, players);
+                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_2COL");
+                printRaisesPotBet(&globalRules, globalState);
+                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
+                printCards(players[globalState->current_player], comm_cards, globalState->revealed_comm_cards);
+                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
                 gsAdvancePlayerTurn(globalState, players, tapout_pot_statuses, &globalRules, NULL);
             }
 
             //If a betting round was suddenly ended by everyone but one player folding, get to pot payout right away
-            if (globalState->all_but_one_folded)
+            if (globalState->all_but_one_folded){
                 break;
-
-            //Debug
-            //printf("\t--- END OF BETTING ROUND %d ---\n", globalState->betting_round);
+            }
             gsConcludeBettingRound(globalState);
         }
 
