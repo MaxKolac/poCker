@@ -11,7 +11,7 @@
 #define PIPS_PER_SUIT 13
 #define SUITS_COUNT 4
 #define DECK_LENGTH (4 * 13)
-#define CARDNAME_MAX_LENGTH (5 + 4 + 8)
+#define CARDNAME_MAX_LENGTH (5 + 4 + 8 + 1)
 #define CARDS_PER_PLAYER 2
 #define COMM_CARDS_COUNT 5
 

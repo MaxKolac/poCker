@@ -305,11 +305,17 @@ void printShowdownResults(const GameState* state, const Player* players[], const
         char secondCard[CARDNAME_MAX_LENGTH];
         Player* currentPlayer = players[winners[i]];
         int highestNonzeroScoreTier = 0;
-        while (highestNonzeroScoreTier < SCORE_TABLE_SIZE && currentPlayer->scores[highestNonzeroScoreTier] == 0){
-            highestNonzeroScoreTier++;
+        if (state->all_but_one_folded){
+            highestNonzeroScoreTier = -1;
+        }
+        else {
+            while (highestNonzeroScoreTier < SCORE_TABLE_SIZE && currentPlayer->scores[highestNonzeroScoreTier] == 0){
+                highestNonzeroScoreTier++;
+            }
         }
         char* highestHandrank;
         switch (highestNonzeroScoreTier){
+            case -1: highestHandrank ="Everyone folded"; break;
             case 0: highestHandrank = "Royal Flush"; break;
             case 1: highestHandrank = "Straight Flush"; break;
             case 2: highestHandrank = "Four-of-a-Kind"; break;
