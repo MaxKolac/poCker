@@ -21,6 +21,7 @@ PIO_CPDV_TAPOUT You can still afford to call the current bet. You may not tap ou
 PIO_CPDV_UNKNOWN Unrecognized decision.
 PIO_SHOWDOWN_HEADER |           WINNERS             | Final pot: %17d$ |
 PIO_SHOWDOWN_ROW | P%-2d - %-15s - %-17s + %-17s |
+PIO_DEBUG_DECISION Player's (%s) decision was %d.
 GAMESTATE_HUMANPROMPT Player %d, it's your turn to act. You can either 'call', 'raise', 'raise amount', 'fold' or 'tapout':
 GAMERULES_PROMPT_PLAYERCOUNT Enter the amount of players. Min - %d, Max - %d
 GAMERULES_PROMPT_AICOUNT Enter the amount of AI players. The remaining players will be controlled by human prompts, Min - %d, Max - %d
