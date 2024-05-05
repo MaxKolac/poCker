@@ -1,5 +1,16 @@
 TEST Hello world!
 TESTPARAM This is a digit %d
+DIVIDER_1COL |---------------------------------------------------------------|
+DIVIDER_2COL |-------------------------------|-------------------------------|
+DIVIDER_4COL |---------------|---------------|---------------|---------------|
+PIO_HEADER |         ROUND %d of %d          |         Turns left: %2d        |
+PIO_PLAYER_NAME | P%-2d %4s %4s
+PIO_PLAYER_LASTDECISION | %13s
+PIO_PLAYER_FUNDS | %12d$
+PIO_PLAYER_NUMBERS | Raises left: %d %13s  | Pot: %7d$ | Bet: %7d$ |
+PIO_CARDS_HEADER | Community cards:		| Your cards:			|
+PIO_CARDS_ROW_DOUBLE | - %-27s | - %-27s |
+PIO_CARDS_ROW_SINGLE | - %-27s |                               |
 PIO_CPDV_RAISE_LIMIT The limit of raises per one betting round has already been reached.
 PIO_CPDV_RAISE_SB_AMOUNT You cannot afford to raise the bet by the required small blind amount.
 PIO_CPDV_RAISE_BB_AMOUNT You cannot afford to raise the bet by the required big blind amount.

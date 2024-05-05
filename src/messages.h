@@ -38,7 +38,7 @@
  */
 #define MESSAGES_MAX_MSG_LENGTH 120
 /** \brief Current amount of lines contained within the loc.txt file */
-#define MESSAGES_COUNT 24
+#define MESSAGES_COUNT 35
 /** \brief Defines the localization's filename */
 #define MESSAGES_FILENAME "loc.txt"
 /** \brief String literal returned when no message with a matching key was found. */
