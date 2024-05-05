@@ -2,13 +2,12 @@
 
 #include <math.h>
 #include <stdio.h>
-#include "constants.h"
 #include "messages.h"
 
 const int MIN_PLAYER_COUNT = 3;
 const int MAX_PLAYER_COUNT = 12;
 const int MIN_FUNDS_PER_PLAYER = 100;
-const int MAX_FUNDS_PER_PLAYER = 100000;
+const int MAX_FUNDS_PER_PLAYER = 10000;
 
 /**
  *  \brief Prompts the user for the total amount of all players.

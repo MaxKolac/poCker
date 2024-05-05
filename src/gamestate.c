@@ -12,6 +12,7 @@
 #include "utils.h"
 
 const int MAX_BETS_PER_ROUND_OBJ = MAX_BETS_PER_ROUND;
+const int MAX_ROUNDS_PER_GAME_OBJ = MAX_ROUNDS_PER_GAME;
 
 GameState* gsCreateNew(const GameRuleSet* rules){
     GameState* state = ((GameState*)malloc(sizeof(GameState)));
@@ -45,9 +46,9 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
                 //For human players
                 bool decisionValid = false;
                 do {
-                    char input[MESSAGES_MAX_MSG_LENGTH];
-                    MSG_SHOWV(GLOBAL_MSGS, "GAMESTATE_HUMANPROMPT", state->current_player);
-                    gets_s(input, MESSAGES_MAX_MSG_LENGTH);
+                    char input[PLAYER_DECISION_LENGTH];
+                    MSG_SHOWV(GLOBAL_MSGS, "GAMESTATE_HUMANPROMPT", state->current_player + 1);
+                    gets_s(input, PLAYER_DECISION_LENGTH);
                     player_decision = recognizeDecision(input);
                     decisionValid = checkPlayerDecisionValidity(players[state->current_player], state, ruleSet, player_decision);
                 } while(!decisionValid);
@@ -65,8 +66,9 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
             player_decision = *player_dec_override;
         }
         //Debug
-        char* debug_isHuman = players[state->current_player]->isHuman ? "Human" : "AI";
-        printf("Player's \(%s\) decision was %d.\n", debug_isHuman, player_decision);
+        MSG_SHOWVN(GLOBAL_MSGS, "PIO_DEBUG_DECISION",
+                   players[state->current_player]->isHuman ? "Human" : "AI",
+                   player_decision);
 
         //WARNING! This part assumes the player's decision was allowed and valid!
         //Consequence of player's actions

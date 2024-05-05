@@ -1,5 +1,8 @@
 #include "CuTest.h"
 #include "../src/messages.h"
+#include "../src/playingcard.h"
+#include "../src/gamestate.h"
+#include "../src/gamerules.h"
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -35,20 +38,52 @@ static void test_retrieveParametrizedTestString(CuTest* ct){
     CuAssertStrEquals(ct, expectedWithParam, actualWithParam);
 }
 
-static void test_macroMsgShowWithCorrectKey(CuTest* ct){
-    TODOTEST(ct);
-}
+//This is less of a unit-test and more of a ready-to-use function
+//Uncomment the line that adds it to the suit, change variables to suit your needs
+//And check the test project's console output for any incorrect behaviours
+static void test_fullPrinting(CuTest* ct){
+    //Full game initialization
+    msgInitFromFile("loc.txt");
+    const PlayingCard deck[DECK_LENGTH];
+    buildDeck(deck, false);
+    const GameRuleSet rules = {
+        //Adjust gamerules here
+        .player_count = 10,
+        .ai_player_count = 6,
+        .funds_per_player = 1200,
+        .limit_fixed = false,
+        .big_blind = 4,
+        .small_blind = 2
+    };
+    GameState* state = gsCreateNew(&rules);
+    Player* players[rules.player_count];
+    for (int i = 0; i < rules.player_count; i++){
+        players[i] = playerCreateNewWithFunds(rules.funds_per_player);
+    }
+    for (int i = rules.ai_player_count; i < rules.player_count; i++){
+        players[i]->isHuman = true;
+    }
+    PlayingCard* comm_cards[COMM_CARDS_COUNT];
+    distributeCards(deck, players, comm_cards, &rules);
 
-static void test_macroMsgShowWithIncorrectKey(CuTest* ct){
-    TODOTEST(ct);
-}
+    //Change variables here
+    players[5]->folded = true;
+    players[3]->tappedout = true;
+    players[6]->funds = 1234567890;
+    state->pot = 12 * 10000;
+    state->betting_round = 1;
+    state->revealed_comm_cards = 5;
 
-static void test_macroMsgShowNWithCorrectKey(CuTest* ct){
-    TODOTEST(ct);
-}
-
-static void test_macroMsgShowNWithIncorrectKey(CuTest* ct){
-    TODOTEST(ct);
+    //Prints
+    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
+    printHeader(state);
+    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_2COL");
+    printPlayers(&rules, state, players);
+    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_2COL");
+    printRaisesPotBet(&rules, state);
+    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
+    printCards(players[0], comm_cards, state->revealed_comm_cards);
+    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
 }
 
 CuSuite* MessagesGetSuite(){
@@ -57,9 +92,6 @@ CuSuite* MessagesGetSuite(){
     SUITE_ADD_TEST(suite, test_invalidKeyReturnsErrorMsg);
     SUITE_ADD_TEST(suite, test_retrieveTestString);
     SUITE_ADD_TEST(suite, test_retrieveParametrizedTestString);
-    SUITE_ADD_TEST(suite, test_macroMsgShowWithCorrectKey);
-    SUITE_ADD_TEST(suite, test_macroMsgShowWithIncorrectKey);
-    SUITE_ADD_TEST(suite, test_macroMsgShowNWithCorrectKey);
-    SUITE_ADD_TEST(suite, test_macroMsgShowNWithIncorrectKey);
+    //SUITE_ADD_TEST(suite, test_fullPrinting);
     return suite;
 }

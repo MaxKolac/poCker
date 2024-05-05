@@ -1,12 +1,16 @@
 #include "playerio.h"
 
 #include <ctype.h>
+#include <limits.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
 #include "messages.h"
+#include "gamerules.h"
+#include "gamestate.h"
+#include "utils.h"
 
 /**
  *  \brief Prompts the user with a message for a positive integer or zero value.
@@ -53,6 +57,15 @@ bool promptBool(char* msg){
         }
     } while (!input_valid);
     return result;
+}
+
+/**
+ *  \brief Prompts the user to simply click any button to continue exection.
+ *  \param msg Message to show with trailing three dots.
+ */
+void promptNull(char* msg){
+    printf("%s...", msg);
+    getch();
 }
 
 /**
@@ -173,80 +186,180 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
 }
 
 /**
- *  \brief Prints the infobox that appears before Player has a chance to choose an action.
+ *  \brief Prints the UI header which includes the current round and amount of turns left in it.
  */
-void printPlayerInfobox(const GameState* state, const Player* player, const PlayingCard* comm_cards[]){
-    printGameStateBrief(state);
-    MSG_SHOWVN(GLOBAL_MSGS, "PIO_PLAYERFUNDS", player->funds);
-    printCommunityCards(comm_cards, state->revealed_comm_cards);
-    printHoleCards(player);
+void printHeader(const GameState* state){
+    MSG_SHOWVN(GLOBAL_MSGS, "PIO_HEADER", state->betting_round + 1, MAX_ROUNDS_PER_GAME, state->turns_left - 1);
 }
 
 /**
- *  \brief Prints a concise message about current GameState, meant to be seen by Player.
+ *  \brief Prints the table showing information about all the players, including their funds, last decision, etc.
  */
-void printGameStateBrief(const GameState* state){
-    MSG_SHOWVN(GLOBAL_MSGS, "PIO_GAMESTATE",
-           state->betting_round + 1,
-           MAX_ROUNDS_PER_GAME,
-           state->bet,
-           MAX_BETS_PER_ROUND - state->raises_performed,
-           state->pot);
-}
+void printPlayers(const GameRuleSet* rules, const GameState* state, const Player* players[]){
+    //For each greater row
+    int tableRows = ceilf(rules->player_count / 4.0);
+    for (int i = 0; i < tableRows; i++){
+        int playersToPrint = MIN(rules->player_count - (i * 4), 4);
 
-/**
- *  \brief Prints the full debug message about the given GameState struct.
- */
-void printGameStateFull(const GameState* state){
-    MSG_SHOWVN(GLOBAL_MSGS, "PIO_GAMESTATE_PLAYERS",
-              state->current_player,
-              state->dealer_player,
-              state->s_blind_player,
-              state->b_blind_player);
-    MSG_SHOWVN(GLOBAL_MSGS, "PIO_GAMESTATE_TURNS", state->turns_left);
-    printGameStateBrief(state);
-}
+        //PIO_PLAYER_NAME
+        for (int j = 0; j < playersToPrint; j++){
+            int currentPlayer = i * 4 + j;
+            char* playerStatus;
+            if (state->b_blind_player == currentPlayer){
+                playerStatus = "(BB)";
+            }
+            else if (state->s_blind_player == currentPlayer){
+                playerStatus = "(SB)";
+            }
+            else if (state->dealer_player == currentPlayer){
+                playerStatus = "(DL)";
+            }
+            else {
+                playerStatus = "    ";
+            }
+            MSG_SHOWVS(GLOBAL_MSGS, "PIO_PLAYER_NAME",
+                      currentPlayer + 1,
+                      players[currentPlayer]->isHuman ? "(H)" : "(AI)",
+                      playerStatus);
+        }
+        printf("|\n");
 
-/**
- *  \brief Prints the currently revealed community cards along with their count.
- */
-void printCommunityCards(const PlayingCard* cards[], const int rev_comm_cards){
-    if (rev_comm_cards == 0){
-        MSG_SHOWN(GLOBAL_MSGS, "PIO_COMMCARDS_NONE");
-        return;
+        //PIO_PLAYER_LASTDECISION
+        for (int j = 0; j < playersToPrint; j++){
+            int currentPlayer = i * 4 + j;
+            char* lastDecision;
+            if (state->current_player == currentPlayer){
+                lastDecision = "Deciding...";
+            }
+            else if (players[currentPlayer]->folded){
+                lastDecision = "Folded";
+            }
+            else if (players[currentPlayer]->tappedout){
+                lastDecision = "Tappedout";
+            }
+            else {
+                //TODO: choice of a literal in this scope should depend on player's last recorded decision
+                lastDecision = "TODO!";
+            }
+            MSG_SHOWVS(GLOBAL_MSGS, "PIO_PLAYER_LASTDECISION", lastDecision);
+        }
+        printf("|\n");
+
+        //PIO_PLAYER_FUNDS
+        for (int j = 0; j < playersToPrint; j++){
+            int currentPlayer = i * 4 + j;
+            MSG_SHOWVS(GLOBAL_MSGS, "PIO_PLAYER_FUNDS", players[currentPlayer]->funds);
+        }
+        printf("|\n");
+        if (i != tableRows - 1){
+            MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_4COL");
+        }
     }
-    MSG_SHOWVN(GLOBAL_MSGS, "PIO_COMMCARDS", rev_comm_cards, COMM_CARDS_COUNT);
-    for (int i = 0; i < rev_comm_cards; ++i){
-        const char* pipName = getPipName(cards[i]->pips);
-        const char* suitName = getSuitName(cards[i]->suit);
-        printf(" - %s of %s\n", pipName, suitName);
-    }
 }
 
 /**
- *  \brief Prints Player's current cards.
+ *  \brief Prints the intermediary header which shows the raises left, current pot and bet.
  */
-void printHoleCards(const Player* player){
-    MSG_SHOWN(GLOBAL_MSGS, "PIO_HOLECARDS");
-    for (int i = 0; i < CARDS_PER_PLAYER; ++i){
-        char cardName[CARDNAME_MAX_LENGTH];
-        getCardName(player->current_hand[i], cardName, CARDNAME_MAX_LENGTH);
-        printf(" - %s\n", cardName);
+void printRaisesPotBet(const GameRuleSet* rules, const GameState* state){
+    char* bet_variant;
+    if (rules->limit_fixed){
+        bet_variant = state->betting_round < 2 ? "(Small Blind)" : "(Big Blind)";
     }
+    else {
+        bet_variant = "(No limit)";
+    }
+    MSG_SHOWVN(GLOBAL_MSGS, "PIO_PLAYER_NUMBERS",
+               MAX_BETS_PER_ROUND - state->raises_performed,
+               bet_variant,
+               state->pot,
+               state->bet);
 }
 
 /**
- *  \brief Prints the results of a showdown.
+ *  \brief Prints the second table showing revealed community cards and current player's hole cards.
+ *  \param player If this parameter is NULL, the right column with player's cards won't be printed. Only community cards will be visible.
  */
-void printShowdownResults(const int winners[], const int winners_count, const Player* players[]){
-    for (int i = 0; i < winners_count; ++i){
-        const Player* currentWinner = players[winners[i]];
-        MSG_SHOWV(GLOBAL_MSGS, "PIO_SHOWDOWN", i, winners[i], currentWinner->isHuman ? "Human" : "AI");
+void printCards(const Player* player, const PlayingCard* comm_cards[], const int revealed_cards){
+    MSG_SHOWVN(GLOBAL_MSGS, "PIO_CARDS_HEADER", player != NULL ? "| Your cards:" : "" );
+    if (player != NULL){
+        //Print community cards and player cards
+        for (int i = 0; i < CARDS_PER_PLAYER; i++){
+            char commCard[CARDNAME_MAX_LENGTH];
+            char holeCard[CARDNAME_MAX_LENGTH];
+            if (i < revealed_cards){
+                getCardName(comm_cards[i], commCard, CARDNAME_MAX_LENGTH);
+            }
+            else {
+                strcpy(commCard, "???");
+            }
+            getCardName(player->current_hand[i], holeCard, CARDNAME_MAX_LENGTH);
+            MSG_SHOWVN(GLOBAL_MSGS, "PIO_CARDS_ROW_DOUBLE",
+                       commCard,
+                       holeCard);
+        }
+        for (int i = CARDS_PER_PLAYER; i < COMM_CARDS_COUNT; i++){
+            char commCard[CARDNAME_MAX_LENGTH];
+            if (i < revealed_cards){
+                getCardName(comm_cards[i], commCard, CARDNAME_MAX_LENGTH);
+            }
+            else {
+                strcpy(commCard, "???");
+            }
+            MSG_SHOWVN(GLOBAL_MSGS, "PIO_CARDS_ROW_SINGLE", commCard, '|');
+        }
+    }
+    else {
+        //Print only community cards
+        for (int i = 0; i < COMM_CARDS_COUNT; i++){
+            char commCard[CARDNAME_MAX_LENGTH];
+            if (i < revealed_cards){
+                getCardName(comm_cards[i], commCard, CARDNAME_MAX_LENGTH);
+            }
+            else {
+                strcpy(commCard, "???");
+            }
+            MSG_SHOWVN(GLOBAL_MSGS, "PIO_CARDS_ROW_SINGLE", commCard, ' ');
+        }
+    }
+}
+
+void printShowdownResults(const GameState* state, const Player* players[], const int winners[], const int winners_count){
+    MSG_SHOWVN(GLOBAL_MSGS, "PIO_SHOWDOWN_HEADER", state->pot);
+    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
+    for (int i = 0; i < winners_count; i++){
         char firstCard[CARDNAME_MAX_LENGTH];
         char secondCard[CARDNAME_MAX_LENGTH];
-        getCardName(currentWinner->current_hand[0], firstCard, CARDNAME_MAX_LENGTH);
-        getCardName(currentWinner->current_hand[1], secondCard, CARDNAME_MAX_LENGTH);
-        printf("%s and %s\n", firstCard, secondCard);
+        Player* currentPlayer = players[winners[i]];
+        int highestNonzeroScoreTier = 0;
+        if (state->all_but_one_folded){
+            highestNonzeroScoreTier = -1;
+        }
+        else {
+            while (highestNonzeroScoreTier < SCORE_TABLE_SIZE && currentPlayer->scores[highestNonzeroScoreTier] == 0){
+                highestNonzeroScoreTier++;
+            }
+        }
+        char* highestHandrank;
+        switch (highestNonzeroScoreTier){
+            case -1: highestHandrank ="Everyone folded"; break;
+            case 0: highestHandrank = "Royal Flush"; break;
+            case 1: highestHandrank = "Straight Flush"; break;
+            case 2: highestHandrank = "Four-of-a-Kind"; break;
+            case 3: highestHandrank = "Full House"; break;
+            case 4: highestHandrank = "Flush"; break;
+            case 5: highestHandrank = "Straight"; break;
+            case 6: highestHandrank = "Three-of-a-Kind"; break;
+            case 7: highestHandrank = "Two Pair"; break;
+            case 8: highestHandrank = "Pair"; break;
+            case 9: highestHandrank = "High Card"; break;
+            default: highestHandrank = "None"; break;
+        }
+        getCardName(currentPlayer->current_hand[0], firstCard, CARDNAME_MAX_LENGTH);
+        getCardName(currentPlayer->current_hand[1], secondCard, CARDNAME_MAX_LENGTH);
+        MSG_SHOWVN(GLOBAL_MSGS, "PIO_SHOWDOWN_ROW",
+                   winners[i] + 1,
+                   highestHandrank,
+                   firstCard,
+                   secondCard);
     }
 }
-

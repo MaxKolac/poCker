@@ -2,7 +2,6 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include "constants.h"
 #include "gamerules.h"
 #include "handranking.h"
 #include "player.h"

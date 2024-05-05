@@ -11,11 +11,15 @@
 #define PIPS_PER_SUIT 13
 #define SUITS_COUNT 4
 #define DECK_LENGTH (4 * 13)
-#define CARDNAME_MAX_LENGTH (5 + 4 + 8)
+#define CARDNAME_MAX_LENGTH (5 + 4 + 8 + 1)
+#define CARDS_PER_PLAYER 2
+#define COMM_CARDS_COUNT 5
 
 extern const int PIPS_PER_SUIT_OBJ;
 extern const int SUITS_COUNT_OBJ;
 extern const int DECK_LENGTH_OBJ;
+extern const int CARDS_PER_PLAYER_OBJ;
+extern const int COMM_CARDS_COUNT_OBJ;
 
 /** \brief Represents a symbol in a card deck. */
 enum Suit {

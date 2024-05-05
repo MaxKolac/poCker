@@ -1231,6 +1231,7 @@ static void test_passingAroundDealersButton(CuTest* ct){
 
 CuSuite* GamestateGetSuite(CuTest* ct){
     CuSuite* suite = CuSuiteNew();
+    msgInitFromFile("loc.txt");
     SUITE_ADD_TEST(suite, test_checkConstructor);
 
     SUITE_ADD_TEST(suite, test_raiseRightAfterStartingGame);

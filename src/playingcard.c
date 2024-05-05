@@ -6,6 +6,8 @@
 const int PIPS_PER_SUIT_OBJ = PIPS_PER_SUIT;
 const int SUITS_COUNT_OBJ = SUITS_COUNT;
 const int DECK_LENGTH_OBJ = SUITS_COUNT * PIPS_PER_SUIT;
+const int CARDS_PER_PLAYER_OBJ = CARDS_PER_PLAYER;
+const int COMM_CARDS_COUNT_OBJ = COMM_CARDS_COUNT;
 
 /**
  *  \brief Returns a string literal containing the name of the given Pip enumerator.

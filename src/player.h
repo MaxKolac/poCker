@@ -2,13 +2,17 @@
 #define PLAYER_H
 
 #include <stdbool.h>
-#include "constants.h"
 #include "playingcard.h"
 
 /**
 * \file player.h
 * \brief Contains a Player struct and related functions.
 */
+
+/** \brief Defines the size of the scores[] array. */
+#define SCORE_TABLE_SIZE 10
+
+extern const int SCORE_TABLE_SIZE_OBJ;
 
 /** \brief Represents a single player. */
 typedef struct {
