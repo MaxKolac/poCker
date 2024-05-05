@@ -1,0 +1,32 @@
+|---------------------------------------------------------------|
+|	ROUND 1 of 4		|	Turns left: 4		|
+|---------------------------------------------------------------|
+| P1 (AI)	| P2 (H)	| P3 (H)	| P4 (AI)	|
+| In-game	| Folded	| Deciding...	| Tappedout	|
+| 100000$	| 5000$		| 10000$ 	| 0$ (50$)	|
+|---------------|---------------|---------------|---------------|
+| P5 (AI)	| P6 (H)	| 		| P8 (H)	|
+| In-game	| Folded	| 		| Called 	|
+| 999999999999$	| 12345$	| 		| 0$		|
+|---------------|---------------|---------------|---------------|
+| P9 (AI)	| P10 (H) (D)	| P11 (AI) (BB)	| P12 (AI) (SB)	|
+| In-game	| Folded	| Raised 999999 | Called 	|
+| 999999999999$	| 12345$	| 0$		| 0$		|
+|---------------|---------------|---------------|---------------|
+| Raises left: 3 (Small Blind)  | Pot: 50$	| Bet: 25$ 	|
+| Raises left: 3 (Big Blind)	| Pot: 50$	| Bet: 25$ 	|
+| Raises left: 3 (No limit)	| Pot: 50$	| Bet: 25$ 	|
+|-------------------------------|-------------------------------|
+| Community cards:		| Your cards:			|
+| - Seven of Diamonds		| - Seven of Diamonds		|
+| - Seven of Diamonds		| - Seven of Diamonds		|
+| - Two of Aces			|				|
+| - King of Clubs		|				|
+| - ???				|				|
+|---------------------------------------------------------------|
+ Player %d, it's your turn to act. 
+ You can choose to 'call', 'raise', 'raise amount', 'fold' or 'tapout': call
+ Unrecognized decision.
+ Player %d, it's your turn to act.
+ You can choose to 'call', 'raise', 'raise amount', 'fold' or 'tapout': call
+ Player %d's decision was %d.

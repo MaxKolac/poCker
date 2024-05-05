@@ -7,6 +7,9 @@
 #include <string.h>
 #include <limits.h>
 #include "messages.h"
+#include "gamerules.h"
+#include "gamestate.h"
+#include "utils.h"
 
 /**
  *  \brief Prompts the user with a message for a positive integer or zero value.
@@ -250,3 +253,111 @@ void printShowdownResults(const int winners[], const int winners_count, const Pl
     }
 }
 
+void printHeader(const GameState* state){
+    MSG_SHOWVN(GLOBAL_MSGS, "PIO_HEADER", state->betting_round + 1, MAX_ROUNDS_PER_GAME, state->turns_left);
+}
+
+void printPlayers(const GameRuleSet* rules, const GameState* state, const Player* players[]){
+    //For each greater row
+    int tableRows = ceilf(rules->player_count / 4.0);
+    for (int i = 0; i < tableRows; i++){
+        int playersToPrint = MIN(rules->player_count - (i * 4), 4);
+
+        //PIO_PLAYER_NAME
+        for (int j = 0; j < playersToPrint; j++){
+            int currentPlayer = i * 4 + j;
+            char* playerStatus;
+            if (state->b_blind_player == currentPlayer){
+                playerStatus = "(BB)";
+            }
+            else if (state->s_blind_player == currentPlayer){
+                playerStatus = "(SB)";
+            }
+            else if (state->dealer_player == currentPlayer){
+                playerStatus = "(DL)";
+            }
+            else {
+                playerStatus = "    ";
+            }
+            MSG_SHOWVS(GLOBAL_MSGS, "PIO_PLAYER_NAME",
+                      currentPlayer + 1,
+                      players[currentPlayer]->isHuman ? "(H)" : "(AI)",
+                      playerStatus);
+        }
+        printf("|\n");
+
+        //PIO_PLAYER_LASTDECISION
+        for (int j = 0; j < playersToPrint; j++){
+            int currentPlayer = i * 4 + j;
+            char* lastDecision;
+            if (state->current_player == currentPlayer){
+                lastDecision = "Deciding...";
+            }
+            else if (players[currentPlayer]->folded){
+                lastDecision = "Folded";
+            }
+            else if (players[currentPlayer]->tappedout){
+                lastDecision = "Tappedout";
+            }
+            else {
+                //TODO: choice of a literal in this scope should depend on player's last recorded decision
+                lastDecision = "TODO!";
+            }
+            MSG_SHOWVS(GLOBAL_MSGS, "PIO_PLAYER_LASTDECISION", lastDecision);
+        }
+        printf("|\n");
+
+        //PIO_PLAYER_FUNDS
+        for (int j = 0; j < playersToPrint; j++){
+            int currentPlayer = i * 4 + j;
+            MSG_SHOWVS(GLOBAL_MSGS, "PIO_PLAYER_FUNDS", players[currentPlayer]->funds);
+        }
+        printf("|\n");
+        if (i != tableRows - 1){
+            MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_4COL");
+        }
+    }
+}
+
+void printRaisesPotBet(const GameRuleSet* rules, const GameState* state){
+    char* bet_variant;
+    if (rules->limit_fixed){
+        bet_variant = "(No limit)";
+    }
+    else {
+        bet_variant = state->betting_round < 2 ? "(Small Blind)" : "(Big Blind)";
+    }
+    MSG_SHOWVN(GLOBAL_MSGS, "PIO_PLAYER_NUMBERS",
+               MAX_BETS_PER_ROUND - state->raises_performed,
+               bet_variant,
+               state->pot,
+               state->bet);
+}
+
+void printCards(const Player* player, const PlayingCard* comm_cards[], const int revealed_cards){
+    MSG_SHOWN(GLOBAL_MSGS, "PIO_CARDS_HEADER");
+    for (int i = 0; i < CARDS_PER_PLAYER; i++){
+        char commCard[CARDNAME_MAX_LENGTH];
+        char holeCard[CARDNAME_MAX_LENGTH];
+        if (i < revealed_cards){
+            getCardName(comm_cards[i], commCard, CARDNAME_MAX_LENGTH);
+        }
+        else {
+            strcpy(commCard, "???");
+        }
+        getCardName(player->current_hand[i], holeCard, CARDNAME_MAX_LENGTH);
+        MSG_SHOWVN(GLOBAL_MSGS, "PIO_CARDS_ROW_DOUBLE",
+                   commCard,
+                   holeCard);
+    }
+    for (int i = CARDS_PER_PLAYER; i < COMM_CARDS_COUNT; i++){
+        char commCard[CARDNAME_MAX_LENGTH];
+        if (i < revealed_cards){
+            getCardName(comm_cards[i], commCard, CARDNAME_MAX_LENGTH);
+        }
+        else {
+            strcpy(commCard, "???");
+        }
+        MSG_SHOWVN(GLOBAL_MSGS, "PIO_CARDS_ROW_SINGLE", commCard);
+    }
+}

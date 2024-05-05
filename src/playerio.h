@@ -25,4 +25,9 @@ void printCommunityCards(const PlayingCard*[], const int);
 void printHoleCards(const Player*);
 void printShowdownResults(const int[], const int, const Player*[]);
 
+void printHeader(const GameState*);
+void printPlayers(const GameRuleSet*, const GameState*, const Player*[]);
+void printRaisesPotBet(const GameRuleSet*, const GameState*);
+void printCards(const Player*, const PlayingCard*[], const int);
+
 #endif // PLAYERIO_H
