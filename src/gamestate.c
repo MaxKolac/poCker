@@ -66,7 +66,9 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
             player_decision = *player_dec_override;
         }
         //Debug
-        MSG_SHOWVN(GLOBAL_MSGS, "PIO_DEBUG_DECISION", players[state->current_player]->isHuman ? "Human" : "AI", player_decision);
+        MSG_SHOWVN(GLOBAL_MSGS, "PIO_DEBUG_DECISION",
+                   players[state->current_player]->isHuman ? "Human" : "AI",
+                   player_decision);
 
         //WARNING! This part assumes the player's decision was allowed and valid!
         //Consequence of player's actions
