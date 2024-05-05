@@ -2,7 +2,6 @@
 
 #include <math.h>
 #include <stdio.h>
-#include "constants.h"
 #include "messages.h"
 
 const int MIN_PLAYER_COUNT = 3;

@@ -43,10 +43,6 @@
 		<Unit filename="notes.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/constants.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/constants.h" />
 		<Unit filename="src/dealer.c">
 			<Option compilerVar="CC" />
 		</Unit>

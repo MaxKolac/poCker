@@ -12,6 +12,7 @@
 #include "utils.h"
 
 const int MAX_BETS_PER_ROUND_OBJ = MAX_BETS_PER_ROUND;
+const int MAX_ROUNDS_PER_GAME_OBJ = MAX_ROUNDS_PER_GAME;
 
 GameState* gsCreateNew(const GameRuleSet* rules){
     GameState* state = ((GameState*)malloc(sizeof(GameState)));

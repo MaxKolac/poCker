@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 
+const int SCORE_TABLE_SIZE_OBJ = SCORE_TABLE_SIZE;
+
 Player* playerCreateNew(){
     Player* self = ((Player*)malloc(sizeof(Player)));
     self->funds = 0;

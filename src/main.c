@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <tgmath.h>
 #include <time.h>
-#include "constants.h"
 #include "dealer.h"
 #include "gamerules.h"
 #include "gamestate.h"
