@@ -83,6 +83,8 @@ int main()
         MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
         printShowdownResults(globalState, players, winners, winners_count);
         MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
+        printCards(NULL, comm_cards, globalState->revealed_comm_cards);
+        MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
 
         gsAwardPot(globalState, players, tapout_pot_statuses, winners, winners_count);
         gameOver = gsCheckGameOverCondition(globalState, players, &globalRules);

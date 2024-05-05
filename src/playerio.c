@@ -268,32 +268,49 @@ void printRaisesPotBet(const GameRuleSet* rules, const GameState* state){
 
 /**
  *  \brief Prints the second table showing revealed community cards and current player's hole cards.
+ *  \param player If this parameter is NULL, the right column with player's cards won't be printed. Only community cards will be visible.
  */
 void printCards(const Player* player, const PlayingCard* comm_cards[], const int revealed_cards){
-    MSG_SHOWN(GLOBAL_MSGS, "PIO_CARDS_HEADER");
-    for (int i = 0; i < CARDS_PER_PLAYER; i++){
-        char commCard[CARDNAME_MAX_LENGTH];
-        char holeCard[CARDNAME_MAX_LENGTH];
-        if (i < revealed_cards){
-            getCardName(comm_cards[i], commCard, CARDNAME_MAX_LENGTH);
+    MSG_SHOWVN(GLOBAL_MSGS, "PIO_CARDS_HEADER", player != NULL ? "| Your cards:" : "" );
+    if (player != NULL){
+        //Print community cards and player cards
+        for (int i = 0; i < CARDS_PER_PLAYER; i++){
+            char commCard[CARDNAME_MAX_LENGTH];
+            char holeCard[CARDNAME_MAX_LENGTH];
+            if (i < revealed_cards){
+                getCardName(comm_cards[i], commCard, CARDNAME_MAX_LENGTH);
+            }
+            else {
+                strcpy(commCard, "???");
+            }
+            getCardName(player->current_hand[i], holeCard, CARDNAME_MAX_LENGTH);
+            MSG_SHOWVN(GLOBAL_MSGS, "PIO_CARDS_ROW_DOUBLE",
+                       commCard,
+                       holeCard);
         }
-        else {
-            strcpy(commCard, "???");
+        for (int i = CARDS_PER_PLAYER; i < COMM_CARDS_COUNT; i++){
+            char commCard[CARDNAME_MAX_LENGTH];
+            if (i < revealed_cards){
+                getCardName(comm_cards[i], commCard, CARDNAME_MAX_LENGTH);
+            }
+            else {
+                strcpy(commCard, "???");
+            }
+            MSG_SHOWVN(GLOBAL_MSGS, "PIO_CARDS_ROW_SINGLE", commCard, '|');
         }
-        getCardName(player->current_hand[i], holeCard, CARDNAME_MAX_LENGTH);
-        MSG_SHOWVN(GLOBAL_MSGS, "PIO_CARDS_ROW_DOUBLE",
-                   commCard,
-                   holeCard);
     }
-    for (int i = CARDS_PER_PLAYER; i < COMM_CARDS_COUNT; i++){
-        char commCard[CARDNAME_MAX_LENGTH];
-        if (i < revealed_cards){
-            getCardName(comm_cards[i], commCard, CARDNAME_MAX_LENGTH);
+    else {
+        //Print only community cards
+        for (int i = 0; i < COMM_CARDS_COUNT; i++){
+            char commCard[CARDNAME_MAX_LENGTH];
+            if (i < revealed_cards){
+                getCardName(comm_cards[i], commCard, CARDNAME_MAX_LENGTH);
+            }
+            else {
+                strcpy(commCard, "???");
+            }
+            MSG_SHOWVN(GLOBAL_MSGS, "PIO_CARDS_ROW_SINGLE", commCard, ' ');
         }
-        else {
-            strcpy(commCard, "???");
-        }
-        MSG_SHOWVN(GLOBAL_MSGS, "PIO_CARDS_ROW_SINGLE", commCard);
     }
 }
 
