@@ -27,6 +27,7 @@ PIO_COMMCARDS The revealed community cards (%d of %d) are:
 PIO_COMMCARDS_NONE There are no community cards revealed.
 PIO_HOLECARDS Your current cards are:
 PIO_SHOWDOWN Winner #%d: Player %d (%s) -
+PIO_DEBUG_DECISION Player's (%s) decision was %d.
 GAMESTATE_HUMANPROMPT Player %d, it's your turn to act. You can either 'call', 'raise', 'raise amount', 'fold' or 'tapout':
 GAMERULES_PROMPT_PLAYERCOUNT Enter the amount of players. Min - %d, Max - %d
 GAMERULES_PROMPT_AICOUNT Enter the amount of AI players. The remaining players will be controlled by human prompts, Min - %d, Max - %d

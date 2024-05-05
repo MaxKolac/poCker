@@ -255,7 +255,7 @@ void printShowdownResults(const int winners[], const int winners_count, const Pl
 }
 
 void printHeader(const GameState* state){
-    MSG_SHOWVN(GLOBAL_MSGS, "PIO_HEADER", state->betting_round + 1, MAX_ROUNDS_PER_GAME, state->turns_left);
+    MSG_SHOWVN(GLOBAL_MSGS, "PIO_HEADER", state->betting_round + 1, MAX_ROUNDS_PER_GAME, state->turns_left - 1);
 }
 
 void printPlayers(const GameRuleSet* rules, const GameState* state, const Player* players[]){
@@ -322,7 +322,7 @@ void printPlayers(const GameRuleSet* rules, const GameState* state, const Player
 
 void printRaisesPotBet(const GameRuleSet* rules, const GameState* state){
     char* bet_variant;
-    if (rules->limit_fixed){
+    if (!(rules->limit_fixed)){
         bet_variant = "(No limit)";
     }
     else {
