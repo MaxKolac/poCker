@@ -20,7 +20,7 @@ void msgInitFromFile(const char* sourceFile){
 
     for (int i = 0; i < MESSAGES_COUNT; ++i){
         if (feof(locFile)){
-            perror("End of file reached when more messages where promised! Some message requests may turn up with errors.");
+            printf("End of file reached when more messages where promised! Some message requests may turn up with errors.\n");
             fclose(locFile);
             return;
         }

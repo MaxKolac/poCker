@@ -18,16 +18,10 @@ bool promptBool(char*);
 int recognizeDecision(char*);
 bool checkPlayerDecisionValidity(const Player*, const GameState*, const GameRuleSet*, int);
 
-void printPlayerInfobox(const GameState*, const Player*, const PlayingCard*[]);
-void printGameStateFull(const GameState*);
-void printGameStateBrief(const GameState*);
-void printCommunityCards(const PlayingCard*[], const int);
-void printHoleCards(const Player*);
-void printShowdownResults(const int[], const int, const Player*[]);
-
 void printHeader(const GameState*);
 void printPlayers(const GameRuleSet*, const GameState*, const Player*[]);
 void printRaisesPotBet(const GameRuleSet*, const GameState*);
 void printCards(const Player*, const PlayingCard*[], const int);
+void printShowdownResults(const GameState*, const Player*[], const int[], const int);
 
 #endif // PLAYERIO_H
