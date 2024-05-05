@@ -28,3 +28,4 @@ GAMERULES_PROMPT_AICOUNT Enter the amount of AI players. The remaining players w
 GAMERULES_PROMPT_FUNDS Set the initial amount of funds for each player. Min - %d$, Max - %d$
 GAMERULES_PROMPT_LIMITS Should the betting limits be fixed?
 GAMERULES_PROMPT_BIGBLIND Set the big blind amount. Minimum is 2, maximum is 10% of funds per player
+NULL_PROMPT Press any button to continue onto the next game

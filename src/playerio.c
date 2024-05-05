@@ -60,6 +60,15 @@ bool promptBool(char* msg){
 }
 
 /**
+ *  \brief Prompts the user to simply click any button to continue exection.
+ *  \param msg Message to show with trailing three dots.
+ */
+void promptNull(char* msg){
+    printf("%s...", msg);
+    getch();
+}
+
+/**
  *  \brief Recognizes one of the predetermined string literals in the input parameter and returns it as the corresponding integer.
  *  \returns The amount to raise by for RAISES, 0 for CALL/CHECK, -1 for FOLD, -2 for TAPOUT, INT_MIN for unrecognized decision.
  *

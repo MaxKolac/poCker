@@ -15,6 +15,7 @@
 
 int promptInt(int, char*);
 bool promptBool(char*);
+void promptNull(char*);
 int recognizeDecision(char*);
 bool checkPlayerDecisionValidity(const Player*, const GameState*, const GameRuleSet*, int);
 
