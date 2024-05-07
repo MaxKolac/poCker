@@ -12,6 +12,7 @@
  */
 
 #define PLAYER_DECISION_LENGTH 16
+#define clearScreen() (system("@cls||clear"))
 
 int promptInt(int, char*);
 bool promptBool(char*);
@@ -19,6 +20,7 @@ void promptNull(char*);
 int recognizeDecision(char*);
 bool checkPlayerDecisionValidity(const Player*, const GameState*, const GameRuleSet*, int);
 
+void printTitleScreen();
 void printHeader(const GameState*);
 void printPlayers(const GameRuleSet*, const GameState*, const Player*[]);
 void printRaisesPotBet(const GameRuleSet*, const GameState*);

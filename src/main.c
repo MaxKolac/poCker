@@ -16,6 +16,8 @@
 
 int main()
 {
+    printTitleScreen();
+
     //  -- Loading messages --
     msgInitFromFile(MESSAGES_FILENAME);
 
@@ -26,6 +28,7 @@ int main()
     promptFundsPerPlayer(&globalRules);
     promptLimitFixed(&globalRules);
     promptBigBlind(&globalRules);
+    clearScreen();
 
     //  --  Game setup   --
     //Seeds the random number generator with current time since epoch.

@@ -186,6 +186,24 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
 }
 
 /**
+ *  \brief Prints the title screen. Duh.
+ */
+void printTitleScreen(){
+    printf("                       _____ _\n");
+    printf("                      /  __ \\ |\n");
+    printf("           _ __   ___ | /  \\/ | _____ _ __\n");
+    printf("          | '_ \\ / _ \\| |   | |/ / _ \\ '__|\n");
+    printf("          | |_) | (_) | \\__/\\   <  __/ |\n");
+    printf("          | .__/ \\___/ \\____/_|\\_\\___|_|\n");
+    printf("          | |\n");
+    printf("          |_|\n");
+    printf("      ----------------------------------------- \n");
+    printf("  Created by: MaxKolac @ github.com/MaxKolac/poCker\n");
+    printf("             ASCII made with patorjk.com\n");
+    printf("      ----------------------------------------- \n");
+}
+
+/**
  *  \brief Prints the UI header which includes the current round and amount of turns left in it.
  */
 void printHeader(const GameState* state){
