@@ -45,9 +45,9 @@ int main()
 
     //  --  Game loop   --
     GameState* globalState;
+    globalState = gsCreateNew(&globalRules);
     bool gameOver = false;
     do {
-        globalState = gsCreateNew(&globalRules);
         distributeCards(deck, &players, comm_cards, &globalRules);
 
         //Reset everyone's tappedout funds
@@ -60,18 +60,18 @@ int main()
 
             //  --  Single round of betting loop  --
             while (globalState->turns_left > 0){
-                if (players[globalState->current_player]->isHuman){
-                    clearScreen();
-                    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
-                    printHeader(globalState);
-                    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_2COL");
-                    printPlayers(&globalRules, globalState, players);
-                    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_2COL");
-                    printRaisesPotBet(&globalRules, globalState);
-                    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
-                    printCards(players[globalState->current_player], comm_cards, globalState->revealed_comm_cards);
-                    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
-                }
+                clearScreen();
+                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
+                printHeader(globalState);
+                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_2COL");
+                printPlayers(&globalRules, globalState, players);
+                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_2COL");
+                printRaisesPotBet(&globalRules, globalState);
+                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_2COL");
+                printCards(players[globalState->current_player]->isHuman ? players[globalState->current_player] : NULL,
+                           comm_cards,
+                           globalState->revealed_comm_cards);
+                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
                 gsAdvancePlayerTurn(globalState, players, &globalRules, NULL);
             }
 
@@ -91,11 +91,12 @@ int main()
         MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
         printCards(NULL, comm_cards, globalState->revealed_comm_cards);
         MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
-        promptNull(msgGet(GLOBAL_MSGS, "NULL_PROMPT"));
+        promptNull(msgGet(GLOBAL_MSGS, "NULL_PROMPT_NEXTGAME"));
 
         gsAwardPot(globalState, players, winners, winners_count);
-        gameOver = gsCheckGameOverCondition(globalState, players, &globalRules);
+        gameOver = gsCheckGameOverCondition(players, &globalRules);
         gsPassDealerButton(globalState, &globalRules);
+        gsConcludeSingleGame(globalState);
     } while (!gameOver);
 
     //Post-game results

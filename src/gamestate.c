@@ -47,7 +47,7 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
                 bool decisionValid = false;
                 do {
                     char input[PLAYER_DECISION_LENGTH];
-                    MSG_SHOWV(GLOBAL_MSGS, "GAMESTATE_HUMANPROMPT", state->current_player + 1);
+                    MSG_SHOWVS(GLOBAL_MSGS, "GAMESTATE_HUMANPROMPT", state->current_player + 1);
                     gets_s(input, PLAYER_DECISION_LENGTH);
                     player_decision = recognizeDecision(input);
                     decisionValid = checkPlayerDecisionValidity(players[state->current_player], state, ruleSet, player_decision);
@@ -55,20 +55,14 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
             }            else {
                 //for AI players - for now this function always returns 0 - CHECK
                 player_decision = takeAction(players[state->current_player]);
-                //player_decision = mathClamp(player_decision, -2, players[state->current_player]->funds);
-                //decisionValid = checkPlayerDecisionValidity(players[state->current_player],
-                //                                            ruleSet,
-                //                                            player_decision,
-                //                                            state->bet);
+                promptNull(msgGet(GLOBAL_MSGS, "NULL_PROMPT_NEXTTURN"));
             }
         }
         else {
             player_decision = *player_dec_override;
         }
         //Debug
-        MSG_SHOWVN(GLOBAL_MSGS, "PIO_DEBUG_DECISION",
-                   players[state->current_player]->isHuman ? "Human" : "AI",
-                   player_decision);
+        //MSG_SHOWVN(GLOBAL_MSGS, "PIO_DEBUG_DECISION", players[state->current_player]->isHuman ? "Human" : "AI", player_decision);
 
         //WARNING! This part assumes the player's decision was allowed and valid!
         //Consequence of player's actions
@@ -262,10 +256,11 @@ void gsAwardPot(GameState* state, Player* players[], const int winners[], const 
 /**
  *  \brief Checks if everyone but one player has any funds left.
  *
- *  If the condition is true, this would indicate end of the game.
- *  This function also unmarks all Players with funds left. Broke players are marked as folded right away.
+ *  If the condition is true, this would indicate end of the whole game.
+ *  This function also reverts the "folded" and "tappedout" statuss for all Players with funds left.
+ *  Broke players are marked as folded right away.
  */
-bool gsCheckGameOverCondition(GameState* state, Player* players[], const GameRuleSet* rules){
+bool gsCheckGameOverCondition(Player* players[], const GameRuleSet* rules){
     int broke_players = 0;
     for (int i = 0; i < rules->player_count; i++){
             players[i]->tappedout = false;
@@ -288,4 +283,15 @@ void gsPassDealerButton(GameState* state, const GameRuleSet* rules){
     state->dealer_player = (state->dealer_player + 1) % rules->player_count;
     state->s_blind_player = (state->s_blind_player + 1) % rules->player_count;
     state->b_blind_player = (state->b_blind_player + 1) % rules->player_count;
+}
+
+/**
+ *  \brief Prepares the GameState struct for a fresh game while preserving dealer button positions.
+ *
+ *  Before entering a pre-flop betting round, make sure to call gsSetUpBettingRound() function.
+ */
+void gsConcludeSingleGame(GameState* state){
+    state->revealed_comm_cards = 0;
+    state->betting_round = 0;
+    state->all_but_one_folded = false;
 }

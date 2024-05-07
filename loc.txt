@@ -22,10 +22,11 @@ PIO_CPDV_UNKNOWN Unrecognized decision.
 PIO_SHOWDOWN_HEADER |           WINNERS             | Final pot: %17d$ |
 PIO_SHOWDOWN_ROW | P%-2d - %-15s - %-17s + %-17s |
 PIO_DEBUG_DECISION Player's (%s) decision was %d.
+NULL_PROMPT_NEXTGAME Press any button to continue onto the next game
+NULL_PROMPT_NEXTTURN Press any button to continue onto the next turn
 GAMESTATE_HUMANPROMPT Player %d, it's your turn to act. You can either 'call', 'raise', 'raise amount', 'fold' or 'tapout':
 GAMERULES_PROMPT_PLAYERCOUNT Enter the amount of players. Min - %d, Max - %d
 GAMERULES_PROMPT_AICOUNT Enter the amount of AI players. The remaining players will be controlled by human prompts, Min - %d, Max - %d
 GAMERULES_PROMPT_FUNDS Set the initial amount of funds for each player. Min - %d$, Max - %d$
 GAMERULES_PROMPT_LIMITS Should the betting limits be fixed?
 GAMERULES_PROMPT_BIGBLIND Set the big blind amount. Minimum is 2, maximum is 10% of funds per player
-NULL_PROMPT Press any button to continue onto the next game

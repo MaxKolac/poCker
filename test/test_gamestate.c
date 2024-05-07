@@ -703,6 +703,32 @@ static void test_advancingToNextBettingRoundResetsTurnsLeftProperly(CuTest* ct){
     }
 }
 
+static void test_concludingSingleGame(CuTest* ct){
+    const GameRuleSet rules = {
+        .player_count = 6,
+        .funds_per_player = 10000
+    };
+    const GameState* state = gsCreateNew(&rules);
+    Player* players[rules.player_count];
+    for (int i = 0; i < rules.player_count; ++i)
+        players[i] = playerCreateNewWithFunds(rules.funds_per_player);
+
+    for (int i = 0; i < MAX_ROUNDS_PER_GAME; ++i){
+        gsSetUpBettingRound(state, players, &rules);
+        gsConcludeBettingRound(state);
+    }
+    gsPassDealerButton(state, &rules);
+    gsConcludeSingleGame(state);
+    const GameState* freshState = gsCreateNew(&rules);
+
+    CuAssert(ct, "", state->revealed_comm_cards == freshState->revealed_comm_cards);
+    CuAssert(ct, "", state->dealer_player == freshState->dealer_player + 1);
+    CuAssert(ct, "", state->s_blind_player == freshState->s_blind_player + 1);
+    CuAssert(ct, "", state->b_blind_player == freshState->b_blind_player + 1);
+    CuAssert(ct, "", state->betting_round == freshState->betting_round);
+    CuAssert(ct, "", state->all_but_one_folded == freshState->all_but_one_folded);
+}
+
 //  --  Tap-outs   --
 
 static void test_singleTapOut(CuTest* ct){
@@ -1156,7 +1182,7 @@ static void test_markingBrokePlayers(CuTest* ct){
     players[4]->folded = false;
     players[4]->tappedout = true;
 
-    gsCheckGameOverCondition(state, players, &ruleset);
+    gsCheckGameOverCondition(players, &ruleset);
 
     CuAssert(ct, "", !(players[0]->folded));
     CuAssert(ct, "", players[1]->folded);
@@ -1176,10 +1202,10 @@ static void test_everyoneButOnePlayerIsBroke(CuTest* ct){
     GameState* state = gsCreateNew(&ruleset);
 
     players[2]->funds = 1;
-    CuAssert(ct, "", gsCheckGameOverCondition(state, players, &ruleset));
+    CuAssert(ct, "", gsCheckGameOverCondition(players, &ruleset));
 
     players[3]->funds = 1;
-    CuAssert(ct, "", !gsCheckGameOverCondition(state, players, &ruleset));
+    CuAssert(ct, "", !gsCheckGameOverCondition(players, &ruleset));
 }
 
 //  --  Others  --
@@ -1231,6 +1257,7 @@ CuSuite* GamestateGetSuite(CuTest* ct){
     SUITE_ADD_TEST(suite, test_checkTheWhileLoopInMainForPlayerTurnAdvancing);
     SUITE_ADD_TEST(suite, test_allButOneFoldedConditionCheckForAdvancePlayerTurn);
     SUITE_ADD_TEST(suite, test_advancingToNextBettingRoundResetsTurnsLeftProperly);
+    SUITE_ADD_TEST(suite, test_concludingSingleGame);
 
     SUITE_ADD_TEST(suite, test_settingUpPreFlopRound);
     SUITE_ADD_TEST(suite, test_settingUpFlopRound);
