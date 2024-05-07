@@ -108,7 +108,7 @@
 	<stdio.h>
 	"messages.h"
 
-1715100123 source:c:\users\ja\documents\github\pocker\src\gamestate.c
+1715103431 source:c:\users\ja\documents\github\pocker\src\gamestate.c
 	"gamestate.h"
 	<stdbool.h>
 	<stdlib.h>
@@ -131,7 +131,7 @@
 	"CuTest.h"
 	"../src/gamerules.h"
 
-1715100884 source:c:\users\ja\documents\github\pocker\test\test_gamestate.c
+1715103500 source:c:\users\ja\documents\github\pocker\test\test_gamestate.c
 	"CuTest.h"
 	"../src/gamestate.h"
 	"../src/playingcard.h"

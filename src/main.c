@@ -60,15 +60,18 @@ int main()
 
             //  --  Single round of betting loop  --
             while (globalState->turns_left > 0){
-                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
-                printHeader(globalState);
-                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_2COL");
-                printPlayers(&globalRules, globalState, players);
-                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_2COL");
-                printRaisesPotBet(&globalRules, globalState);
-                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
-                printCards(players[globalState->current_player], comm_cards, globalState->revealed_comm_cards);
-                MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
+                if (players[globalState->current_player]->isHuman){
+                    clearScreen();
+                    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
+                    printHeader(globalState);
+                    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_2COL");
+                    printPlayers(&globalRules, globalState, players);
+                    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_2COL");
+                    printRaisesPotBet(&globalRules, globalState);
+                    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
+                    printCards(players[globalState->current_player], comm_cards, globalState->revealed_comm_cards);
+                    MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
+                }
                 gsAdvancePlayerTurn(globalState, players, &globalRules, NULL);
             }
 
@@ -82,6 +85,7 @@ int main()
         //Time for showdown and deciding the winners of the pot
         int winners[globalRules.player_count];
         int winners_count = gsDetermineWinners(winners, &globalRules, globalState, players, comm_cards);
+        clearScreen();
         MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
         printShowdownResults(globalState, players, winners, winners_count);
         MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");

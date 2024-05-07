@@ -138,6 +138,7 @@ void gsSetUpBettingRound(GameState* state, Player* players[], const GameRuleSet*
         state->current_player = state->s_blind_player;
         state->bet = 0;
         state->raises_performed = 0;
+        state->turns_left = ruleSet->player_count;
     }
     //Unless it's a pre-flop (beggining of a single game)
     //Force blind players to chip into the pot, without affecting the turns variable
@@ -148,8 +149,8 @@ void gsSetUpBettingRound(GameState* state, Player* players[], const GameRuleSet*
         state->pot += ruleSet->big_blind;
         state->bet = ruleSet->big_blind;
         state->current_player = (state->b_blind_player + 1) % ruleSet->player_count;
+        state->turns_left = ruleSet->player_count - 1;
     }
-    state->turns_left = ruleSet->player_count - 1;
 }
 
 /**

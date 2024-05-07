@@ -490,7 +490,8 @@ static void test_checkTheWhileLoopInMainForPlayerTurnAdvancing(CuTest* ct){
         gsAdvancePlayerTurn(state, players, &rules, 0);
     }
 
-    CuAssert(ct, "", state->current_player == 2);
+    //Current player should be the one after the last player who acted, therefore big_blind
+    CuAssert(ct, "", state->current_player == state->b_blind_player);
     CuAssert(ct, "", state->turns_left == 0);
     CuAssert(ct, "", state->bet == 20);
     CuAssert(ct, "", state->pot == 10 + (20 * 7));
@@ -501,7 +502,8 @@ static void test_checkTheWhileLoopInMainForPlayerTurnAdvancing(CuTest* ct){
         gsAdvancePlayerTurn(state, players, &rules, 0);
     }
 
-    CuAssert(ct, "", state->current_player == 0);
+    //Current player should be the one after the last player who acted, therefore s_blind
+    CuAssert(ct, "", state->current_player == state->s_blind_player);
     CuAssert(ct, "", state->turns_left == 0);
     CuAssert(ct, "", state->bet == 0);
     CuAssert(ct, "", state->pot == 10 + (20 * 7));
@@ -588,7 +590,7 @@ static void test_settingUpFlopRound(CuTest* ct){
     CuAssert(ct, "", state->b_blind_player == 2);
     CuAssert(ct, "", state->current_player == 1);
     CuAssert(ct, "", state->betting_round == 1);
-    CuAssert(ct, "", state->turns_left == 5);
+    CuAssert(ct, "", state->turns_left == ruleSet.player_count);
     CuAssert(ct, "", state->raises_performed == 0);
     CuAssert(ct, "", !(state->all_but_one_folded));
     CuAssert(ct, "", state->pot == 30);
@@ -624,7 +626,7 @@ static void test_settingUpTurnRound(CuTest* ct){
     CuAssert(ct, "", state->b_blind_player == 2);
     CuAssert(ct, "", state->current_player == 1);
     CuAssert(ct, "", state->betting_round == 2);
-    CuAssert(ct, "", state->turns_left == 9);
+    CuAssert(ct, "", state->turns_left == ruleSet.player_count);
     CuAssert(ct, "", state->raises_performed == 0);
     CuAssert(ct, "", !(state->all_but_one_folded));
     CuAssert(ct, "", state->pot == 75);
@@ -662,7 +664,7 @@ static void test_settingUpRiverRound(CuTest* ct){
     CuAssert(ct, "", state->b_blind_player == 2);
     CuAssert(ct, "", state->current_player == 1);
     CuAssert(ct, "", state->betting_round == 3);
-    CuAssert(ct, "", state->turns_left == 3);
+    CuAssert(ct, "", state->turns_left == ruleSet.player_count);
     CuAssert(ct, "", state->raises_performed == 0);
     CuAssert(ct, "", !(state->all_but_one_folded));
     CuAssert(ct, "", state->pot == 15);
@@ -684,12 +686,20 @@ static void test_advancingToNextBettingRoundResetsTurnsLeftProperly(CuTest* ct){
         players[i] = playerCreateNewWithFunds(rules.funds_per_player);
 
     int decision = 0;
-    for (int i = 0; i < 4; ++i){
+    //preflop
+    gsSetUpBettingRound(state, players, &rules);
+    CuAssert(ct, "", state->turns_left == rules.player_count - 1);
+    gsAdvancePlayerTurn(state, players, &rules, &decision);
+    gsConcludeBettingRound(state);
+    CuAssert(ct, "", state->turns_left == rules.player_count - 2);
+
+    //flop, turn, river
+    for (int i = 0; i < 3; i++){
         gsSetUpBettingRound(state, players, &rules);
-        CuAssert(ct, "", state->turns_left == rules.player_count - 1);
+        CuAssert(ct, "", state->turns_left == rules.player_count);
         gsAdvancePlayerTurn(state, players, &rules, &decision);
         gsConcludeBettingRound(state);
-        CuAssert(ct, "", state->turns_left == rules.player_count - 2);
+        CuAssert(ct, "", state->turns_left == rules.player_count - 1);
     }
 }
 
