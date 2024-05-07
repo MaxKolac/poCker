@@ -9,6 +9,7 @@ Player* playerCreateNew(){
     self->funds = 0;
     self->folded = false;
     self->tappedout = false;
+    self->tappedout_funds = 0;
     resetScores(self);
     self->current_hand[0] = NULL;
     self->current_hand[1] = NULL;

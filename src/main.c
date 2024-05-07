@@ -47,10 +47,9 @@ int main()
         globalState = gsCreateNew(&globalRules);
         distributeCards(deck, &players, comm_cards, &globalRules);
 
-        //Create a new table of tapout pot status records
-        unsigned int tapout_pot_statuses[globalRules.player_count];
+        //Reset everyone's tappedout funds
         for (int i = 0; i < globalRules.player_count; ++i)
-            tapout_pot_statuses[i] = 0;
+            players[i]->tappedout_funds = 0;
 
         //Play four betting rounds: pre-flop, flop, turn, river
         while (globalState->betting_round < MAX_ROUNDS_PER_GAME){
@@ -67,7 +66,7 @@ int main()
                 MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
                 printCards(players[globalState->current_player], comm_cards, globalState->revealed_comm_cards);
                 MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
-                gsAdvancePlayerTurn(globalState, players, tapout_pot_statuses, &globalRules, NULL);
+                gsAdvancePlayerTurn(globalState, players, &globalRules, NULL);
             }
 
             //If a betting round was suddenly ended by everyone but one player folding, get to pot payout right away
@@ -87,7 +86,7 @@ int main()
         MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
         promptNull(msgGet(GLOBAL_MSGS, "NULL_PROMPT"));
 
-        gsAwardPot(globalState, players, tapout_pot_statuses, winners, winners_count);
+        gsAwardPot(globalState, players, winners, winners_count);
         gameOver = gsCheckGameOverCondition(globalState, players, &globalRules);
         gsPassDealerButton(globalState, &globalRules);
     } while (!gameOver);

@@ -46,11 +46,11 @@ typedef struct {
 } GameState;
 
 GameState* gsCreateNew(const GameRuleSet*);
-void gsAdvancePlayerTurn(GameState*, Player*[], unsigned int[], const GameRuleSet*, const int*);
+void gsAdvancePlayerTurn(GameState*, Player*[], const GameRuleSet*, const int*);
 void gsSetUpBettingRound(GameState*, Player*[], const GameRuleSet*);
 void gsConcludeBettingRound(GameState*);
 int gsDetermineWinners(int[], const GameRuleSet*, const GameState*, const Player*[], const PlayingCard*[]);
-void gsAwardPot(GameState*, Player*[], unsigned int[], const int[], const int);
+void gsAwardPot(GameState*, Player*[], const int[], const int);
 bool gsCheckGameOverCondition(GameState*, Player*[], const GameRuleSet*);
 void gsPassDealerButton(GameState*, const GameRuleSet*);
 

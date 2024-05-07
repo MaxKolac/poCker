@@ -39,13 +39,10 @@ static void test_raiseRightAfterStartingGame(CuTest* ct){
     Player* players[8];
     for (int i = 0; i < 8; ++i)
         players[i] = playerCreateNewWithFunds(ruleSet.funds_per_player);
-    unsigned int tapout_pot_statuses[ruleSet.player_count];
-    for (int i = 0; i < ruleSet.player_count; ++i)
-        tapout_pot_statuses[i] = 0;
 
     gsSetUpBettingRound(state, players, &ruleSet);
     int decision = 25;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
 
     CuAssert(ct, "", state->revealed_comm_cards == 0);
     CuAssert(ct, "", state->dealer_player == 0);
@@ -77,16 +74,13 @@ static void test_advancePlayerTurnsThroughRoundWithNoRaises(CuTest* ct){
     Player* players[5];
     for (int i = 0; i < 5; ++i)
         players[i] = playerCreateNewWithFunds(ruleSet.funds_per_player);
-    unsigned int tapout_pot_statuses[ruleSet.player_count];
-    for (int i = 0; i < ruleSet.player_count; ++i)
-        tapout_pot_statuses[i] = 0;
 
     gsSetUpBettingRound(state, players, &ruleSet);
     int decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
 
     CuAssert(ct, "", state->revealed_comm_cards == 0);
     CuAssert(ct, "", state->dealer_player == 0);
@@ -119,7 +113,6 @@ static void test_advancePlayerTurnsThroughRoundWithSomeLowFixedRaises(CuTest* ct
     Player* players[ruleSet.player_count];
     for (int i = 0; i < ruleSet.player_count; ++i)
         players[i] = playerCreateNewWithFunds(ruleSet.funds_per_player);
-    unsigned int tapout_pot_statuses[] = { 0, 0, 0, 0, 0 };
 
     //dealer is 0, small b is 1, big b is 2
     gsSetUpBettingRound(state, players, &ruleSet);
@@ -128,13 +121,13 @@ static void test_advancePlayerTurnsThroughRoundWithSomeLowFixedRaises(CuTest* ct
 
     //player[3]
     int decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 50);
     CuAssert(ct, "", state->bet == 20);
 
     //player[4]
     decision = 1;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 80);
     CuAssert(ct, "", state->bet == 30);
     CuAssert(ct, "", state->raises_performed == 1);
@@ -142,14 +135,14 @@ static void test_advancePlayerTurnsThroughRoundWithSomeLowFixedRaises(CuTest* ct
 
     //player[0]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 110);
     CuAssert(ct, "", state->bet == 30);
     CuAssert(ct, "", state->turns_left == 3);
 
     //player[1]
     decision = 50;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 150);
     CuAssert(ct, "", state->bet == 40);
     CuAssert(ct, "", state->raises_performed == 2);
@@ -157,42 +150,42 @@ static void test_advancePlayerTurnsThroughRoundWithSomeLowFixedRaises(CuTest* ct
 
     //player[2]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 190);
     CuAssert(ct, "", state->bet == 40);
     CuAssert(ct, "", state->turns_left == 3);
 
     //player[3]
     decision = 123;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 240);
     CuAssert(ct, "", state->bet == 50);
     CuAssert(ct, "", state->turns_left == 4);
 
     //player[4]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 290);
     CuAssert(ct, "", state->bet == 50);
     CuAssert(ct, "", state->turns_left == 3);
 
     //player[0]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 340);
     CuAssert(ct, "", state->bet == 50);
     CuAssert(ct, "", state->turns_left == 2);
 
     //player[1]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 390);
     CuAssert(ct, "", state->bet == 50);
     CuAssert(ct, "", state->turns_left == 1);
 
     //player[2]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 440);
     CuAssert(ct, "", state->bet == 50);
     CuAssert(ct, "", state->turns_left == 0);
@@ -218,7 +211,6 @@ static void test_advancePlayerTurnsThroughRoundWithSomeHighFixedRaises(CuTest* c
     Player* players[ruleSet.player_count];
     for (int i = 0; i < ruleSet.player_count; ++i)
         players[i] = playerCreateNewWithFunds(ruleSet.funds_per_player);
-    unsigned int tapout_pot_statuses[] = { 0, 0, 0, 0, 0, 0 };
 
     //dealer is 0, small b is 1, big b is 2
     gsSetUpBettingRound(state, players, &ruleSet);
@@ -227,7 +219,7 @@ static void test_advancePlayerTurnsThroughRoundWithSomeHighFixedRaises(CuTest* c
 
     //player[1]
     int decision = 4;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 30);
     CuAssert(ct, "", state->bet == 30);
     CuAssert(ct, "", state->raises_performed == 1);
@@ -235,7 +227,7 @@ static void test_advancePlayerTurnsThroughRoundWithSomeHighFixedRaises(CuTest* c
 
     //player[2]
     decision = 1;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 90);
     CuAssert(ct, "", state->bet == 60);
     CuAssert(ct, "", state->raises_performed == 2);
@@ -243,14 +235,14 @@ static void test_advancePlayerTurnsThroughRoundWithSomeHighFixedRaises(CuTest* c
 
     //player[3]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 150);
     CuAssert(ct, "", state->bet == 60);
     CuAssert(ct, "", state->turns_left == 4);
 
     //player[4]
     decision = 5000;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 240);
     CuAssert(ct, "", state->bet == 90);
     CuAssert(ct, "", state->raises_performed == 3);
@@ -258,35 +250,35 @@ static void test_advancePlayerTurnsThroughRoundWithSomeHighFixedRaises(CuTest* c
 
     //player[5]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 330);
     CuAssert(ct, "", state->bet == 90);
     CuAssert(ct, "", state->turns_left == 4);
 
     //player[0]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 420);
     CuAssert(ct, "", state->bet == 90);
     CuAssert(ct, "", state->turns_left == 3);
 
     //player[1]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 510);
     CuAssert(ct, "", state->bet == 90);
     CuAssert(ct, "", state->turns_left == 2);
 
     //player[2]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 600);
     CuAssert(ct, "", state->bet == 90);
     CuAssert(ct, "", state->turns_left == 1);//player[2]
 
     //player[3]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 690);
     CuAssert(ct, "", state->bet == 90);
 
@@ -313,7 +305,6 @@ static void test_advancePlayerTurnsThroughRoundWithSomeUnlimitedRaises(CuTest* c
     Player* players[ruleSet.player_count];
     for (int i = 0; i < ruleSet.player_count; ++i)
         players[i] = playerCreateNewWithFunds(ruleSet.funds_per_player);
-    unsigned int tapout_pot_statuses[] = { 0, 0, 0, 0, 0, 0 };
 
     //dealer is 0, small b is 1, big b is 2
     gsSetUpBettingRound(state, players, &ruleSet);
@@ -322,13 +313,13 @@ static void test_advancePlayerTurnsThroughRoundWithSomeUnlimitedRaises(CuTest* c
 
     //player[3]
     int decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 75);
     CuAssert(ct, "", state->bet == 30);
 
     //player[4]
     decision = 61;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 136);
     CuAssert(ct, "", state->bet == 61);
     CuAssert(ct, "", state->raises_performed == 1);
@@ -336,21 +327,21 @@ static void test_advancePlayerTurnsThroughRoundWithSomeUnlimitedRaises(CuTest* c
 
     //player[5]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 197);
     CuAssert(ct, "", state->bet == 61);
     CuAssert(ct, "", state->turns_left == 4);
 
     //player[0]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 258);
     CuAssert(ct, "", state->bet == 61);
     CuAssert(ct, "", state->turns_left == 3);
 
     //player[1]
     decision = 62;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 320);
     CuAssert(ct, "", state->bet == 62);
     CuAssert(ct, "", state->turns_left == 5);
@@ -358,35 +349,35 @@ static void test_advancePlayerTurnsThroughRoundWithSomeUnlimitedRaises(CuTest* c
 
     //player[2]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 382);
     CuAssert(ct, "", state->bet == 62);
     CuAssert(ct, "", state->turns_left == 4);
 
     //player[3]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 444);
     CuAssert(ct, "", state->bet == 62);
     CuAssert(ct, "", state->turns_left == 3);
 
     //player[4]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 506);
     CuAssert(ct, "", state->bet == 62);
     CuAssert(ct, "", state->turns_left == 2);
 
     //player[5]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 568);
     CuAssert(ct, "", state->bet == 62);
     CuAssert(ct, "", state->turns_left == 1);
 
     //player[0]
     decision = 0;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 630);
     CuAssert(ct, "", state->bet == 62);
 
@@ -413,9 +404,6 @@ static void test_advancePlayerTurnsThroughRoundWithOnlyRaises(CuTest* ct){
     Player* players[7];
     for (int i = 0; i < 7; ++i)
         players[i] = playerCreateNewWithFunds(ruleSet.funds_per_player);
-    unsigned int tapout_pot_statuses[ruleSet.player_count];
-    for (int i = 0; i < ruleSet.player_count; ++i)
-        tapout_pot_statuses[i] = 0;
 
     //dealer is 0, small b is 1, big b is 2
     gsSetUpBettingRound(state, players, &ruleSet);
@@ -424,49 +412,49 @@ static void test_advancePlayerTurnsThroughRoundWithOnlyRaises(CuTest* ct){
 
     //player[3]
     int decision = 40;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 76);
     CuAssert(ct, "", state->bet == 40);
     CuAssert(ct, "", state->raises_performed == 1);
 
     //player[4]
     decision = 45;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 121);
     CuAssert(ct, "", state->bet == 45);
     CuAssert(ct, "", state->raises_performed == 2);
 
     //player[5]
     decision = 55;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 176);
     CuAssert(ct, "", state->bet == 55);
     CuAssert(ct, "", state->raises_performed == 3);
 
     //player[6]
     decision = 70;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 246);
     CuAssert(ct, "", state->bet == 70);
     CuAssert(ct, "", state->raises_performed == 4);
 
     //player[0]
     decision = 82;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 328);
     CuAssert(ct, "", state->bet == 82);
     CuAssert(ct, "", state->raises_performed == 5);
 
     //player[1]
     decision = 90;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 418);
     CuAssert(ct, "", state->bet == 90);
     CuAssert(ct, "", state->raises_performed == 6);
 
     //player[2]
     decision = 100;
-    gsAdvancePlayerTurn(state, players, tapout_pot_statuses, &ruleSet, &decision);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &decision);
     CuAssert(ct, "", state->pot == 518);
     CuAssert(ct, "", state->bet == 100);
 
@@ -496,11 +484,10 @@ static void test_checkTheWhileLoopInMainForPlayerTurnAdvancing(CuTest* ct){
     Player* players[rules.player_count];
     for (int i = 0; i < rules.player_count; ++i)
         players[i] = playerCreateNewWithFunds(rules.funds_per_player);
-    unsigned int tapouts[] = { 0, 0, 0, 0, 0, 0, 0 };
 
     gsSetUpBettingRound(state, players, &rules);
     while (state->turns_left > 0){
-        gsAdvancePlayerTurn(state, players, tapouts, &rules, 0);
+        gsAdvancePlayerTurn(state, players, &rules, 0);
     }
 
     CuAssert(ct, "", state->current_player == 2);
@@ -511,7 +498,7 @@ static void test_checkTheWhileLoopInMainForPlayerTurnAdvancing(CuTest* ct){
 
     gsSetUpBettingRound(state, players, &rules);
     while (state->turns_left > 0){
-        gsAdvancePlayerTurn(state, players, tapouts, &rules, 0);
+        gsAdvancePlayerTurn(state, players, &rules, 0);
     }
 
     CuAssert(ct, "", state->current_player == 0);
@@ -527,7 +514,6 @@ static void test_allButOneFoldedConditionCheckForAdvancePlayerTurn(CuTest* ct){
     Player* players[rules.player_count];
     for (int i = 0; i < rules.player_count; ++i)
         players[i] = playerCreateNew();
-    unsigned int tapouts[] = { 0, 0, 0, 0, 0, 0 };
     GameState* state = gsCreateNew(&rules);
     state->turns_left = 3;
     state->current_player = 2;
@@ -540,7 +526,7 @@ static void test_allButOneFoldedConditionCheckForAdvancePlayerTurn(CuTest* ct){
     CuAssert(ct, "", !(state->all_but_one_folded));
 
     int decision = -1;
-    gsAdvancePlayerTurn(state, players, tapouts, &rules, &decision);
+    gsAdvancePlayerTurn(state, players, &rules, &decision);
 
     CuAssert(ct, "", state->all_but_one_folded);
 }
@@ -701,7 +687,7 @@ static void test_advancingToNextBettingRoundResetsTurnsLeftProperly(CuTest* ct){
     for (int i = 0; i < 4; ++i){
         gsSetUpBettingRound(state, players, &rules);
         CuAssert(ct, "", state->turns_left == rules.player_count - 1);
-        gsAdvancePlayerTurn(state, players, NULL, &rules, &decision);
+        gsAdvancePlayerTurn(state, players, &rules, &decision);
         gsConcludeBettingRound(state);
         CuAssert(ct, "", state->turns_left == rules.player_count - 2);
     }
@@ -731,16 +717,12 @@ static void test_singleTapOut(CuTest* ct){
         players[i] = playerCreateNewWithFunds(rules.funds_per_player);
     players[state->current_player]->funds = 140;
 
-    unsigned int tapouts[rules.player_count];
-    for (int i = 0; i < rules.player_count; ++i)
-        tapouts[i] = 0;
-
     int decision = -2;
-    gsAdvancePlayerTurn(state, players, tapouts, &rules, &decision);
+    gsAdvancePlayerTurn(state, players, &rules, &decision);
 
     CuAssert(ct, "", players[1]->funds == 0);
     CuAssert(ct, "", players[1]->tappedout);
-    CuAssert(ct, "", tapouts[1] == 500 + 140);
+    CuAssert(ct, "", players[1]->tappedout_funds == 500 + 140);
     CuAssert(ct, "", state->pot == 500 + 140);
     CuAssert(ct, "", state->bet == 150);
 }
@@ -769,22 +751,18 @@ static void test_multipleTapouts(CuTest* ct){
     players[1]->funds = 45;
     players[2]->funds = 10;
 
-    unsigned int tapouts[rules.player_count];
-    for (int i = 0; i < rules.player_count; ++i)
-        tapouts[i] = 0;
-
     int decision = -2;
-    gsAdvancePlayerTurn(state, players, tapouts, &rules, &decision);
-    gsAdvancePlayerTurn(state, players, tapouts, &rules, &decision);
-    gsAdvancePlayerTurn(state, players, tapouts, &rules, &decision);
+    gsAdvancePlayerTurn(state, players, &rules, &decision);
+    gsAdvancePlayerTurn(state, players, &rules, &decision);
+    gsAdvancePlayerTurn(state, players, &rules, &decision);
 
     for (int i = 0; i < 3; ++i){
         CuAssert(ct, "", players[i]->funds == 0);
         CuAssert(ct, "", players[i]->tappedout);
     }
-    CuAssert(ct, "", tapouts[0] == 280);
-    CuAssert(ct, "", tapouts[1] == 325);
-    CuAssert(ct, "", tapouts[2] == 335);
+    CuAssert(ct, "", players[0]->tappedout_funds == 280);
+    CuAssert(ct, "", players[1]->tappedout_funds == 325);
+    CuAssert(ct, "", players[2]->tappedout_funds == 335);
     CuAssert(ct, "", state->pot == 335);
     CuAssert(ct, "", state->bet == 80);
 }
@@ -807,7 +785,6 @@ static void test_standardShowdownWithSingleWinner(CuTest* ct){
     state->betting_round = 4;
     state->all_but_one_folded = false;
     state->pot = 200;
-    unsigned int tapouts[] = { 0, 0, 0, 0, 0, 0, 0 };
 
     PlayingCard* deck[DECK_LENGTH];
     buildDeck(&deck, false);
@@ -846,7 +823,7 @@ static void test_standardShowdownWithSingleWinner(CuTest* ct){
     CuAssert(ct, "", winners_count == 1);
     CuAssert(ct, "", winners[0] == 0);
 
-    gsAwardPot(state, players, tapouts, winners, winners_count);
+    gsAwardPot(state, players, winners, winners_count);
 
     CuAssert(ct, "", players[0]->funds == ruleset.funds_per_player + 200);
     for (int i = 1; i < ruleset.player_count; ++i)
@@ -871,7 +848,6 @@ static void test_standardShowdownWithMultipleWinnersWithIndivisiblePot(CuTest* c
     state->betting_round = 4;
     state->all_but_one_folded = false;
     state->pot = 501;
-    unsigned int tapouts[] = { 0, 0, 0, 0, 0 };
 
     PlayingCard* deck[DECK_LENGTH];
     buildDeck(&deck, false);
@@ -905,7 +881,7 @@ static void test_standardShowdownWithMultipleWinnersWithIndivisiblePot(CuTest* c
     CuAssert(ct, "", winners[0] == 0);
     CuAssert(ct, "", winners[1] == 4);
 
-    gsAwardPot(state, players, tapouts, winners, winners_count);
+    gsAwardPot(state, players, winners, winners_count);
 
     CuAssert(ct, "", players[0]->funds == ruleset.funds_per_player + 250);
     CuAssert(ct, "", players[1]->funds == ruleset.funds_per_player + 1);
@@ -931,7 +907,6 @@ static void test_allButOneFoldedShowdown(CuTest* ct){
     state->betting_round = 4;
     state->all_but_one_folded = true;
     state->pot = 125;
-    unsigned int tapouts[] = { 0, 0, 0, 0, 0, 0 };
 
     for (int i = 0; i < ruleset.player_count; ++i){
         if (i != 3)
@@ -944,7 +919,7 @@ static void test_allButOneFoldedShowdown(CuTest* ct){
     CuAssert(ct, "", winners_count == 1);
     CuAssert(ct, "", winners[0] == 3);
 
-    gsAwardPot(state, players, tapouts, winners, winners_count);
+    gsAwardPot(state, players, winners, winners_count);
 
     CuAssert(ct, "", players[3]->funds == ruleset.funds_per_player + 125);
     CuAssert(ct, "", state->pot == 0);
@@ -967,7 +942,6 @@ static void test_onlyOneTappedoutWinnerShowdown(CuTest* ct){
     state->betting_round = 4;
     state->all_but_one_folded = false;
     state->pot = 550;
-    unsigned int tapouts[] = { 200, 0, 0, 0, 0 };
 
     PlayingCard* deck[DECK_LENGTH];
     buildDeck(&deck, false);
@@ -982,6 +956,7 @@ static void test_onlyOneTappedoutWinnerShowdown(CuTest* ct){
     players[0]->current_hand[0] = &deck[PIPS_PER_SUIT * DIAMONDS + TEN - 1];
     players[0]->current_hand[1] = &deck[PIPS_PER_SUIT * DIAMONDS + ACE - 1];
     players[0]->funds = 0;
+    players[0]->tappedout_funds = 200;
     players[0]->tappedout = true;
 
     players[1]->current_hand[0] = &deck[PIPS_PER_SUIT * CLUBS + TEN - 1];
@@ -1002,7 +977,7 @@ static void test_onlyOneTappedoutWinnerShowdown(CuTest* ct){
     CuAssert(ct, "", winners_count == 1);
     CuAssert(ct, "", winners[0] == 0);
 
-    gsAwardPot(state, players, tapouts, winners, winners_count);
+    gsAwardPot(state, players, winners, winners_count);
 
     CuAssert(ct, "", players[0]->funds == 200);
     CuAssert(ct, "", players[state->s_blind_player]->funds == ruleset.funds_per_player + (550 - 200));
@@ -1025,7 +1000,6 @@ static void test_multipleWinnersWhereOnlySomeAreTappedOut(CuTest* ct){
     state->betting_round = 4;
     state->all_but_one_folded = false;
     state->pot = 550;
-    unsigned int tapouts[] = { 120, 0, 0, 0, 65 };
 
     PlayingCard* deck[DECK_LENGTH];
     buildDeck(&deck, false);
@@ -1040,6 +1014,7 @@ static void test_multipleWinnersWhereOnlySomeAreTappedOut(CuTest* ct){
     players[0]->current_hand[0] = &deck[PIPS_PER_SUIT * CLUBS + QUEEN - 1];
     players[0]->current_hand[1] = &deck[PIPS_PER_SUIT * CLUBS + ACE - 1];
     players[0]->funds = 0;
+    players[0]->tappedout_funds = 120;
     players[0]->tappedout = true;
     //Pair of tens
     players[1]->current_hand[0] = &deck[PIPS_PER_SUIT * CLUBS + TEN - 1];
@@ -1054,6 +1029,7 @@ static void test_multipleWinnersWhereOnlySomeAreTappedOut(CuTest* ct){
     players[4]->current_hand[0] = &deck[PIPS_PER_SUIT * SPADES + QUEEN - 1];
     players[4]->current_hand[1] = &deck[PIPS_PER_SUIT * SPADES + ACE - 1];
     players[4]->funds = 0;
+    players[4]->tappedout_funds = 65;
     players[4]->tappedout = true;
 
     int winners[] = { -1, -1, -1, -1, -1 };
@@ -1064,7 +1040,7 @@ static void test_multipleWinnersWhereOnlySomeAreTappedOut(CuTest* ct){
     CuAssert(ct, "", winners[1] == 2);
     CuAssert(ct, "", winners[2] == 4);
 
-    gsAwardPot(state, players, tapouts, winners, winners_count);
+    gsAwardPot(state, players, winners, winners_count);
 
     CuAssert(ct, "", players[0]->funds == 120);
     CuAssert(ct, "", players[2]->funds == ruleset.funds_per_player + (550 - 120 - 65));
@@ -1089,7 +1065,6 @@ static void test_showdownWhereEveryoneTappedOut(CuTest* ct){
     state->betting_round = 4;
     state->all_but_one_folded = false;
     state->pot = 650;
-    unsigned int tapouts[] = { 115, 0, 100, 0, 80 };
 
     PlayingCard* deck[DECK_LENGTH];
     buildDeck(&deck, false);
@@ -1104,6 +1079,7 @@ static void test_showdownWhereEveryoneTappedOut(CuTest* ct){
     players[0]->current_hand[0] = &deck[PIPS_PER_SUIT * CLUBS + QUEEN - 1];
     players[0]->current_hand[1] = &deck[PIPS_PER_SUIT * CLUBS + ACE - 1];
     players[0]->funds = 0;
+    players[0]->tappedout_funds = 115;
     players[0]->tappedout = true;
     //Pair of tens
     players[1]->current_hand[0] = &deck[PIPS_PER_SUIT * CLUBS + TEN - 1];
@@ -1112,6 +1088,7 @@ static void test_showdownWhereEveryoneTappedOut(CuTest* ct){
     players[2]->current_hand[0] = &deck[PIPS_PER_SUIT * HEARTS + QUEEN - 1];
     players[2]->current_hand[1] = &deck[PIPS_PER_SUIT * HEARTS + ACE - 1];
     players[2]->funds = 0;
+    players[2]->tappedout_funds = 100;
     players[2]->tappedout = true;
     //No ranks
     players[3]->current_hand[0] = &deck[PIPS_PER_SUIT * HEARTS + FIVE - 1];
@@ -1120,6 +1097,7 @@ static void test_showdownWhereEveryoneTappedOut(CuTest* ct){
     players[4]->current_hand[0] = &deck[PIPS_PER_SUIT * SPADES + QUEEN - 1];
     players[4]->current_hand[1] = &deck[PIPS_PER_SUIT * SPADES + ACE - 1];
     players[4]->funds = 0;
+    players[4]->tappedout_funds = 80;
     players[4]->tappedout = true;
     //No ranks
     players[5]->current_hand[0] = &deck[PIPS_PER_SUIT * HEARTS + FOUR - 1];
@@ -1133,7 +1111,7 @@ static void test_showdownWhereEveryoneTappedOut(CuTest* ct){
     CuAssert(ct, "", winners[1] == 2);
     CuAssert(ct, "", winners[2] == 4);
 
-    gsAwardPot(state, players, tapouts, winners, winners_count);
+    gsAwardPot(state, players, winners, winners_count);
 
     CuAssert(ct, "", players[0]->funds == 115);
     CuAssert(ct, "", players[state->s_blind_player]->funds == ruleset.funds_per_player + (650 - 115 - 100 - 80));

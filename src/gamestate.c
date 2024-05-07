@@ -34,7 +34,7 @@ GameState* gsCreateNew(const GameRuleSet* rules){
  *  \brief Advances the player's turn by allowing them to take action and applying any changes causes by the chosen action.
  *  \param player_dec_override Meant for unit-testing. A non-null pointer will override whatever the player's decision was. Keep in mind this value won't be validated!
  */
-void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapout_pot_statuses[], const GameRuleSet* ruleSet, const int* player_dec_override){
+void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet* ruleSet, const int* player_dec_override){
     //This player has not folded, we may perform an action
     //Wowza, practical use of De Morgan's law
     if (!(players[state->current_player]->folded || players[state->current_player]->tappedout)){
@@ -116,7 +116,7 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], unsigned int tapou
             state->pot += players[state->current_player]->funds;
             players[state->current_player]->funds = 0;
             players[state->current_player]->tappedout = true;
-            tapout_pot_statuses[state->current_player] = state->pot;
+            players[state->current_player]->tappedout_funds = state->pot;
         }
 
         //If this condition is true, we need to return ASAP. One player just got an auto-win.
@@ -211,11 +211,11 @@ int gsDetermineWinners(int winners[],
  *  Tapped out winners receive their rewards first, the rest is then divide evenly between other winners.
  *  If the pot happened to be indivisible by amount of winners, small blind player receives the remainder.
  */
-void gsAwardPot(GameState* state, Player* players[], unsigned int tapout_pot_statuses[], const int winners[], const int winners_count){
+void gsAwardPot(GameState* state, Player* players[], const int winners[], const int winners_count){
     //If we have a single winner, they take the whole pot;
     if (winners_count == 1){
         //Unless they tapped out, which means they only get a portion of it and the rest goes to small blind player.
-        int adjusted_pot_amount = tapout_pot_statuses[winners[0]];
+        int adjusted_pot_amount = players[winners[0]]->tappedout_funds;
         if (adjusted_pot_amount > 0){
             players[winners[0]]->funds += adjusted_pot_amount;
             players[state->s_blind_player]->funds += (state->pot - adjusted_pot_amount);
@@ -232,7 +232,7 @@ void gsAwardPot(GameState* state, Player* players[], unsigned int tapout_pot_sta
         //Instead they are awarded the amount of funds the pot held at the time of their tapping out.
         int tappedout_players_count = 0;
         for (int i = 0; i < winners_count; i++){
-            int adjusted_pot_amount = tapout_pot_statuses[winners[i]];
+            int adjusted_pot_amount = players[winners[i]]->tappedout_funds;
             if (adjusted_pot_amount > 0){
                 tappedout_players_count++;
                 players[winners[i]]->funds += adjusted_pot_amount;
@@ -245,7 +245,7 @@ void gsAwardPot(GameState* state, Player* players[], unsigned int tapout_pot_sta
         //What the tapped out winners couldn't receieve, goes to the small blind player.
         for (int i = 0; i < winners_count; i++){
             //Make sure not to accidentally give the winnings to the tappedout player again
-            if (tapout_pot_statuses[winners[i]] > 0){
+            if (players[winners[i]]->tappedout_funds > 0){
                 continue;
             }
             players[winners[i]]->funds += award_per_player;

@@ -22,8 +22,10 @@ typedef struct {
     bool folded;
     /** \brief Tells if this player has tapped out in the current round. */
     bool tappedout;
+    /** \brief If the player is tapped out, this is the amount they'd get if they win. */
+    unsigned int tappedout_funds;
     /** \brief A score table for individual hand ranks to help break up ties. See handranking.c for more info. */
-    int scores[10];
+    int scores[SCORE_TABLE_SIZE];
     /** \brief Pointers to player's playing cards in his hand. */
     PlayingCard* current_hand[CARDS_PER_PLAYER];
     /** \brief Whether or not this player is controlled through AI or by human. */
