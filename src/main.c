@@ -44,15 +44,16 @@ int main()
         players[i]->isHuman = true;
 
     //  --  Game loop   --
-    GameState* globalState;
-    globalState = gsCreateNew(&globalRules);
+    GameState* globalState = gsCreateNew(&globalRules);
     bool gameOver = false;
     do {
         distributeCards(deck, &players, comm_cards, &globalRules);
 
-        //Reset everyone's tappedout funds
-        for (int i = 0; i < globalRules.player_count; ++i)
+        //Reset everyone's tappedout funds and their decision logs
+        for (int i = 0; i < globalRules.player_count; ++i){
             players[i]->tappedout_funds = 0;
+            players[i]->past_decisions_size = 0;
+        }
 
         //Play four betting rounds: pre-flop, flop, turn, river
         while (globalState->betting_round < MAX_ROUNDS_PER_GAME){

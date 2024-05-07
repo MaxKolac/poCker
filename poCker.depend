@@ -54,7 +54,7 @@
 1713035139 c:\users\ja\documents\github\pocker\src\handranking.h
 	"player.h"
 
-1715100026 c:\users\ja\documents\github\pocker\src\player.h
+1715109493 c:\users\ja\documents\github\pocker\src\player.h
 	<stdbool.h>
 	"playingcard.h"
 
@@ -88,7 +88,7 @@
 	<stdio.h>
 	<string.h>
 
-1715106451 source:c:\users\ja\documents\github\pocker\src\main.c
+1715108653 source:c:\users\ja\documents\github\pocker\src\main.c
 	<assert.h>
 	<stdbool.h>
 	<stdio.h>
@@ -118,7 +118,7 @@
 1712917163 source:c:\users\ja\documents\github\pocker\src\constants.c
 	"constants.h"
 
-1715100083 source:c:\users\ja\documents\github\pocker\src\player.c
+1715108361 source:c:\users\ja\documents\github\pocker\src\player.c
 	"player.h"
 	<stdlib.h>
 
@@ -131,7 +131,7 @@
 1714407647 c:\users\ja\documents\github\pocker\src\gamerules.h
 	<stdbool.h>
 
-1715106620 source:c:\users\ja\documents\github\pocker\src\gamestate.c
+1715108581 source:c:\users\ja\documents\github\pocker\src\gamestate.c
 	"gamestate.h"
 	<stdbool.h>
 	<stdlib.h>
@@ -144,7 +144,7 @@
 	"player.h"
 	"utils.h"
 
-1715105595 c:\users\ja\documents\github\pocker\src\gamestate.h
+1715109325 c:\users\ja\documents\github\pocker\src\gamestate.h
 	<stdbool.h>
 	"gamerules.h"
 	"player.h"
@@ -277,7 +277,7 @@
 	"gamestate.h"
 	"player.h"
 
-1715097764 source:c:\users\ja\documents\github\pocker\src\playerio.c
+1715109423 source:c:\users\ja\documents\github\pocker\src\playerio.c
 	"playerio.h"
 	<ctype.h>
 	<limits.h>

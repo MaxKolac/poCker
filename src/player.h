@@ -5,11 +5,11 @@
 #include "playingcard.h"
 
 /**
-* \file player.h
-* \brief Contains a Player struct and related functions.
+*   \file player.h
+*   \brief Contains a Player struct and related functions.
 */
 
-/** \brief Defines the size of the scores[] array. */
+/** \brief Defines the size of the scores array. */
 #define SCORE_TABLE_SIZE 10
 
 extern const int SCORE_TABLE_SIZE_OBJ;
@@ -30,6 +30,12 @@ typedef struct {
     PlayingCard* current_hand[CARDS_PER_PLAYER];
     /** \brief Whether or not this player is controlled through AI or by human. */
     bool isHuman;
+    /** \brief Contains a log of this Player's past decision in the current game. */
+    //Are you 100% sure this length is sufficient?
+    //I cant use macros from gamestate.h, this would create a circular dependency!!
+    int past_decisions[4 * (3 + 1)];
+    /** \brief Current size of the past_decisions array. */
+    int past_decisions_size;
 } Player;
 
 Player* playerCreateNew();

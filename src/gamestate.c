@@ -35,14 +35,15 @@ GameState* gsCreateNew(const GameRuleSet* rules){
  *  \param player_dec_override Meant for unit-testing. A non-null pointer will override whatever the player's decision was. Keep in mind this value won't be validated!
  */
 void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet* ruleSet, const int* player_dec_override){
+    Player* currentPlayer = players[state->current_player];
     //This player has not folded, we may perform an action
     //Wowza, practical use of De Morgan's law
-    if (!(players[state->current_player]->folded || players[state->current_player]->tappedout)){
+    if (!(currentPlayer->folded || currentPlayer->tappedout)){
         //Player chooses an action and check if they even can do that
         //Validity checks should not be done by players themselves (they might cheat lol)
         int player_decision;
         if (player_dec_override == NULL){
-            if (players[state->current_player]->isHuman){
+            if (currentPlayer->isHuman){
                 //For human players
                 bool decisionValid = false;
                 do {
@@ -50,11 +51,11 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
                     MSG_SHOWVS(GLOBAL_MSGS, "GAMESTATE_HUMANPROMPT", state->current_player + 1);
                     gets_s(input, PLAYER_DECISION_LENGTH);
                     player_decision = recognizeDecision(input);
-                    decisionValid = checkPlayerDecisionValidity(players[state->current_player], state, ruleSet, player_decision);
+                    decisionValid = checkPlayerDecisionValidity(currentPlayer, state, ruleSet, player_decision);
                 } while(!decisionValid);
             }            else {
                 //for AI players - for now this function always returns 0 - CHECK
-                player_decision = takeAction(players[state->current_player]);
+                player_decision = takeAction(currentPlayer);
                 promptNull(msgGet(GLOBAL_MSGS, "NULL_PROMPT_NEXTTURN"));
             }
         }
@@ -72,7 +73,7 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
             if (ruleSet->limit_fixed){
                 player_decision = (state->betting_round <= 1) ? state->bet + ruleSet->small_blind : state-> bet + ruleSet->big_blind;
             }
-            players[state->current_player]->funds -= player_decision;
+            currentPlayer->funds -= player_decision;
             state->pot += player_decision;
             state->bet = player_decision;
             state->raises_performed++;
@@ -82,14 +83,14 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
         //CALL means that player is matching the current bet to stay in the game.
         //If the bet is 0, that means noone raised and instead it's called CHECK.
         else if (0 == player_decision){
-            players[state->current_player]->funds -= state->bet;
+            currentPlayer->funds -= state->bet;
             state->pot += state->bet;
         }
         // -1 == player_decision signifies a FOLD
         //Player folds his hand and no longer participates in the current game.
         //They do not need to match any raises, but they cannot win the pot.
         else if (-1 == player_decision){
-            players[state->current_player]->folded = true;
+            currentPlayer->folded = true;
             //Have everyone but one person folded?
             //This would indicate an auto-win of current pot for last unfolded player
             int folded_players = 0;
@@ -108,15 +109,19 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
         //The rest is paid to second best hand.
         else if (-2 == player_decision){
             state->pot += players[state->current_player]->funds;
-            players[state->current_player]->funds = 0;
-            players[state->current_player]->tappedout = true;
-            players[state->current_player]->tappedout_funds = state->pot;
+            currentPlayer->funds = 0;
+            currentPlayer->tappedout = true;
+            currentPlayer->tappedout_funds = state->pot;
         }
 
         //If this condition is true, we need to return ASAP. One player just got an auto-win.
         if (state->all_but_one_folded){
             return;
         }
+
+        //Record the chosen decision
+        currentPlayer->past_decisions[currentPlayer->past_decisions_size] = player_decision;
+        currentPlayer->past_decisions_size++;
     }
     state->current_player = (state->current_player + 1) % ruleSet->player_count;
     state->turns_left--;
