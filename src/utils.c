@@ -41,8 +41,8 @@ int randRange(int lower_inc_bound, int upper_inc_bound){
  *  \brief Returns the greatest integer provided in arguments.
  *  \param count Amount of integers in the arguments.
  *  \param ... Integers to compare.
- *
  *  \warning This function is redundant because MAX(a,b) exists, but I'm keeping it in case I ever need an example of a function with variadic arguments.
+ *  \returns The largest of the provided integers, excluding the count parameter.
  */
 int mathMax(int count, ...) {
     //Declare a variadic arguments list
@@ -69,8 +69,8 @@ int mathMax(int count, ...) {
  *  \brief Returns the smallest integer provided in arguments.
  *  \param count Amount of integers in the arguments.
  *  \param ... Integers to compare.
- *
  *  \warning This function is redundant because MIN(a,b) exists, but I'm keeping it in case I ever need an example of a function with variadic arguments.
+ *  \returns The smallest of the provided integers, excluding the count parameter.
  */
 int mathMin(int count, ...){
     va_list args;

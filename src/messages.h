@@ -5,12 +5,13 @@
  *  \file messages.h
  *  \brief Allows to use string literals loaded from a separate text file through a dictionary of key/message pairs.
  *
- *  The localization should follow this format:
- *   - Keys should be unique. If there are duplicates, the pair closed to the file's top will always be returned.
- *   - Keys don't include any whitespaces - inside, or before them.
+ *  The localization text inside the file should follow this format:
+ *   - Keys should be unique. If there are duplicates, the pair closer to the file's top will always be returned.
+ *   - Keys should not include any whitespaces - inside them, or before them.
+ *   - While the format of the key itself isn't important, it is preferrable to write them in CAPITALIZED_SNAKE_CASE to make them stand out from messages.
  *   - After the key, one whitespace is mandatory to indicate that the rest of the line is a message.
  *   - Any whitespaces after the mandatory one WILL be preserved.
- *   - A message will contain all character between the mandatory whitespace and a newline character.
+ *   - A message will consist of all characters between the mandatory single whitespace and a newline character.
  *   - Make sure that each key and message are no longer than what is specified in this header under MESSAGES_MAX_KEY_LENGTH and MESSAGES_MAX_MSG_LENGTH. Those lengths do not include the null terminator.
  *   - Messages can contain string formatters, such as %s, %c, %d etc.
  *   - Special characters that use backward slashes such as "\n","\t","\0" will be read a literal characters and won't work.
@@ -20,6 +21,7 @@
  *  TESTPARAM This is a digit %d
  *  TESTPARAM2 This is a really long digit %10d
  *  PRESERVE_THREESPACES    I will have 3 spaces when I'm printed!
+ *  IWILLBREAK STUFF A struct resulting from reading this line will be: Key = IWILLBREAK, Message=STUFF A Struct resulting...
  *
  *  \warning When you add more lines, make sure to update MESSAGES_COUNT accordingly!
  */
@@ -60,7 +62,15 @@
 
 /** \brief A message string with a unique Key. */
 typedef struct {
+    /**
+     *  \brief A unique string literal identifying this struct in an array. Comparison rules of strcmp() apply.
+     *  \warning Make sure that it does not exceed the MESSAGES_MAX_KEY_LENGTH value.
+     */
     char key[MESSAGES_MAX_KEY_LENGTH];
+    /**
+     *  \brief The message to be returned when its key is requested. It can contain string formatters such as %s, but can not contain escape characters such as '\n'.
+     *  \warning Make sure that it does not exceed the MESSAGES_MAX_MSG_LENGTH value.
+     */
     char message[MESSAGES_MAX_MSG_LENGTH];
 } Message;
 

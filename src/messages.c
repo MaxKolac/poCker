@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <string.h>
 
+/**
+ *  \brief A global singleton containing Message structs.
+ *  \warning Make sure to populate it with msgInitFromFile() function.
+ */
 Message GLOBAL_MSGS[MESSAGES_COUNT];
 
 /**

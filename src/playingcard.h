@@ -4,22 +4,22 @@
 #include <string.h>
 
 /**
-* \file     playingcard.h
-* \brief    Contains functions, constants and structs related to playing cards.
+*   \file playingcard.h
+*   \brief Contains functions, constants and structs related to PlayingCards.
 */
 
+/** \brief Amount of different value cards under the same card symbol. */
 #define PIPS_PER_SUIT 13
+/** \brief Amount of different symbols in a single deck. */
 #define SUITS_COUNT 4
+/** \brief Amount of cards in a single deck. */
 #define DECK_LENGTH (4 * 13)
+/** \brief Longest name of a single PlayingCard. Meant for char arrays that might hold them. */
 #define CARDNAME_MAX_LENGTH (5 + 4 + 8 + 1)
+/** \brief The amount of hole cards per Player. */
 #define CARDS_PER_PLAYER 2
+/** \brief The amount of community cards the dealer will place. */
 #define COMM_CARDS_COUNT 5
-
-extern const int PIPS_PER_SUIT_OBJ;
-extern const int SUITS_COUNT_OBJ;
-extern const int DECK_LENGTH_OBJ;
-extern const int CARDS_PER_PLAYER_OBJ;
-extern const int COMM_CARDS_COUNT_OBJ;
 
 /** \brief Represents a symbol in a card deck. */
 enum Suit {

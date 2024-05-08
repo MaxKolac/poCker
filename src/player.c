@@ -2,8 +2,10 @@
 
 #include <stdlib.h>
 
-const int SCORE_TABLE_SIZE_OBJ = SCORE_TABLE_SIZE;
-
+/**
+ *  \brief Creates a new Player struct.
+ *  \return A pointer to it.
+ */
 Player* playerCreateNew(){
     Player* self = ((Player*)malloc(sizeof(Player)));
     self->funds = 0;
@@ -18,6 +20,13 @@ Player* playerCreateNew(){
     return self;
 }
 
+/**
+ *  \brief Creates a new Player struct instance and sets its funds value.
+ *  \param initial_funds The amount of funds to be assigned.
+ *  \returns A pointer to the created struct.
+ *
+ *  A rude remainder on why lack of polymorphism is a bit of a bummer.
+ */
 Player* playerCreateNewWithFunds(int initial_funds){
     Player* self = playerCreateNew();
     self->funds = initial_funds;
@@ -26,6 +35,7 @@ Player* playerCreateNewWithFunds(int initial_funds){
 
 /**
  *  \brief Resets player's scores to an array of zeros.
+ *  \param self The Player struct whose table should be reset.
  *
  *  Remember that C does not have zero-initialization. The scores array WILL be filled with gibberish data.
  */

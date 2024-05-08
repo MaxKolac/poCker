@@ -9,10 +9,88 @@
 #include "utils.h"
 
 /**
+ *  \brief Builds a deck of playing cards containing 4 suits & 13 cards for each suit.
+ *  \param targetArray The array of PlayingCards to build the deck in.
+ *  \param print_addrs If true, console will print out memory address of each card. For debug purposes.
+ */
+void buildDeck(PlayingCard targetArray[], bool print_addrs){
+    for (int i = 0; i < SUITS_COUNT; i++){
+        for (int j = 0; j < PIPS_PER_SUIT; j++){
+            targetArray[PIPS_PER_SUIT * i + j].suit = i;
+            targetArray[PIPS_PER_SUIT * i + j].pips = j + 1; //Remember, Pips start from 1, not zero!
+            //printf("%d\n", PIPS_PER_SUIT * i + j);
+        }
+    }
+    //Debug
+    if (print_addrs){
+        for (int i = 0; i < DECK_LENGTH; i++){
+            char buffer[30];
+            getCardName(&targetArray[i], buffer, 30);
+            printf("%s at %p\n", buffer, &targetArray[i]);
+            //printf("%s of %s at %p\n", getPipName(targetArray[i].pips), getSuitName(targetArray[i].suit), &targetArray[i]);
+        }
+    }
+}
+
+
+/**
+ *  \brief Compares the scores of all players on the same tier (scores array index). Populates the winners array with player indexes who function deemed as winners.
+ *  \param players The Players who will be compared with each other score-wise.
+ *  \param players_count The length of players array.
+ *  \param winners An array which the function will populate with player indexes who are to be awarded the pot or part of it.
+ *  \returns The size of the resulting winners array, or how many players are winners.
+ */
+int decideWinners(Player* players[], int players_count, int *winners){
+    int possible_winners[players_count];
+    int possible_winners_count = 0;
+    int score_tier = -1;
+
+    //Get all players who have a non-zero score on the same tier
+    for (int i = 0; i < SCORE_TABLE_SIZE; i++){
+        for (int j = 0; j < players_count; j++){
+            if (players[j]->scores[i] > 0){
+                possible_winners[possible_winners_count] = j;
+                possible_winners_count++;
+                score_tier = i;
+            }
+        }
+        if (possible_winners_count > 0){
+            break;
+        }
+    }
+
+    //Only one player had a non-zero score? They win without a shadow of a doubt
+    if (possible_winners_count == 1){
+        winners[0] = possible_winners[0];
+        return 1;
+    }
+
+    //More than 1 player had a non-zero score? Oh boy.
+    int winners_count = 0;
+    int highest_score = 0;
+    for (int i = 0; i < possible_winners_count; i++){
+        //Player with a higher score overrides the previous contender for a winner
+        if (players[possible_winners[i]]->scores[score_tier] > highest_score){
+            highest_score = players[possible_winners[i]]->scores[score_tier];
+            winners_count = 1;
+            winners[0] = possible_winners[i];
+        }
+        //If they have both the exact same score, we have a tie
+        else if (players[possible_winners[i]]->scores[score_tier] == highest_score){
+            winners[winners_count] = possible_winners[i];
+            winners_count++;
+        }
+    }
+    return winners_count;
+}
+
+
+/**
  *  \brief Distributes random playing cards to players' hands and selects community cards.
- *  \param deck An array of previously generated playing cards.
- *  \param player_hands Array of pointers which will be populated with addresses to deck's elements.
- *  \param comm_cards Array of pointers which will be populated with addresses to deck's elements.
+ *  \param deck An array of previously generated PlayingCard structs.
+ *  \param players Array of Players who will be dealt hole cards.
+ *  \param comm_cards Array of PlayingCards which will be community cards.
+ *  \param rules GameRuleSet struct containing amount of Players.
  *
  *  First, it generates an array of random numbers which will symbolize playing cards' index in the deck.
  *  Then, this array will be checked and modified to ensure that all elements are unique.
@@ -86,30 +164,6 @@ void distributeCards(PlayingCard deck[], Player* players[], PlayingCard* comm_ca
 }
 
 /**
- *  \brief Builds a deck of playing cards containing 4 suits & 13 cards for each suit.
- *  \param targetArray The array of PlayingCards to build the deck in.
- *  \param print_addrs If true, console will print out memory address of each card. For debug purposes.
- */
-void buildDeck(PlayingCard targetArray[], bool print_addrs){
-    for (int i = 0; i < SUITS_COUNT; i++){
-        for (int j = 0; j < PIPS_PER_SUIT; j++){
-            targetArray[PIPS_PER_SUIT * i + j].suit = i;
-            targetArray[PIPS_PER_SUIT * i + j].pips = j + 1; //Remember, Pips start from 1, not zero!
-            //printf("%d\n", PIPS_PER_SUIT * i + j);
-        }
-    }
-    //Debug
-    if (print_addrs){
-        for (int i = 0; i < DECK_LENGTH; i++){
-            char buffer[30];
-            getCardName(&targetArray[i], buffer, 30);
-            printf("%s at %p\n", buffer, &targetArray[i]);
-            //printf("%s of %s at %p\n", getPipName(targetArray[i].pips), getSuitName(targetArray[i].suit), &targetArray[i]);
-        }
-    }
-}
-
-/**
  *  \brief Analyzes Player's hand using functions inside handranking.c and saves scores in Player.scores array.
  *  \param _player The player whose hand will be scored.
  *  \param comm_cards An array of pointers to current community cards.
@@ -145,55 +199,3 @@ void scorePlayersHand(Player* _player, const PlayingCard* comm_cards[], int rev_
         _player->scores[i] = (*handranks[i]) (all_cards, CARDS_PER_PLAYER + rev_cards_count);
     }
 }
-
-/**
- *  \brief Compares the scores of all players on the same tier (scores array index). Populates the winners array with player indexes who function deemed as winners.
- *  \param players The Players array to compare score-wise.
- *  \param players_count The length of players array.
- *  \param winners An array which the function will populate with player indexes who are to be awarded the pot or part of it.
- *  \returns The size of the resulting winners array, or how many players are winners.
- */
-int decideWinners(Player* players[], int players_count, int *winners){
-    int possible_winners[players_count];
-    int possible_winners_count = 0;
-    int score_tier = -1;
-
-    //Get all players who have a non-zero score on the same tier
-    for (int i = 0; i < SCORE_TABLE_SIZE; i++){
-        for (int j = 0; j < players_count; j++){
-            if (players[j]->scores[i] > 0){
-                possible_winners[possible_winners_count] = j;
-                possible_winners_count++;
-                score_tier = i;
-            }
-        }
-        if (possible_winners_count > 0){
-            break;
-        }
-    }
-
-    //Only one player had a non-zero score? They win without a shadow of a doubt
-    if (possible_winners_count == 1){
-        winners[0] = possible_winners[0];
-        return 1;
-    }
-
-    //More than 1 player had a non-zero score? Oh boy.
-    int winners_count = 0;
-    int highest_score = 0;
-    for (int i = 0; i < possible_winners_count; i++){
-        //Player with a higher score overrides the previous contender for a winner
-        if (players[possible_winners[i]]->scores[score_tier] > highest_score){
-            highest_score = players[possible_winners[i]]->scores[score_tier];
-            winners_count = 1;
-            winners[0] = possible_winners[i];
-        }
-        //If they have both the exact same score, we have a tie
-        else if (players[possible_winners[i]]->scores[score_tier] == highest_score){
-            winners[winners_count] = possible_winners[i];
-            winners_count++;
-        }
-    }
-    return winners_count;
-}
-

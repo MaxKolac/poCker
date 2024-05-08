@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include "ai.h"
 #include "dealer.h"
 #include "gamerules.h"
 #include "messages.h"
@@ -11,6 +12,11 @@
 #include "player.h"
 #include "utils.h"
 
+/**
+ *  \brief Creates a new, clean and unconfigured GameState struct.
+ *  \param rules The GameRuleSet struct to base the creation of the GameState on.
+ *  \returns A pointer to the newly created struct.
+ */
 GameState* gsCreateNew(const GameRuleSet* rules){
     GameState* state = ((GameState*)malloc(sizeof(GameState)));
     state->revealed_comm_cards = 0;
@@ -28,7 +34,39 @@ GameState* gsCreateNew(const GameRuleSet* rules){
 }
 
 /**
+ *  \brief Sets the members of a GameState struct according to its current betting_round value.
+ *  \param state The GameState struct to modify.
+ *  \param players An array of Players which might be modified if the round being set up is the pre-flop.
+ *  \param ruleSet The GameRuleSet dictating current game's rules regarding small and big blinds.
+ */
+void gsSetUpBettingRound(GameState* state, Player* players[], const GameRuleSet* ruleSet){
+    //In each round, small blind (player to the left of dealer) is the first to act
+    //Also, make sure to reset the bet back to 0
+    if (state->betting_round != 0){
+        state->current_player = state->s_blind_player;
+        state->bet = 0;
+        state->raises_performed = 0;
+        state->turns_left = ruleSet->player_count;
+    }
+    //Unless it's a pre-flop (beggining of a single game)
+    //Force blind players to chip into the pot, without affecting the turns variable
+    else {
+        players[state->s_blind_player]->funds -= ruleSet->small_blind;
+        state->pot += ruleSet->small_blind;
+        players[state->b_blind_player]->funds -= ruleSet->big_blind;
+        state->pot += ruleSet->big_blind;
+        state->bet = ruleSet->big_blind;
+        state->current_player = (state->b_blind_player + 1) % ruleSet->player_count;
+        state->turns_left = ruleSet->player_count - 1;
+    }
+}
+
+
+/**
  *  \brief Advances the player's turn by allowing them to take action and applying any changes causes by the chosen action.
+ *  \param state The current state of the game to modify accordingly.
+ *  \param players An array of Players to modify accordingly.
+ *  \param ruleSet The GameRuleSet on which some logic is based.
  *  \param player_dec_override Meant for unit-testing. A non-null pointer will override whatever the player's decision was. Keep in mind this value won't be validated!
  */
 void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet* ruleSet, const int* player_dec_override){
@@ -50,11 +88,11 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
                     player_decision = recognizeDecision(input);
                     decisionValid = checkPlayerDecisionValidity(currentPlayer, state, ruleSet, player_decision);
                 } while(!decisionValid);
-            }            else {
+            }
+            else {
                 //for AI players - for now this function always returns 0 - CHECK
                 player_decision = takeAction(currentPlayer);
                 promptNull(msgGet(GLOBAL_MSGS, "NULL_PROMPT_NEXTTURN"));
-#include "ai.h"
             }
         }
         else {
@@ -126,32 +164,8 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
 }
 
 /**
- *  \brief Sets the members of a GameState struct according to its current betting_round value.
- */
-void gsSetUpBettingRound(GameState* state, Player* players[], const GameRuleSet* ruleSet){
-    //In each round, small blind (player to the left of dealer) is the first to act
-    //Also, make sure to reset the bet back to 0
-    if (state->betting_round != 0){
-        state->current_player = state->s_blind_player;
-        state->bet = 0;
-        state->raises_performed = 0;
-        state->turns_left = ruleSet->player_count;
-    }
-    //Unless it's a pre-flop (beggining of a single game)
-    //Force blind players to chip into the pot, without affecting the turns variable
-    else {
-        players[state->s_blind_player]->funds -= ruleSet->small_blind;
-        state->pot += ruleSet->small_blind;
-        players[state->b_blind_player]->funds -= ruleSet->big_blind;
-        state->pot += ruleSet->big_blind;
-        state->bet = ruleSet->big_blind;
-        state->current_player = (state->b_blind_player + 1) % ruleSet->player_count;
-        state->turns_left = ruleSet->player_count - 1;
-    }
-}
-
-/**
  *  \brief Sets the amount of revealed community cards and increments the betting_round value of the passed GameState struct.
+ *  \param state The GameState struct to modify.
  */
 void gsConcludeBettingRound(GameState* state){
     //Pre-flop has no cards.
@@ -171,6 +185,11 @@ void gsConcludeBettingRound(GameState* state){
 
 /**
  *  \brief Determines the winner(s) and populates the winners array with their indexes.
+ *  \param winners An array which will be filled with Player indexes.
+ *  \param rules The GameRuleSet struct containing the amount of Players.
+ *  \param state The GameState containing all_but_one_folded and revealed community cards count.
+ *  \param players An array of Players to modify accordingly.
+ *  \param comm_cards The community cards to analyze when determining who has got the best handrank.
  *  \returns The size of the populated winners array. In other words, how many winners there are.
  *
  *  If the win happened because of everyone else folding, only one player who did not fold is awarded the whole pot.
@@ -205,8 +224,12 @@ int gsDetermineWinners(int winners[],
 
 /**
  *  \brief Determines the winner(s) and pays them their winnings from the pot.
+ *  \param state The GameState struct to modify accordingly.
+ *  \param players An array of Players to modify accordingly.
+ *  \param winners An array containing indexes of winning Players.
+ *  \param winners_count The size of the winners array.
  *
- *  Tapped out winners receive their rewards first, the rest is then divide evenly between other winners.
+ *  Tapped out winners receive their rewards first, the rest is then divided evenly between other winners.
  *  If the pot happened to be indivisible by amount of winners, small blind player receives the remainder.
  */
 void gsAwardPot(GameState* state, Player* players[], const int winners[], const int winners_count){
@@ -258,10 +281,13 @@ void gsAwardPot(GameState* state, Player* players[], const int winners[], const 
 
 /**
  *  \brief Checks if everyone but one player has any funds left.
+ *  \param players An array of Players to be modified accordingly.
+ *  \param rules GameRuleSet containing the amount of Players.
+ *  \returns True, if the whole game should be ended. False, otherwise.
  *
  *  If the condition is true, this would indicate end of the whole game.
- *  This function also reverts the "folded" and "tappedout" statuss for all Players with funds left.
- *  Broke players are marked as folded right away.
+ *  This function also reverts the "folded" and "tappedout" statuses for all Players with any funds left.
+ *  Broke players are marked as folded right away, preventing them from being able to act again.
  */
 bool gsCheckGameOverCondition(Player* players[], const GameRuleSet* rules){
     int broke_players = 0;
@@ -279,8 +305,9 @@ bool gsCheckGameOverCondition(Player* players[], const GameRuleSet* rules){
 }
 
 /**
- *  \brief Pass the dealer button to the next player. Done once after each full round.
- *  This also causes the blind player statuses to move.
+ *  \brief Pass the dealer button to the next player. Done once after each full round. This also causes the blind player statuses to move.
+ *  \param state The GameState struct to modify.
+ *  \param rules The GameRuleSet containing the amount of Players.
  */
 void gsPassDealerButton(GameState* state, const GameRuleSet* rules){
     state->dealer_player = (state->dealer_player + 1) % rules->player_count;
@@ -290,6 +317,7 @@ void gsPassDealerButton(GameState* state, const GameRuleSet* rules){
 
 /**
  *  \brief Prepares the GameState struct for a fresh game while preserving dealer button positions.
+ *  \param state The GameState struct to modify.
  *
  *  Before entering a pre-flop betting round, make sure to call gsSetUpBettingRound() function.
  */
