@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include "messages.h"
 
+const int MAX_BETS_PER_ROUND_OBJ = MAX_BETS_PER_ROUND;
+const int MAX_ROUNDS_PER_GAME_OBJ = MAX_ROUNDS_PER_GAME;
 const int MIN_PLAYER_COUNT = 3;
 const int MAX_PLAYER_COUNT = 12;
 const int MIN_FUNDS_PER_PLAYER = 100;

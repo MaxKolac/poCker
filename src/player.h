@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include "playingcard.h"
+#include "gamerules.h"
 
 /**
 *   \file player.h
@@ -31,10 +32,10 @@ typedef struct {
     /** \brief Whether or not this player is controlled through AI or by human. */
     bool isHuman;
     /** \brief Contains a log of this Player's past decision in the current game. */
-    //Are you 100% sure this length is sufficient?
-    //I cant use macros from gamestate.h, this would create a circular dependency!!
-    int past_decisions[4 * (3 + 1)];
-    /** \brief Current size of the past_decisions array. */
+    int past_decisions[MAX_ROUNDS_PER_GAME * (MAX_BETS_PER_ROUND + 1)];
+    /** \brief Current size of the past_decisions array.
+     *
+     *  The greatest value of this variable would be a scenario where a Player calls, and then is calls all subsequent MAX_BETS_PER_ROUND raises, on every betting round.*/
     int past_decisions_size;
 } Player;
 
