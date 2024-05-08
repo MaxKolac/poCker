@@ -71,6 +71,9 @@
 		</Unit>
 		<Unit filename="test/CuTest.h" />
 		<Unit filename="test/README.txt" />
+		<Unit filename="test/test_ai.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="test/test_dealer.c">
 			<Option compilerVar="CC" />
 		</Unit>

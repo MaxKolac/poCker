@@ -41,7 +41,6 @@ typedef struct {
 
 Player* playerCreateNew();
 Player* playerCreateNewWithFunds(int);
-int takeAction(Player*);
 void resetScores(Player*);
 
 #endif // PLAYER_H
