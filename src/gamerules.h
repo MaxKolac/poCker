@@ -8,6 +8,13 @@
  *  \brief Contains the GameRuleSet struct and functions related to its initialization through console prompts.
  */
 
+#define MAX_BETS_PER_ROUND 3
+#define MAX_ROUNDS_PER_GAME 4
+
+extern const int MAX_BETS_PER_ROUND_OBJ;
+extern const int MAX_ROUNDS_PER_GAME_OBJ;
+extern const int MIN_PLAYER_COUNT;
+extern const int MAX_PLAYER_COUNT;
 extern const int MIN_FUNDS_PER_PLAYER;
 extern const int MAX_FUNDS_PER_PLAYER;
 

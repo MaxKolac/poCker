@@ -14,6 +14,7 @@ Player* playerCreateNew(){
     self->current_hand[0] = NULL;
     self->current_hand[1] = NULL;
     self->isHuman = false;
+    self->past_decisions_size = 0;
     return self;
 }
 
@@ -30,12 +31,12 @@ Player* playerCreateNewWithFunds(int initial_funds){
     return 0;
  }
 
-
 /**
  *  \brief Resets player's scores to an array of zeros.
+ *
  *  Remember that C does not have zero-initialization. The scores array WILL be filled with gibberish data.
  */
-void resetScores(Player *self){
+void resetScores(Player* self){
     for (int i = 0; i < SCORE_TABLE_SIZE; i++){
         self->scores[i] = 0;
     }

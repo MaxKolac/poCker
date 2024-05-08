@@ -11,12 +11,6 @@
  *  \brief Contains the logic of a poker game in a form of DI'able functions. See their arrangement and implementation in main.c.
  */
 
-#define MAX_BETS_PER_ROUND 3
-#define MAX_ROUNDS_PER_GAME 4
-
-extern const int MAX_BETS_PER_ROUND_OBJ;
-extern const int MAX_ROUNDS_PER_GAME_OBJ;
-
 /**
  *  \brief Represents the current state of a poker game.
  *  Recommended to initialize this struct through gsCreateNew(), but hey I'm not your mom.

@@ -245,6 +245,8 @@ void printPlayers(const GameRuleSet* rules, const GameState* state, const Player
         //PIO_PLAYER_LASTDECISION
         for (int j = 0; j < playersToPrint; j++){
             int currentPlayer = i * 4 + j;
+            int currentPlayerDecisionsSize = players[currentPlayer]->past_decisions_size;
+            int currentPlayersLastDecision = players[currentPlayer]->past_decisions[currentPlayerDecisionsSize - 1];
             char* lastDecision;
             if (state->current_player == currentPlayer){
                 lastDecision = "Deciding...";
@@ -255,9 +257,19 @@ void printPlayers(const GameRuleSet* rules, const GameState* state, const Player
             else if (players[currentPlayer]->tappedout){
                 lastDecision = "Tappedout";
             }
+            else if (currentPlayerDecisionsSize == 0){
+                lastDecision = "...";
+            }
+            else if (currentPlayersLastDecision > 0){
+                lastDecision = "Raised";
+            }
+            else if (currentPlayersLastDecision == 0){
+                lastDecision = "Called";
+            }
             else {
-                //TODO: choice of a literal in this scope should depend on player's last recorded decision
-                lastDecision = "TODO!";
+                //If this block is reached, something went terribly wrong.
+                //How is current player tappedout/folded and not tagged as such??
+                lastDecision = "BUG!";
             }
             MSG_SHOWVS(GLOBAL_MSGS, "PIO_PLAYER_LASTDECISION", lastDecision);
         }
