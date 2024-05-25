@@ -143,7 +143,7 @@ static void test_checkPlayerDecisionValidity_CallsChecks_scenario2(CuTest* ct){
     };
     const GameState state = {
         .betting_round = 3,
-        .raises_performed = MAX_BETS_PER_ROUND_OBJ,
+        .raises_performed = MAX_BETS_PER_ROUND,
         .bet = 300
     };
     int decision = 0;
@@ -194,8 +194,8 @@ static void test_checkPlayerDecisionValidity_RaisesInFixedGame_scenario3(CuTest*
     };
     const GameState state = {
         .betting_round = 1,
-        .raises_performed = MAX_BETS_PER_ROUND_OBJ,
-        .bet = 50 * MAX_BETS_PER_ROUND_OBJ
+        .raises_performed = MAX_BETS_PER_ROUND,
+        .bet = 50 * MAX_BETS_PER_ROUND
     };
     int decision = 1;
     bool result = checkPlayerDecisionValidity(_player, &state, &rules, decision);

@@ -60,21 +60,24 @@ bool promptBool(char* msg){
 }
 
 /**
- *  \brief Prompts the user to simply click any button to continue exection.
+ *  \brief Prompts the user to simply click any button to continue execution.
  *  \param msg Message to show with trailing three dots.
  */
 void promptNull(char* msg){
+    #if (TARGET_NAME != DEBUG)
     printf("%s...", msg);
     getch();
+    #endif
 }
 
 /**
  *  \brief Recognizes one of the predetermined string literals in the input parameter and returns it as the corresponding integer.
+ *  \param input Player's input as a string literal.
  *  \returns The amount to raise by for RAISES, 0 for CALL/CHECK, -1 for FOLD, -2 for TAPOUT, INT_MIN for unrecognized decision.
  *
  *  Available decisions are "call", "check", "raise", "fold" and "tapout".
- *  Function is case-insensitive. Raises can be made of two parts separated with a space,
- *  where first part is the "raise" decision and the second is an integer indicating by
+ *  Function is case-insensitive. Raises can consist of two parts separated with a space,
+ *  where first part is the "raise" keyword and the second is an integer indicating by
  *  how many funds should the bet be raised.
  */
 int recognizeDecision(char* input){
@@ -123,11 +126,17 @@ int recognizeDecision(char* input){
 }
 
 /**
- *  \brief Checks that the player is allowed to do their action. Function meant for human players and their custom inputs.
+ *  \brief Checks that the player is allowed to do their action. Calls messages.h with appropriate message to notify the Player if and how their input was incorrect.
+ *  \param player The Player struct used for checks.
+ *  \param state The GameState struct used for checks.
+ *  \param rules The GameRuleSet struct used for checks.
+ *  \param player_decision Player's decision to analyze, as an integer.
  *  \return True, if the player is allowed. False, otherwise.
  *  \warning Make sure that the response array is always the length of MESSAGES_MAX_MSG_LENGTH!
+ *
+ *  Function meant for human players and their console inputs.
  */
-bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, const GameRuleSet* rules, int player_decision){
+bool checkPlayerDecisionValidity(const Player* player, const GameState* state, const GameRuleSet* rules, int player_decision){
     //For raises:
     if (player_decision > 0){
         if (rules->limit_fixed){
@@ -137,19 +146,19 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
                 return 0;
             }
             //The game's fixed-limit and we are in the first half of it. Can player afford the raise by small blind amount?
-            if (state->betting_round <= 1 && _player->funds < state->bet + rules->small_blind){
+            if (state->betting_round <= 1 && player->funds < state->bet + rules->small_blind){
                 MSG_SHOWN(GLOBAL_MSGS, "PIO_CPDV_RAISE_SB_AMOUNT");
                 return 0;
             }
             //The game's fixed-limit and we are in the second half of it. Can player afford the raise by big blind amount?
-            if (state->betting_round > 1 && _player->funds < state->bet + rules->big_blind){
+            if (state->betting_round > 1 && player->funds < state->bet + rules->big_blind){
                 MSG_SHOWN(GLOBAL_MSGS, "PIO_CPDV_RAISE_BB_AMOUNT");
                 return 0;
             }
         }
         else {
             //The game's no limit, can player even afford their decision?
-            if (_player->funds < player_decision){
+            if (player->funds < player_decision){
                 MSG_SHOWN(GLOBAL_MSGS, "PIO_CPDV_RAISE_GENERIC");
                 return 0;
             }
@@ -163,7 +172,7 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
     //For calls/checks:
     else if (player_decision == 0){
         //Can the player afford to call?
-        if (_player->funds < state->bet){
+        if (player->funds < state->bet){
             MSG_SHOWN(GLOBAL_MSGS, "PIO_CPDV_CALL");
             return 0;
         }
@@ -171,7 +180,7 @@ bool checkPlayerDecisionValidity(const Player* _player, const GameState* state, 
     //For folds, no checks need to be performed
     //For tap outs:
     else if (player_decision == -2){
-        if (_player->funds >= state->bet){
+        if (player->funds >= state->bet){
             MSG_SHOWN(GLOBAL_MSGS, "PIO_CPDV_TAPOUT");
             return 0;
         }
@@ -205,6 +214,7 @@ void printTitleScreen(){
 
 /**
  *  \brief Prints the UI header which includes the current round and amount of turns left in it.
+ *  \param state The GameState struct whose variables will be printed.
  */
 void printHeader(const GameState* state){
     MSG_SHOWVN(GLOBAL_MSGS, "PIO_HEADER", state->betting_round + 1, MAX_ROUNDS_PER_GAME, state->turns_left - 1);
@@ -212,6 +222,9 @@ void printHeader(const GameState* state){
 
 /**
  *  \brief Prints the table showing information about all the players, including their funds, last decision, etc.
+ *  \param rules The GameRuleSet struct whose variables will be printed.
+ *  \param state The GameState struct whose variables will be printed.
+ *  \param players The Player array whose elements will be printed.
  */
 void printPlayers(const GameRuleSet* rules, const GameState* state, const Player* players[]){
     //For each greater row
@@ -289,6 +302,8 @@ void printPlayers(const GameRuleSet* rules, const GameState* state, const Player
 
 /**
  *  \brief Prints the intermediary header which shows the raises left, current pot and bet.
+ *  \param rules The GameRuleSet struct whose variables will be printed.
+ *  \param state The GameState struct whose variables will be printed.
  */
 void printRaisesPotBet(const GameRuleSet* rules, const GameState* state){
     char* bet_variant;
@@ -307,7 +322,10 @@ void printRaisesPotBet(const GameRuleSet* rules, const GameState* state){
 
 /**
  *  \brief Prints the second table showing revealed community cards and current player's hole cards.
- *  \param player If this parameter is NULL, the right column with player's cards won't be printed. Only community cards will be visible.
+ *  \param player The Player whose cards will be shown.
+ *  If this parameter is NULL, the right column with player's cards won't be printed. Only community cards will be visible.
+ *  \param comm_cards The community cards to print.
+ *  \param revealed_cards How many of the community cards should be printed. Any missing card will be replaced with '???'.
  */
 void printCards(const Player* player, const PlayingCard* comm_cards[], const int revealed_cards){
     MSG_SHOWVN(GLOBAL_MSGS, "PIO_CARDS_HEADER", player != NULL ? "| Your cards:" : "" );
@@ -353,6 +371,15 @@ void printCards(const Player* player, const PlayingCard* comm_cards[], const int
     }
 }
 
+/**
+ *  \brief Prints a table showing Players with the strongest hand at the end of a single game.
+ *  \param state The GameState struct whose variables will be printed.
+ *  \param players The Player array whose elements will be printed.
+ *  \param winners An array of integers holding indexes of Players who won.
+ *  \param winners_count The size of the winners array.
+ *
+ *  It prints player's number, their cards and their strongest handrank. Also shows the final amount held by the pot.
+ */
 void printShowdownResults(const GameState* state, const Player* players[], const int winners[], const int winners_count){
     MSG_SHOWVN(GLOBAL_MSGS, "PIO_SHOWDOWN_HEADER", state->pot);
     MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");

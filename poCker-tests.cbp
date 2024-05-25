@@ -26,6 +26,10 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="loc.txt" />
+		<Unit filename="src/ai.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/ai.h" />
 		<Unit filename="src/dealer.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -71,6 +75,9 @@
 		</Unit>
 		<Unit filename="test/CuTest.h" />
 		<Unit filename="test/README.txt" />
+		<Unit filename="test/test_ai.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="test/test_dealer.c">
 			<Option compilerVar="CC" />
 		</Unit>

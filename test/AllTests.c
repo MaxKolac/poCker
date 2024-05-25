@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "CuTest.h"
 
+CuSuite* AiGetSuite();
 CuSuite* DealerGetSuite();
 CuSuite* GamestateGetSuite();
 CuSuite* HandrankingGetSuite();
@@ -14,6 +15,7 @@ void RunAllTests(void) {
     CuString *output = CuStringNew();
     CuSuite* suite = CuSuiteNew();
 
+    CuSuiteAddSuite(suite, AiGetSuite());
     CuSuiteAddSuite(suite, DealerGetSuite());
     CuSuiteAddSuite(suite, GamestateGetSuite());
     CuSuiteAddSuite(suite, HandrankingGetSuite());

@@ -570,7 +570,12 @@ int detectHighCard(PlayingCard* cards[], int cards_count){
 
 /**
  *  \brief Takes a deck of cards and counts the amounts of each pip in the deck.
+ *  \param found_pips An array which will be populated with the found Pip enums.
+ *  \param found_pips_counts An array containing how many of each Pip were found.
+ *  \param cards PlayingCard structs to analyze.
+ *  \param cards_count The size of the cards array.
  *  \returns The size of the found_pips array which was filled by the function. found_pips and found_pips_counts share the same length.
+ *
  *  found_pips and found_pips_counts should be initialized with cards_count lengths before calling this function.
  *  To ensure that the function does not reach outside of those arrays, they should preferably be initialized with the length of cards_count.
  */

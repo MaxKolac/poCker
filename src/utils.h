@@ -8,7 +8,9 @@
  *  \brief  Contains a collection of miscellaneous functions.
  */
 
+/** \brief Quick generic macro for getting the larger number. */
 #define MAX(a,b) (a > b ? a : b)
+/** \brief Quick generic macro for getting the smaller number. */
 #define MIN(a,b) (a < b ? a : b)
 
 int mathClamp(int, int, int);

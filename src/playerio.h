@@ -11,7 +11,9 @@
  *  \brief Contains functions responsible for two-way communication with the human player through console inputs and outputs.
  */
 
+/** \brief Maximum allowed length for user's decision. */
 #define PLAYER_DECISION_LENGTH 16
+/** \brief Quick macro for cleaning the screen. Works for Windows, not 100% sure for Linux. */
 #define clearScreen() (system("@cls||clear"))
 
 int promptInt(int, char*);

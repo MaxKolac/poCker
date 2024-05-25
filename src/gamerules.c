@@ -4,32 +4,6 @@
 #include <stdio.h>
 #include "messages.h"
 
-const int MAX_BETS_PER_ROUND_OBJ = MAX_BETS_PER_ROUND;
-const int MAX_ROUNDS_PER_GAME_OBJ = MAX_ROUNDS_PER_GAME;
-const int MIN_PLAYER_COUNT = 3;
-const int MAX_PLAYER_COUNT = 12;
-const int MIN_FUNDS_PER_PLAYER = 100;
-const int MAX_FUNDS_PER_PLAYER = 10000;
-
-/**
- *  \brief Prompts the user for the total amount of all players.
- *  \param grs The GameRuleSet struct to modify.
- */
-void promptPlayerCount(GameRuleSet* grs){
-    int player_count = -1;
-    do {
-        char msg[MESSAGES_MAX_MSG_LENGTH];
-        snprintf(msg,
-                 sizeof(msg),
-                 msgGet(GLOBAL_MSGS, "GAMERULES_PROMPT_PLAYERCOUNT"),
-                 MIN_PLAYER_COUNT,
-                 MAX_PLAYER_COUNT);
-        player_count = promptInt(3, msg);
-    } while (player_count < MIN_PLAYER_COUNT || MAX_PLAYER_COUNT < player_count);
-    //Debug
-    //printf("Player count: %d\n", player_count);
-    grs->player_count = player_count;
-}
 
 /**
  *  \brief Prompts the user for how many of the players will be AI controlled.
@@ -50,6 +24,23 @@ void promptAIPlayersCount(GameRuleSet* grs){
     //Debug
     //printf("AI Player count: %d\n", ai_player_count);
     grs->ai_player_count = ai_player_count;
+}
+
+/**
+ *  \brief Prompts the user to set the big blind amount. This also sets the small amount to be the half of the entered amount.
+ *  \param grs The GameRuleSet struct to modify.
+ *  \warning This needs to be called before setting the funds_per_player!
+ */
+void promptBigBlind(GameRuleSet* grs){
+    int big_blind = -1;
+    do {
+        big_blind = promptInt(6, msgGet(GLOBAL_MSGS, "GAMERULES_PROMPT_BIGBLIND"));
+    } while (big_blind < 2 || floorf(grs->funds_per_player * 0.1) < big_blind);
+    int small_blind = floorf(big_blind / 2);
+    //Debug
+    //printf("Big blind: %d, Small blind: %d\n", big_blind, small_blind);
+    grs->big_blind = big_blind;
+    grs->small_blind = small_blind;
 }
 
 /**
@@ -84,18 +75,21 @@ void promptLimitFixed(GameRuleSet* grs){
 }
 
 /**
- *  \brief Prompts the user to set the big blind amount. This also sets the small amount.
+ *  \brief Prompts the user for the total amount of all players.
  *  \param grs The GameRuleSet struct to modify.
- *  \warning This needs to be called before setting the funds_per_player!
  */
-void promptBigBlind(GameRuleSet* grs){
-    int big_blind = -1;
+void promptPlayerCount(GameRuleSet* grs){
+    int player_count = -1;
     do {
-        big_blind = promptInt(6, msgGet(GLOBAL_MSGS, "GAMERULES_PROMPT_BIGBLIND"));
-    } while (big_blind < 2 || floorf(grs->funds_per_player * 0.1) < big_blind);
-    int small_blind = floorf(big_blind / 2);
+        char msg[MESSAGES_MAX_MSG_LENGTH];
+        snprintf(msg,
+                 sizeof(msg),
+                 msgGet(GLOBAL_MSGS, "GAMERULES_PROMPT_PLAYERCOUNT"),
+                 MIN_PLAYER_COUNT,
+                 MAX_PLAYER_COUNT);
+        player_count = promptInt(3, msg);
+    } while (player_count < MIN_PLAYER_COUNT || MAX_PLAYER_COUNT < player_count);
     //Debug
-    //printf("Big blind: %d, Small blind: %d\n", big_blind, small_blind);
-    grs->big_blind = big_blind;
-    grs->small_blind = small_blind;
+    //printf("Player count: %d\n", player_count);
+    grs->player_count = player_count;
 }

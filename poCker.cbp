@@ -43,6 +43,10 @@
 		<Unit filename="notes.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/ai.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/ai.h" />
 		<Unit filename="src/dealer.c">
 			<Option compilerVar="CC" />
 		</Unit>
