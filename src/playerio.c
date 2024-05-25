@@ -64,8 +64,10 @@ bool promptBool(char* msg){
  *  \param msg Message to show with trailing three dots.
  */
 void promptNull(char* msg){
+    #if (TARGET_NAME != DEBUG)
     printf("%s...", msg);
     getch();
+    #endif
 }
 
 /**
