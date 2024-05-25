@@ -675,6 +675,51 @@ static void test_settingUpRiverRound(CuTest* ct){
     CuAssert(ct, "", players[state->b_blind_player]->funds == 1200 - 10);
 }
 
+static void test_settingUpPreFlopRoundWhereSomePlayersCantAffordForcedBets(CuTest* ct){
+    const GameRuleSet ruleSet = {
+        .player_count = 4,
+        .funds_per_player = 1200,
+        .limit_fixed = false,
+        .big_blind = 10,
+        .small_blind = 5
+    };
+    GameState* state = gsCreateNew(&ruleSet);
+    Player* players[ruleSet.player_count];
+    for (int i = 0; i < ruleSet.player_count; ++i)
+        players[i] = playerCreateNewWithFunds(ruleSet.funds_per_player);
+    players[state->s_blind_player]->funds = ruleSet.small_blind - 1;
+    players[state->b_blind_player]->funds = ruleSet.big_blind - 1;
+
+    gsSetUpBettingRound(state, players, &ruleSet);
+
+    //These players will not be tapped out
+    //Doing so would only allow them to win as much as they bet
+    //Placing them in a lose-lose situation
+    //Instead, they will go on without funds until its their time to act
+    //Other player would have thrown some more funds into the pot
+    //Only then, the player can be tapped-out, giving them a chance at winning more than they were forced to bet
+    CuAssert(ct, "", players[state->s_blind_player]->funds == 0);
+    CuAssert(ct, "", players[state->s_blind_player]->tappedout == false);
+    CuAssert(ct, "", players[state->b_blind_player]->funds == 0);
+    CuAssert(ct, "", players[state->b_blind_player]->tappedout == false);
+
+    int zero = 0;
+    int minustwo = -2;
+    gsAdvancePlayerTurn(state, players, &ruleSet, &zero);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &zero);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &minustwo);
+    gsConcludeBettingRound(state);
+    gsSetUpBettingRound(state, players, &ruleSet);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &zero);
+    gsAdvancePlayerTurn(state, players, &ruleSet, &minustwo);
+
+    //pot should be: (4 + 9) + 10 + 10 + SB' Act || End of round || 0 + BB' Act
+    CuAssert(ct, "", players[state->s_blind_player]->tappedout == true);
+    CuAssert(ct, "", players[state->s_blind_player]->tappedout_funds == 33);
+    CuAssert(ct, "", players[state->b_blind_player]->tappedout == true);
+    CuAssert(ct, "", players[state->b_blind_player]->tappedout_funds == 33);
+}
+
 static void test_advancingToNextBettingRoundResetsTurnsLeftProperly(CuTest* ct){
     const GameRuleSet rules = {
         .player_count = 4,
@@ -1263,6 +1308,7 @@ CuSuite* GamestateGetSuite(CuTest* ct){
     SUITE_ADD_TEST(suite, test_settingUpFlopRound);
     SUITE_ADD_TEST(suite, test_settingUpTurnRound);
     SUITE_ADD_TEST(suite, test_settingUpRiverRound);
+    SUITE_ADD_TEST(suite, test_settingUpPreFlopRoundWhereSomePlayersCantAffordForcedBets);
 
     SUITE_ADD_TEST(suite, test_singleTapOut);
     SUITE_ADD_TEST(suite, test_multipleTapouts);

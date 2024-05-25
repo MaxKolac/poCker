@@ -50,11 +50,18 @@ void gsSetUpBettingRound(GameState* state, Player* players[], const GameRuleSet*
     }
     //Unless it's a pre-flop (beggining of a single game)
     //Force blind players to chip into the pot, without affecting the turns variable
+    //Players that would not be able to afford the forced bets are forced to go all-in
+    //They give all their funds but are not marked as tappedout or folded
+    //This would place them in a lose-lose situation where, if they kept winning, they would only win as much as they bet and no more.
+    //Instead, they will continue as if they have funds until its their time to act.
+    //Only then will they tapout, and before that other players could also chip into the pot some more.
     else {
-        players[state->s_blind_player]->funds -= ruleSet->small_blind;
-        state->pot += ruleSet->small_blind;
-        players[state->b_blind_player]->funds -= ruleSet->big_blind;
-        state->pot += ruleSet->big_blind;
+        int sBlindPlayerAmount = MIN(ruleSet->small_blind, players[state->s_blind_player]->funds);
+        players[state->s_blind_player]->funds -= sBlindPlayerAmount;
+        state->pot += sBlindPlayerAmount;
+        int bBlindPlayerAmount = MIN(ruleSet->big_blind, players[state->b_blind_player]->funds);
+        players[state->b_blind_player]->funds -= bBlindPlayerAmount;
+        state->pot += bBlindPlayerAmount;
         state->bet = ruleSet->big_blind;
         state->current_player = (state->b_blind_player + 1) % ruleSet->player_count;
         state->turns_left = ruleSet->player_count - 1;
