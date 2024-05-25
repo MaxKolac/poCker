@@ -12,7 +12,7 @@
 	<setjmp.h>
 	<stdarg.h>
 
-1714903044 source:c:\users\ja\documents\github\pocker\test\alltests.c
+1716212137 source:c:\users\ja\documents\github\pocker\test\alltests.c
 	<stdio.h>
 	"CuTest.h"
 
@@ -109,7 +109,7 @@
 	<stdio.h>
 	"messages.h"
 
-1715178386 source:c:\users\ja\documents\github\pocker\src\gamestate.c
+1716213972 source:c:\users\ja\documents\github\pocker\src\gamestate.c
 	"gamestate.h"
 	<stdbool.h>
 	<stdlib.h>
@@ -133,7 +133,7 @@
 	"CuTest.h"
 	"../src/gamerules.h"
 
-1715106893 source:c:\users\ja\documents\github\pocker\test\test_gamestate.c
+1716214137 source:c:\users\ja\documents\github\pocker\test\test_gamestate.c
 	"CuTest.h"
 	"../src/gamestate.h"
 	"../src/playingcard.h"
@@ -325,7 +325,7 @@
 	"gamestate.h"
 	"player.h"
 
-1715178221 source:c:\users\ja\documents\github\pocker\src\playerio.c
+1716628028 source:c:\users\ja\documents\github\pocker\src\playerio.c
 	"playerio.h"
 	<ctype.h>
 	<limits.h>
@@ -359,16 +359,19 @@
 	"../src/playerio.h"
 	"../src/messages.h"
 
-1715178293 source:c:\users\ja\documents\github\pocker\test\test_ai.c
+1716627525 source:c:\users\ja\documents\github\pocker\test\test_ai.c
 	"CuTest.h"
 	"../src/ai.h"
+	"../src/gamerules.h"
+	"../src/gamestate.h"
+	"../src/player.h"
 
-1715162599 c:\users\ja\documents\github\pocker\src\ai.h
+1716212069 c:\users\ja\documents\github\pocker\src\ai.h
 	"player.h"
 	"gamestate.h"
 	"gamerules.h"
 
-1715175855 source:c:\users\ja\documents\github\pocker\src\ai.c
+1716625908 source:c:\users\ja\documents\github\pocker\src\ai.c
 	"ai.h"
 	"player.h"
 	"gamestate.h"

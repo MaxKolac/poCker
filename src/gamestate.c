@@ -98,7 +98,7 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
             }
             else {
                 //for AI players - for now this function always returns 0 - CHECK
-                player_decision = takeAction(currentPlayer);
+                player_decision = ai_takeAction(ruleSet, state, players);
                 promptNull(msgGet(GLOBAL_MSGS, "NULL_PROMPT_NEXTTURN"));
             }
         }
