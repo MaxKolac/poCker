@@ -22,7 +22,20 @@ typedef enum {
     RAISE = 1 << 3
 } AIDecision;
 
+/**
+ *  \brief List of strategies the AI will choose from at the beginning of each game.
+ */
+typedef enum {
+    /** \brief AI will stay in the game until the showdown, attempting to match most calls. */
+    FIGHT,
+    /** \brief AI will attempt to stay in the game and pretend as if it has better cards than it actually holds. */
+    BLUFF,
+    /** \brief AI will fold on its next action, as it has deemed the stakes to be against its favour. */
+    ABANDON
+} AIStrategy;
+
 unsigned int ai_getAvailableDecisions(const GameRuleSet*, const GameState*, const Player*);
 int ai_takeAction(const GameRuleSet*, const GameState*, const Player**);
+AIStrategy ai_determineStrategy(const GameRuleSet*, const Player*, float (*)());
 
 #endif // AI_H

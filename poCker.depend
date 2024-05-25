@@ -39,7 +39,7 @@
 1710441325 c:\users\ja\documents\github\pocker\test\test_handranking.h
 	<assert.h>
 
-1715163094 source:c:\users\ja\documents\github\pocker\src\dealer.c
+1716644666 source:c:\users\ja\documents\github\pocker\src\dealer.c
 	"dealer.h"
 	<stdbool.h>
 	<stdio.h>
@@ -54,17 +54,17 @@
 1713035139 c:\users\ja\documents\github\pocker\src\handranking.h
 	"player.h"
 
-1715175855 c:\users\ja\documents\github\pocker\src\player.h
+1716631742 c:\users\ja\documents\github\pocker\src\player.h
 	<stdbool.h>
 	"playingcard.h"
 	"gamerules.h"
 
-1715177902 c:\users\ja\documents\github\pocker\src\playingcard.h
+1716631742 c:\users\ja\documents\github\pocker\src\playingcard.h
 	<string.h>
 
 1713035338 c:\users\ja\documents\github\pocker\src\playingcard_enums.h
 
-1715166194 source:c:\users\ja\documents\github\pocker\src\handranking.c
+1716640775 source:c:\users\ja\documents\github\pocker\src\handranking.c
 	"handranking.h"
 	<limits.h>
 	<math.h>
@@ -73,7 +73,7 @@
 	"playingcard.h"
 	"utils.h"
 
-1715177645 source:c:\users\ja\documents\github\pocker\src\utils.c
+1716631742 source:c:\users\ja\documents\github\pocker\src\utils.c
 	"utils.h"
 	<ctype.h>
 	<stdarg.h>
@@ -84,7 +84,7 @@
 
 1714903044 source:c:\users\ja\documents\github\pocker\notes.c
 
-1715178099 source:c:\users\ja\documents\github\pocker\src\playingcard.c
+1716631742 source:c:\users\ja\documents\github\pocker\src\playingcard.c
 	"playingcard.h"
 	<stdio.h>
 	<string.h>
@@ -106,38 +106,39 @@
 	"playingcard.h"
 	"utils.h"
 
-1715162599 c:\users\ja\documents\github\pocker\src\dealer.h
+1716631742 c:\users\ja\documents\github\pocker\src\dealer.h
 	<stdbool.h>
 	"gamerules.h"
 	"gamestate.h"
 	"player.h"
 	"playingcard.h"
 
-1715177686 c:\users\ja\documents\github\pocker\src\utils.h
+1716644789 c:\users\ja\documents\github\pocker\src\utils.h
 	<stdbool.h>
 
 1712917163 source:c:\users\ja\documents\github\pocker\src\constants.c
 	"constants.h"
 
-1715175878 source:c:\users\ja\documents\github\pocker\src\player.c
+1716631742 source:c:\users\ja\documents\github\pocker\src\player.c
 	"player.h"
 	<stdlib.h>
 
-1715163658 source:c:\users\ja\documents\github\pocker\src\gamerules.c
+1716631742 source:c:\users\ja\documents\github\pocker\src\gamerules.c
 	"gamerules.h"
 	<math.h>
 	<stdio.h>
 	"messages.h"
 
-1715164031 c:\users\ja\documents\github\pocker\src\gamerules.h
+1716631742 c:\users\ja\documents\github\pocker\src\gamerules.h
 	<stdbool.h>
 
-1715166001 source:c:\users\ja\documents\github\pocker\src\gamestate.c
+1716631742 source:c:\users\ja\documents\github\pocker\src\gamestate.c
 	"gamestate.h"
 	<stdbool.h>
 	<stdlib.h>
 	<stdio.h>
 	<math.h>
+	"ai.h"
 	"dealer.h"
 	"gamerules.h"
 	"messages.h"
@@ -145,7 +146,7 @@
 	"player.h"
 	"utils.h"
 
-1715166006 c:\users\ja\documents\github\pocker\src\gamestate.h
+1716631742 c:\users\ja\documents\github\pocker\src\gamestate.h
 	<stdbool.h>
 	"gamerules.h"
 	"player.h"
@@ -265,20 +266,20 @@
 	<string.h>
 	<limits.h>
 
-1715177567 c:\users\ja\documents\github\pocker\src\messages.h
+1716631742 c:\users\ja\documents\github\pocker\src\messages.h
 
-1715177374 source:c:\users\ja\documents\github\pocker\src\messages.c
+1716631742 source:c:\users\ja\documents\github\pocker\src\messages.c
 	"messages.h"
 	<stdio.h>
 	<string.h>
 
-1715176036 c:\users\ja\documents\github\pocker\src\playerio.h
+1716631742 c:\users\ja\documents\github\pocker\src\playerio.h
 	<stdbool.h>
 	"gamerules.h"
 	"gamestate.h"
 	"player.h"
 
-1715109658 source:c:\users\ja\documents\github\pocker\src\playerio.c
+1716631742 source:c:\users\ja\documents\github\pocker\src\playerio.c
 	"playerio.h"
 	<ctype.h>
 	<limits.h>
@@ -292,13 +293,17 @@
 	"gamestate.h"
 	"utils.h"
 
-1715175855 source:c:\users\ja\documents\github\pocker\src\ai.c
+1716644882 source:c:\users\ja\documents\github\pocker\src\ai.c
 	"ai.h"
+	<math.h>
+	<stdlib.h>
 	"player.h"
 	"gamestate.h"
 	"gamerules.h"
+	"handranking.h"
+	"utils.h"
 
-1715162599 c:\users\ja\documents\github\pocker\src\ai.h
+1716643360 c:\users\ja\documents\github\pocker\src\ai.h
 	"player.h"
 	"gamestate.h"
 	"gamerules.h"

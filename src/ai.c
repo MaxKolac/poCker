@@ -1,8 +1,12 @@
 #include "ai.h"
 
+#include <math.h>
+#include <stdlib.h>
 #include "player.h"
 #include "gamestate.h"
 #include "gamerules.h"
+#include "handranking.h"
+#include "utils.h"
 
 /**
  *  \brief Tells the caller what decisions are valid for the current state of the game.
@@ -42,8 +46,51 @@ unsigned int ai_getAvailableDecisions(const GameRuleSet* rules, const GameState*
 }
 
 /**
- *  \brief Analyzes the current game situation and return a decision as an integer.
+ *  \brief Acts as a execution chain for other AI functions. Returns the AI's decision as an integer.
+ *
+ *  Return values are:
+ *  - greater than 0 - AI wants to RAISE by the returned value.
+ *  - 0 - AI wants to CALL/CHECK.
+ *  - -1 - AI wishes to FOLD.
+ *  - -2 - AI wants to TAPOUT.
  */
- int ai_takeAction(const GameRuleSet* rules, const GameState* state, const Player** players){
-    return 0;
- }
+int ai_takeAction(const GameRuleSet* rules, const GameState* state, const Player** players){
+    switch (ai_determineStrategy(rules, players[state->current_player], randFloat))
+    {
+        case ABANDON:
+            return -1;
+        default:
+            return 0;
+    }
+}
+
+/**
+ *  \brief Calculates weights for each AIStrategy enum and returns one for the AI to try and follow.
+ *  \param rules Current GameRuleSet struct. Only the funds_per_player member will be read.
+ *  \param self The current Player. Their current_hand and funds will be read.
+ *  \param rngFunction A pointer to a parameterless function which will return a random float from an inclusive range of (0.0 - 1.0).
+ *  \returns One of the AIStrategy enums, chosen pseudo-randomly.
+ */
+AIStrategy ai_determineStrategy(const GameRuleSet* rules, const Player* self, float (*rngFunction)()){
+    const int pairMaxScore = ACE * pow(20, 3);
+    const int handMaxScore = ACE + ACE;
+
+    int pairRankScore = detectPair(self->current_hand, CARDS_PER_PLAYER);
+    int handScore = self->current_hand[0]->pips + self->current_hand[1]->pips;
+
+    float fightWeight = pairRankScore != 0 ?
+                        CLAMP(2.0f * pairRankScore / pairMaxScore, 0.0f, 1.0f) :
+                        handScore / handMaxScore;
+    float bluffWeight = ((1.0f - fightWeight) / 2.0f) * (CLAMP(self->funds / rules->funds_per_player, 0.0f, 2.0f) - 0.5f + fightWeight);
+
+    float rngResult = CLAMP(rngFunction(), 0.0f, 1.0f);
+    if (rngResult <= fightWeight){
+        return FIGHT;
+    }
+    else if (rngResult <= fightWeight + bluffWeight){
+        return BLUFF;
+    }
+    else {
+        return ABANDON;
+    }
+}

@@ -540,6 +540,8 @@ int detectPair(PlayingCard* cards[], int cards_count){
     }
 
     //Calculate final score
+    //FYI: If this formula ever changes, make sure to reflect those changes in:
+    // ai.c -> ai_determineStrategy()
     return pair_card * pow(20, 3) + high_kicker * pow(20, 2) + mid_kicker * 20 + low_kicker;
 }
 
