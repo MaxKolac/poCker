@@ -31,10 +31,19 @@ int mathClamp(int val, int min, int max){
  *
  *  Make sure you call 'srand(time(NULL))' once and before ever calling this method!
  */
-int randRange(int lower_inc_bound, int upper_inc_bound){
+int randInt(int lower_inc_bound, int upper_inc_bound){
     lower_inc_bound = mathClamp(lower_inc_bound, 0, upper_inc_bound);
     upper_inc_bound = mathClamp(upper_inc_bound, lower_inc_bound, RAND_MAX);
     return lower_inc_bound + (rand() % (upper_inc_bound - lower_inc_bound));
+}
+
+/**
+ *  \brief Randomizes a floating point number from a range of [0, 1).
+ *
+ *  Make sure you call 'srand(time(NULL))' once and before ever calling this method!
+ */
+float randFloat(){
+    return (float)rand() / (float)RAND_MAX;
 }
 
 /**

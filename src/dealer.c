@@ -102,7 +102,7 @@ void distributeCards(PlayingCard deck[], Player* players[], PlayingCard* comm_ca
     int indexes_count = rules->player_count * CARDS_PER_PLAYER + COMM_CARDS_COUNT;
     int indexes[indexes_count];
     for (int i = 0; i < indexes_count; i++){
-        indexes[i] = randRange(0, DECK_LENGTH - 1);
+        indexes[i] = randInt(0, DECK_LENGTH - 1);
     }
     //Debug
     //for (int i = 0; i < indexes_count; i++)
@@ -118,7 +118,7 @@ void distributeCards(PlayingCard deck[], Player* players[], PlayingCard* comm_ca
                 bool isDuplicate;
                 do{
                     isDuplicate = false;
-                    indexes[j] = randRange(0, DECK_LENGTH - 1);
+                    indexes[j] = randInt(0, DECK_LENGTH - 1);
                     for (int k = 0; k < j; k++){
                         isDuplicate = indexes[j] == indexes[k] || isDuplicate;
                     }
@@ -140,7 +140,7 @@ void distributeCards(PlayingCard deck[], Player* players[], PlayingCard* comm_ca
     //If the chosen index is -1, keep searching for the first non-negative element and use that instead.
     for (int i = 0; i < rules->player_count; i++){
         for (int j = 0; j < CARDS_PER_PLAYER; j++){
-            int selectedIndex = randRange(0, indexes_count - 1);
+            int selectedIndex = randInt(0, indexes_count - 1);
             while (indexes[selectedIndex] == -1){
                 selectedIndex = (selectedIndex + 1) % indexes_count;
             }
@@ -151,7 +151,7 @@ void distributeCards(PlayingCard deck[], Player* players[], PlayingCard* comm_ca
     //After all this, there should be COMM_CARDS_COUNT amount of indexes left.
     //Those will be community cards.
     for (int i = 0; i < COMM_CARDS_COUNT; i++){
-        int selectedIndex = randRange(0, indexes_count - 1);
+        int selectedIndex = randInt(0, indexes_count - 1);
         while (indexes[selectedIndex] == -1){
             selectedIndex = (selectedIndex + 1) % indexes_count;
         }
