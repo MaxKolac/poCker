@@ -89,7 +89,7 @@
 	<stdio.h>
 	<string.h>
 
-1718712336 source:c:\users\ja\documents\github\pocker\src\main.c
+1718717366 source:c:\users\ja\documents\github\pocker\src\main.c
 	<assert.h>
 	<stdbool.h>
 	<stdio.h>
@@ -132,7 +132,7 @@
 1716631742 c:\users\ja\documents\github\pocker\src\gamerules.h
 	<stdbool.h>
 
-1716631742 source:c:\users\ja\documents\github\pocker\src\gamestate.c
+1718718717 source:c:\users\ja\documents\github\pocker\src\gamestate.c
 	"gamestate.h"
 	<stdbool.h>
 	<stdlib.h>
@@ -146,7 +146,7 @@
 	"player.h"
 	"utils.h"
 
-1716631742 c:\users\ja\documents\github\pocker\src\gamestate.h
+1718715512 c:\users\ja\documents\github\pocker\src\gamestate.h
 	<stdbool.h>
 	"gamerules.h"
 	"player.h"
@@ -279,7 +279,7 @@
 	"gamestate.h"
 	"player.h"
 
-1716631742 source:c:\users\ja\documents\github\pocker\src\playerio.c
+1718714011 source:c:\users\ja\documents\github\pocker\src\playerio.c
 	"playerio.h"
 	<ctype.h>
 	<limits.h>

@@ -87,6 +87,25 @@ static void test_decideWinners_largerScoreInLowerTiersDontWin(CuTest* ct){
     CuAssert(ct, "", winners_count == 2);
 }
 
+static void test_decideWinners_foldedPlayersAreNeverConsideredWinners(CuTest* ct){
+    Player* players[5];
+    for (int i = 0; i < 5; i++){
+        players[i] = playerCreateNew();
+    }
+    players[0]->scores[8] = 100;
+    players[1]->scores[8] = 900;
+    players[2]->scores[8] = 1200;
+    players[2]->folded = true;
+    players[3]->scores[8] = 800;
+    players[4]->scores[8] = 1200;
+
+    int winners[5];
+    int winners_count = decideWinners(players, 5, winners);
+
+    CuAssert(ct, "", winners[0] == 4);
+    CuAssert(ct, "", winners_count == 1);
+}
+
 static void test_decideWinners_miscTest1(CuTest* ct){
     Player* players[5];
     for (int i = 0; i < 5; i++){
@@ -112,6 +131,7 @@ CuSuite* DealerGetSuite(){
     SUITE_ADD_TEST(suite, test_decideWinners_multiplePlayerSameScore);
     SUITE_ADD_TEST(suite, test_decideWinners_correctlySelectWinner);
     SUITE_ADD_TEST(suite, test_decideWinners_largerScoreInLowerTiersDontWin);
+    SUITE_ADD_TEST(suite, test_decideWinners_foldedPlayersAreNeverConsideredWinners);
     SUITE_ADD_TEST(suite, test_decideWinners_miscTest1);
     return suite;
 }

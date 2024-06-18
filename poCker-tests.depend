@@ -53,7 +53,7 @@
 	"CuTest.h"
 	"../src/playingcard.h"
 
-1716644666 source:c:\users\ja\documents\github\pocker\src\dealer.c
+1718720930 source:c:\users\ja\documents\github\pocker\src\dealer.c
 	"dealer.h"
 	<stdbool.h>
 	<stdio.h>
@@ -87,7 +87,7 @@
 	"player.h"
 	<stdlib.h>
 
-1713445157 source:c:\users\ja\documents\github\pocker\test\test_dealer.c
+1718720916 source:c:\users\ja\documents\github\pocker\test\test_dealer.c
 	<stdbool.h>
 	"CuTest.h"
 	"../src/dealer.h"
@@ -109,7 +109,7 @@
 	<stdio.h>
 	"messages.h"
 
-1718713674 source:c:\users\ja\documents\github\pocker\src\gamestate.c
+1718718717 source:c:\users\ja\documents\github\pocker\src\gamestate.c
 	"gamestate.h"
 	<stdbool.h>
 	<stdlib.h>
@@ -123,7 +123,7 @@
 	"player.h"
 	"utils.h"
 
-1716631742 c:\users\ja\documents\github\pocker\src\gamestate.h
+1718715512 c:\users\ja\documents\github\pocker\src\gamestate.h
 	<stdbool.h>
 	"gamerules.h"
 	"player.h"
@@ -133,7 +133,7 @@
 	"CuTest.h"
 	"../src/gamerules.h"
 
-1718713974 source:c:\users\ja\documents\github\pocker\test\test_gamestate.c
+1718720951 source:c:\users\ja\documents\github\pocker\test\test_gamestate.c
 	"CuTest.h"
 	"../src/gamestate.h"
 	"../src/playingcard.h"
@@ -325,7 +325,7 @@
 	"gamestate.h"
 	"player.h"
 
-1718712752 source:c:\users\ja\documents\github\pocker\src\playerio.c
+1718718963 source:c:\users\ja\documents\github\pocker\src\playerio.c
 	"playerio.h"
 	<ctype.h>
 	<limits.h>

@@ -48,7 +48,7 @@ int decideWinners(Player* players[], int players_count, int *winners){
     //Get all players who have a non-zero score on the same tier
     for (int i = 0; i < SCORE_TABLE_SIZE; i++){
         for (int j = 0; j < players_count; j++){
-            if (players[j]->scores[i] > 0){
+            if (!(players[j]->folded) && players[j]->scores[i] > 0){
                 possible_winners[possible_winners_count] = j;
                 possible_winners_count++;
                 score_tier = i;
