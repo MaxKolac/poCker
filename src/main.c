@@ -60,7 +60,7 @@ int main()
             gsSetUpBettingRound(globalState, players, &globalRules);
 
             //  --  Single round of betting loop  --
-            while (globalState->turns_left > 0){
+            while (globalState->turns_left > 0 && !(globalState->all_but_one_folded)){
                 clearScreen();
                 MSG_SHOWN(GLOBAL_MSGS, "DIVIDER_1COL");
                 printHeader(globalState);

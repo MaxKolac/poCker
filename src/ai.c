@@ -55,12 +55,53 @@ unsigned int ai_getAvailableDecisions(const GameRuleSet* rules, const GameState*
  *  - -2 - AI wants to TAPOUT.
  */
 int ai_takeAction(const GameRuleSet* rules, const GameState* state, const Player** players){
+    unsigned int decisions = ai_getAvailableDecisions(rules, state, players[state->current_player]);
     switch (ai_determineStrategy(rules, players[state->current_player], randFloat))
     {
+        case FIGHT:
+            if (decisions & RAISE)
+            {
+                return 1;
+            }
+            else if (decisions & CALL)
+            {
+                return 0;
+            }
+            else if (decisions & TAPOUT)
+            {
+                return -2;
+            }
+            else
+            {
+                return -1;
+            }
+            break;
+        case BLUFF:
+            if (decisions & RAISE)
+            {
+                return 1;
+            }
+            else if (decisions & CALL)
+            {
+                return 0;
+            }
+            else if (decisions & TAPOUT)
+            {
+                return -2;
+            }
+            else
+            {
+                return -1;
+            }
+            break;
         case ABANDON:
-            return -1;
-        default:
-            return 0;
+            if (decisions & TAPOUT){
+                return -2;
+            }
+            else {
+                return -1;
+            }
+            break;
     }
 }
 
@@ -78,11 +119,16 @@ AIStrategy ai_determineStrategy(const GameRuleSet* rules, const Player* self, fl
     int pairRankScore = detectPair(self->current_hand, CARDS_PER_PLAYER);
     int handScore = self->current_hand[0]->pips + self->current_hand[1]->pips;
 
-    float fightWeight = pairRankScore != 0 ?
-                        CLAMP(2.0f * pairRankScore / pairMaxScore, 0.0f, 1.0f) :
-                        handScore / handMaxScore;
-    float bluffWeight = ((1.0f - fightWeight) / 2.0f) * (CLAMP(self->funds / rules->funds_per_player, 0.0f, 2.0f) - 0.5f + fightWeight);
+    //The odds of AI trying to fight legitimately
+    float fightWeight = pairRankScore != 0 ? //If we have a pair (which is a strong opening hand)
+                        CLAMP(2.0f * pairRankScore / pairMaxScore, 0.0f, 1.0f) : //Then odds of fighting should be somewhat great, based on how strong the pair is
+                        handScore / handMaxScore; //Otherwise, odds of fighting should be high only if we have strong cards
 
+    //The odds of AI bluffing and acting like they own better cards
+    //The opposite of fightWeight divided by two and multiplied by how much they can risk to bluff, based on current funds ratio to what we started with.
+    float bluffWeight = MAX(0.0f, ((1.0f - fightWeight) / 2.0f) * (CLAMP(self->funds / rules->funds_per_player, 0.0f, 2.0f) - 0.5f + fightWeight));
+
+    //Now arrange the odds and decide on the strategy
     float rngResult = CLAMP(rngFunction(), 0.0f, 1.0f);
     if (rngResult <= fightWeight){
         return FIGHT;
