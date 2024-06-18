@@ -68,7 +68,6 @@ void gsSetUpBettingRound(GameState* state, Player* players[], const GameRuleSet*
     }
 }
 
-
 /**
  *  \brief Advances the player's turn by allowing them to take action and applying any changes causes by the chosen action.
  *  \param state The current state of the game to modify accordingly.
@@ -82,7 +81,6 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
     //Wowza, practical use of De Morgan's law
     if (!(currentPlayer->folded || currentPlayer->tappedout)){
         //Player chooses an action and check if they even can do that
-        //Validity checks should not be done by players themselves (they might cheat lol)
         int player_decision;
         if (player_dec_override == NULL){
             if (currentPlayer->isHuman){
@@ -97,7 +95,7 @@ void gsAdvancePlayerTurn(GameState* state, Player* players[], const GameRuleSet*
                 } while(!decisionValid);
             }
             else {
-                //for AI players - for now this function always returns 0 - CHECK
+                //For AI players
                 player_decision = ai_takeAction(ruleSet, state, players);
                 promptNull(msgGet(GLOBAL_MSGS, "NULL_PROMPT_NEXTTURN"));
             }

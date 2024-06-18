@@ -486,8 +486,9 @@ static void test_checkTheWhileLoopInMainForPlayerTurnAdvancing(CuTest* ct){
         players[i] = playerCreateNewWithFunds(rules.funds_per_player);
 
     gsSetUpBettingRound(state, players, &rules);
-    while (state->turns_left > 0){
-        gsAdvancePlayerTurn(state, players, &rules, 0);
+    int decision = 0;
+    while (state->turns_left > 0 && !(state->all_but_one_folded)){
+        gsAdvancePlayerTurn(state, players, &rules, &decision);
     }
 
     //Current player should be the one after the last player who acted, therefore big_blind
@@ -498,8 +499,8 @@ static void test_checkTheWhileLoopInMainForPlayerTurnAdvancing(CuTest* ct){
     gsConcludeBettingRound(state);
 
     gsSetUpBettingRound(state, players, &rules);
-    while (state->turns_left > 0){
-        gsAdvancePlayerTurn(state, players, &rules, 0);
+    while (state->turns_left > 0 && !(state->all_but_one_folded)){
+        gsAdvancePlayerTurn(state, players, &rules, &decision);
     }
 
     //Current player should be the one after the last player who acted, therefore s_blind
