@@ -96,7 +96,7 @@ int main()
 
         gsAwardPot(globalState, players, winners, winners_count);
         gameOver = gsCheckGameOverCondition(players, &globalRules);
-        gsPassDealerButton(globalState, &globalRules);
+        gsPassDealerButton(globalState, &globalRules, players);
         gsConcludeSingleGame(globalState);
     } while (!gameOver);
 

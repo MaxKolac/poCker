@@ -313,11 +313,23 @@ bool gsCheckGameOverCondition(Player* players[], const GameRuleSet* rules){
  *  \brief Pass the dealer button to the next player. Done once after each full round. This also causes the blind player statuses to move.
  *  \param state The GameState struct to modify.
  *  \param rules The GameRuleSet containing the amount of Players.
+ *  \param players An array of pointers to Player structs to check if this Player is folded or not.
  */
-void gsPassDealerButton(GameState* state, const GameRuleSet* rules){
-    state->dealer_player = (state->dealer_player + 1) % rules->player_count;
-    state->s_blind_player = (state->s_blind_player + 1) % rules->player_count;
-    state->b_blind_player = (state->b_blind_player + 1) % rules->player_count;
+void gsPassDealerButton(GameState* state, const GameRuleSet* rules, const Player** players){
+    int* indexes[] = {
+        &(state->dealer_player),
+        &(state->s_blind_player),
+        &(state->b_blind_player)
+    };
+
+    for (int i = 0; i < 3; i++){
+        int j = *(indexes[i == 0 ? 0 : i - 1]);
+        do {
+            j = (j + 1) % rules->player_count;
+        }
+        while (players[j]->folded);
+        *(indexes[i]) = j;
+    }
 }
 
 /**

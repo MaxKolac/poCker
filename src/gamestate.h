@@ -47,7 +47,7 @@ void gsConcludeBettingRound(GameState*);
 int gsDetermineWinners(int[], const GameRuleSet*, const GameState*, const Player*[], const PlayingCard*[]);
 void gsAwardPot(GameState*, Player*[], const int[], const int);
 bool gsCheckGameOverCondition(Player*[], const GameRuleSet*);
-void gsPassDealerButton(GameState*, const GameRuleSet*);
+void gsPassDealerButton(GameState*, const GameRuleSet*, const Player**);
 void gsConcludeSingleGame(GameState*);
 
 #endif // GAMESTATE_H

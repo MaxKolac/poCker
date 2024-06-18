@@ -763,7 +763,7 @@ static void test_concludingSingleGame(CuTest* ct){
         gsSetUpBettingRound(state, players, &rules);
         gsConcludeBettingRound(state);
     }
-    gsPassDealerButton(state, &rules);
+    gsPassDealerButton(state, &rules, players);
     gsConcludeSingleGame(state);
     const GameState* freshState = gsCreateNew(&rules);
 
@@ -1264,34 +1264,131 @@ static void test_passingAroundDealersButton(CuTest* ct){
         .big_blind = 10,
         .small_blind = 5
     };
+    Player* players[ruleSet.player_count];
+    for (int i = 0; i < ruleSet.player_count; ++i)
+        players[i] = playerCreateNew();
     GameState* state = gsCreateNew(&ruleSet);
 
     CuAssert(ct, "", state->dealer_player == 0);
     CuAssert(ct, "", state->s_blind_player == 1);
     CuAssert(ct, "", state->b_blind_player == 2);
 
-    gsPassDealerButton(state, &ruleSet);
+    gsPassDealerButton(state, &ruleSet, players);
 
     CuAssert(ct, "", state->dealer_player == 1);
     CuAssert(ct, "", state->s_blind_player == 2);
     CuAssert(ct, "", state->b_blind_player == 3);
 
-    gsPassDealerButton(state, &ruleSet);
+    gsPassDealerButton(state, &ruleSet, players);
 
     CuAssert(ct, "", state->dealer_player == 2);
     CuAssert(ct, "", state->s_blind_player == 3);
     CuAssert(ct, "", state->b_blind_player == 0);
 
-    gsPassDealerButton(state, &ruleSet);
+    gsPassDealerButton(state, &ruleSet, players);
 
     CuAssert(ct, "", state->dealer_player == 3);
     CuAssert(ct, "", state->s_blind_player == 0);
     CuAssert(ct, "", state->b_blind_player == 1);
 }
 
+static void test_passingDealerButtonOmittsFoldedPlayers(CuTest* ct){
+    const GameRuleSet ruleSet = {
+        .player_count = 6,
+        .funds_per_player = 10000,
+        .limit_fixed = false,
+        .big_blind = 10,
+        .small_blind = 5
+    };
+    Player* players[ruleSet.player_count];
+    for (int i = 0; i < ruleSet.player_count; ++i)
+        players[i] = playerCreateNew();
+    GameState* state = gsCreateNew(&ruleSet);
+
+    CuAssert(ct, "", state->dealer_player == 0);
+    CuAssert(ct, "", state->s_blind_player == 1);
+    CuAssert(ct, "", state->b_blind_player == 2);
+
+    players[2]->folded = true;
+    players[4]->folded = true;
+
+    gsPassDealerButton(state, &ruleSet, players);
+
+    CuAssert(ct, "", state->dealer_player == 1);
+    CuAssert(ct, "", state->s_blind_player == 3);
+    CuAssert(ct, "", state->b_blind_player == 5);
+
+    gsPassDealerButton(state, &ruleSet, players);
+
+    CuAssert(ct, "", state->dealer_player == 3);
+    CuAssert(ct, "", state->s_blind_player == 5);
+    CuAssert(ct, "", state->b_blind_player == 0);
+
+    gsPassDealerButton(state, &ruleSet, players);
+
+    CuAssert(ct, "", state->dealer_player == 5);
+    CuAssert(ct, "", state->s_blind_player == 0);
+    CuAssert(ct, "", state->b_blind_player == 1);
+
+    gsPassDealerButton(state, &ruleSet, players);
+
+    CuAssert(ct, "", state->dealer_player == 0);
+    CuAssert(ct, "", state->s_blind_player == 1);
+    CuAssert(ct, "", state->b_blind_player == 3);
+}
+
+static void test_passingDealerButtonFor2PlayersLeftOnlyBlindsAreAssigned(CuTest* ct){
+    const GameRuleSet ruleSet = {
+        .player_count = 6,
+        .funds_per_player = 10000,
+        .limit_fixed = false,
+        .big_blind = 10,
+        .small_blind = 5
+    };
+    Player* players[ruleSet.player_count];
+    for (int i = 0; i < ruleSet.player_count; ++i)
+        players[i] = playerCreateNew();
+    GameState* state = gsCreateNew(&ruleSet);
+
+    CuAssert(ct, "", state->dealer_player == 0);
+    CuAssert(ct, "", state->s_blind_player == 1);
+    CuAssert(ct, "", state->b_blind_player == 2);
+
+    //Only 0 and 3 are in game
+    players[1]->folded = true;
+    players[2]->folded = true;
+    players[4]->folded = true;
+    players[5]->folded = true;
+
+    gsPassDealerButton(state, &ruleSet, players);
+
+    CuAssert(ct, "", state->dealer_player == 3);
+    CuAssert(ct, "", state->s_blind_player == 0);
+    CuAssert(ct, "", state->b_blind_player == 3);
+
+    gsPassDealerButton(state, &ruleSet, players);
+
+    CuAssert(ct, "", state->dealer_player == 0);
+    CuAssert(ct, "", state->s_blind_player == 3);
+    CuAssert(ct, "", state->b_blind_player == 0);
+
+    gsPassDealerButton(state, &ruleSet, players);
+
+    CuAssert(ct, "", state->dealer_player == 3);
+    CuAssert(ct, "", state->s_blind_player == 0);
+    CuAssert(ct, "", state->b_blind_player == 3);
+
+    gsPassDealerButton(state, &ruleSet, players);
+
+    CuAssert(ct, "", state->dealer_player == 0);
+    CuAssert(ct, "", state->s_blind_player == 3);
+    CuAssert(ct, "", state->b_blind_player == 0);
+}
+
 CuSuite* GamestateGetSuite(CuTest* ct){
     CuSuite* suite = CuSuiteNew();
     msgInitFromFile("loc.txt");
+
     SUITE_ADD_TEST(suite, test_checkConstructor);
 
     SUITE_ADD_TEST(suite, test_raiseRightAfterStartingGame);
@@ -1325,5 +1422,7 @@ CuSuite* GamestateGetSuite(CuTest* ct){
     SUITE_ADD_TEST(suite, test_everyoneButOnePlayerIsBroke);
 
     SUITE_ADD_TEST(suite, test_passingAroundDealersButton);
+    SUITE_ADD_TEST(suite, test_passingDealerButtonOmittsFoldedPlayers);
+    SUITE_ADD_TEST(suite, test_passingDealerButtonFor2PlayersLeftOnlyBlindsAreAssigned);
     return suite;
 }
