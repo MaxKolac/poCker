@@ -1,7 +1,6 @@
 #include "player.h"
 
 #include <stdlib.h>
-#include "ai.h"
 
 /**
  *  \brief Creates a new Player struct.
@@ -18,9 +17,6 @@ Player* playerCreateNew(){
     self->current_hand[1] = NULL;
     self->isHuman = false;
     self->past_decisions_size = 0;
-    self->setStrategy = NULL;
-    self->fake_hand[0] = NULL;
-    self->fake_hand[1] = NULL;
     return self;
 }
 

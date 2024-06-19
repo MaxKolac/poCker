@@ -2,7 +2,6 @@
 #define PLAYER_H
 
 #include <stdbool.h>
-#include "ai.h"
 #include "playingcard.h"
 #include "gamerules.h"
 
@@ -36,10 +35,6 @@ typedef struct {
     bool tappedout;
     /** \brief The amount of funds the pot held at the time of this Player tappingout. If they win the showdown, this Player will receive only this much. */
     unsigned int tappedout_funds;
-    /** \brief The strategy chosen by AI to try and follow. */
-    AIStrategy setStrategy;
-    /** \brief If this player is an AI and chose the strategy of AIStrategy.BLUFF, those are the cards the AI will pretend to have. */
-    PlayingCard* fake_hand[CARDS_PER_PLAYER];
 } Player;
 
 Player* playerCreateNew();

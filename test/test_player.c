@@ -13,10 +13,6 @@ static void test_player_checkConstructor(CuTest* ct){
     for (int i = 0; i < CARDS_PER_PLAYER; ++i){
         CuAssert(ct, "", player->current_hand[i] == NULL);
     }
-    CuAssert(ct, "", player->setStrategy == NULL);
-    for (int i = 0; i < CARDS_PER_PLAYER; ++i){
-        CuAssert(ct, "", player->fake_hand[i] == NULL);
-    }
 }
 
 static void test_player_checkConstructorWithParameters(CuTest* ct){
@@ -31,10 +27,6 @@ static void test_player_checkConstructorWithParameters(CuTest* ct){
     }
     for (int i = 0; i < CARDS_PER_PLAYER; ++i){
         CuAssert(ct, "", player->current_hand[i] == NULL);
-    }
-    CuAssert(ct, "", player->setStrategy == NULL);
-    for (int i = 0; i < CARDS_PER_PLAYER; ++i){
-        CuAssert(ct, "", player->fake_hand[i] == NULL);
     }
 }
 
